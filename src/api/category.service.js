@@ -3,7 +3,7 @@ import base from "./base.service"
 const instance = base.service();
 export const getAllCategories = () => {
     return instance
-        .post('categories/')
+        .get('categories/')
         .then((results) => {
             return results.data;
         })
@@ -18,7 +18,12 @@ export const getCategoryByID = (id) => {
 
 export const getAllProductsInCategory = (id, page) => {
     return instance
-        .get(`categories/${id}/products?page=${page}`)
+        .get(`categories/${id}/products`,{
+            params: {
+                page: page.pageNumber,
+                size: page.pageSize,
+            },
+        })
         .then((result) => result.data);
 };
 

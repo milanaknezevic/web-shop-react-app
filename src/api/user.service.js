@@ -10,9 +10,13 @@ export const getUserByID = (id) => {
 
 export const getAllProductsForBuyer = (page) => {
     return instance
-        .get(`users/purchases?page=${page}`, {
+        .get(`users/purchases`, {
             headers: {
                 Authorization: `Bearer ${token}`
+            },
+            params:{
+                page:page.pageNumber,
+                size:page.pageSize
             }
         })
         .then((result) => result.data);
@@ -20,10 +24,15 @@ export const getAllProductsForBuyer = (page) => {
 
 export const getAllProductsForSeller = (page, finished) => {
     return instance
-        .get(`users/products?page=${page}&finished=${finished}`, {
+        .get(`users/products`, {
             headers: {
                 Authorization: `Bearer ${token}`
-            }
+            },params: {
+                page: page.pageNumber,
+                size: page.pageSize,
+                finished: finished,
+
+            },
         })
         .then((result) => result.data);
 };
@@ -39,7 +48,11 @@ export const updateUser = (id, userDataToUpdate) => {
 };
 export const changePassword = (id, changePasswordData) => {
     return instance
-        .put(`users/${id}/change-password/`, changePasswordData)
+        .put(`users/${id}/change-password/`, changePasswordData,{
+            headers:{
+                Authorization: `Bearer ${token}`
+            },
+        })
         .then((results) => results);
 }
 const userService = {

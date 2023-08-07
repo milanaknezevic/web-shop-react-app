@@ -8,9 +8,14 @@ export const getProductByID = (id) => {
         .get(`products/${id}`)
         .then((result) => result.data)
 };
-export const getAllProducts = (page, zavrsenaPonuda) => {
+export const getAllProducts = (page) => {
     return unauthenticatedInstance
-        .get(`products?page=${page}&zavrsenaPonuda=${zavrsenaPonuda}`)
+        .get(`products/`,{
+            params: {
+                page: page.pageNumber,
+                size: page.pageSize
+            }
+        })
         .then((result) => result.data);
 };
 export const insertProducts = (productData) => {
@@ -54,7 +59,12 @@ export const deleteProduct = (id) => {
 
 export const searchProducts = (page,searchData) => {
     return unauthenticatedInstance
-        .post(`products/searchProducts?page=${page}`, searchData)
+        .post(`products/searchProducts`, searchData, {
+            params: {
+                page: page.pageNumber,
+                size: page.pageSize,
+            },
+        })
         .then((results) => {
             return results.data;
         })
@@ -76,6 +86,7 @@ const messageService = {
     sendQuestion,
     sendAnswer,
     deleteProduct,
-    purchaseProduct
+    purchaseProduct,
+    searchProducts
 };
 export default messageService;
