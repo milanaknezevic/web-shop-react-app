@@ -18,7 +18,7 @@ export const getAllProducts = (page) => {
         })
         .then((result) => result.data);
 };
-export const insertProducts = (productData) => {
+export const insertProduct = (productData) => {
     return authenticatedInstance
         .post('products/', productData, {
             headers: {
@@ -82,7 +82,7 @@ export const purchaseProduct = (id) => {
 const messageService = {
     getAllProducts,
     getProductByID,
-    insertProducts,
+    insertProduct,
     sendQuestion,
     sendAnswer,
     deleteProduct,
