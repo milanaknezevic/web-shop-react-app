@@ -1,0 +1,12 @@
+.cardContainer{
+    padding:1rem;
+    display:flex;
+    flex-wrap:wrap
+}
+.naslov{
+    text-align: center;
+}
+.paginacija{
+    text-align: end;
+    margin-bottom: 20px;
+}

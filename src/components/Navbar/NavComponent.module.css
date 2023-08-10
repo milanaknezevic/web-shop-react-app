@@ -1,0 +1,29 @@
+/* NavComponent.module.css */
+.navComponent {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+.verticalLine {
+    border-left: 1px solid white; /* Dodajte stil za vertikalnu liniju */
+    height: 24px; /* Prilagodite visinu linije prema potrebi */
+
+}
+
+.navLink {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+    padding-right: 0.5rem;
+}
+
+.navLink:hover {
+    color: gray;
+}
+
+.activeNavLink {
+    color: blue; /* Podesite boju koja vam odgovara */
+}
