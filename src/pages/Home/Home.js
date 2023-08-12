@@ -6,6 +6,7 @@ import CategoryTree from "../../components/CategoryTree/CategoryTree";
 import SelectComponent from "../../components/Select/Select";
 import { SearchOutlined } from '@ant-design/icons';
 import SidebarComponent from "../../components/Select/SidebarComponent";
+import Header from "../../components/Header/Header";
 
 const {Footer, Sider, Content} = Layout;
 

@@ -5,6 +5,8 @@ import PrivateRoutes from './utils/PrivateRoutes'
 import Product from './pages/Product/Products'
 import Header from "./components/Header/Header";
 import React from "react";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
 
 function App() {
     return (
@@ -17,6 +19,8 @@ function App() {
                     <Route element={<Product/>} path="/products" exact/>
                 </Route>
                 <Route element={<Home/>} path="/"/>
+                <Route element={<Login/>} path="/login"/>
+                <Route element={<Register/>} path="/register"/>
             </Routes>
 
 

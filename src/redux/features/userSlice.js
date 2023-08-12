@@ -2,7 +2,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import userService from "../../api/user.service";
 import authService from "../../api/auth.service";
 
-export const login = createAsyncThunk("/login", async (loginData) => {
+export const login = createAsyncThunk("/login", async ({loginData}) => {
     return await authService.login(loginData);
 });
 
@@ -69,7 +69,7 @@ const userSlice = createSlice({
                 state.authenticatedFailed = false;
                 state.authenticated = true;
                 state.loading = false;
-                state.user = action.payload;
+
             },
             [login.pending]: (state) => {
                 state.loading = true;

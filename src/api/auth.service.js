@@ -4,14 +4,15 @@ const instance = base.service();
 
 export const login = (loginData) => {
     return instance
-        .post('login/', loginData)
+        .post('/login', loginData)  // Koristite relativnu putanju /login umjesto login/
         .then((results) => {
-            const {access} = results.data;
+            const { access } = results.data;
             sessionStorage.setItem('access', access);
             return results.data;
         })
         .catch((err) => Promise.reject(err.response.status));
-}
+};
+
 export const signUp = (signupData) => {
     return instance
         .post('sign-up/', signupData)

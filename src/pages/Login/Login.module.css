@@ -1,0 +1,81 @@
+.App {
+    text-align: center;
+    display: flex;
+    min-height: calc(100vh - 65px);
+    align-items: center;
+    justify-content: center;
+    color: black;
+    background: #e6e6e6;
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+.authFormContainer,
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2.5rem;
+}
+.authFormContainer {
+    min-width: 20%;
+    width: auto;
+    padding: 1.5rem 3.2rem 3.2rem;
+
+    border: 2px solid #2b2b49;
+    border-radius: 50px;
+
+}
+.error {
+    color: red;
+    font-size: 0.75rem;
+    text-align: left;
+    font-weight: bold;
+    padding-bottom: 0.5rem;
+}
+
+input.inputError
+ {
+    border-color: red;
+}
+
+label {
+    text-align: left;
+    padding: 0.25rem 0;
+}
+
+input {
+    margin: 0.5rem 0;
+    padding: 1rem;
+    border: none;
+    border-radius: 10px;
+}
+
+button {
+    border: none;
+    width: 50%;
+    background-color: #2b2b49;
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+}
+button:disabled {
+    opacity: 0.35;
+}
+.linkBtn {
+    background: none;
+    color: #2b2b49;
+    width: fit-content;
+    text-decoration: underline;
+}
+
+.linkBtn:hover {
+    color: #7439db;
+}
+
+
