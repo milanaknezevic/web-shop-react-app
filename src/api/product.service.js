@@ -8,12 +8,12 @@ export const getProductByID = (id) => {
         .get(`products/${id}`)
         .then((result) => result.data)
 };
-export const getAllProducts = (page) => {
-    return unauthenticatedInstance
-        .get(`products/`,{
+export const getAllProducts = (pageNumber, pageSize) => {
+   return unauthenticatedInstance
+        .get(`products`, {
             params: {
-                page: page.pageNumber,
-                size: page.pageSize
+                page: pageNumber,
+                size: pageSize
             }
         })
         .then((result) => result.data);

@@ -87,4 +87,16 @@ button:disabled {
     color: #7439db;
 }
 
+.signupLink1 {
+    color: black;
+    font-size: .875rem;
+    line-height: 0.15rem;
+    text-align: center;
+
+}
+.signupLink{
+    text-decoration: none;
+    color: #2b2b49;
+    font-weight: bold;
+}
 

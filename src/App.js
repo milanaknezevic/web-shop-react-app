@@ -7,6 +7,7 @@ import Header from "./components/Header/Header";
 import React from "react";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
+import ActivationAccount from "./pages/ActivationAccount/ActivationAccount";
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                 <Route element={<Home/>} path="/"/>
                 <Route element={<Login/>} path="/login" exact/>
                 <Route element={<Register/>} path="/register" exact/>
+                <Route element={<ActivationAccount/>} path="/activate" exact/>
             </Routes>
 
 

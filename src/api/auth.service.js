@@ -18,8 +18,9 @@ export const signUp = (signupData) => {
         .then((results) => results);
 }
 export const activateAccount = (activationData) => {
+    console.log("activation data" +activationData);
     return instance
-        .post('activeAccount/', activationData)
+        .post('activeAccount', activationData)
         .then((results) => results);
 }
 

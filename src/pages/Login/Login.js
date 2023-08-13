@@ -17,17 +17,15 @@ const Login = () => {
 
         const response = await dispatch(login(values));
         if (response.error) {
-            // setStatusCode(response.error.message);
+            // nije ulogovan
             return;
-        }
-
-        setShowSuccessMessage(true); // Prikazujemo poruku o uspjehu
-
+        }//ulogovan
+        setShowSuccessMessage(true);
         dispatch(getUser({id: response.payload.id}));
         setTimeout(() => {
-            setShowSuccessMessage(false); // Skrivamo poruku o uspjehu
+            setShowSuccessMessage(false);
             nav('/');
-        }, 3000); // Prikazat će se 3 sekunde
+        }, 3000);
     };
 
     useEffect(() => {
@@ -86,11 +84,12 @@ const Login = () => {
 
 
                             <div>
-                                <button type="submit">Login</button>
+                                <button  type="submit">Login</button>
                             </div>
-                            <p>
+
+                            <p className={classes.signupLink1}>
                                 No account?
-                                <NavLink to="/register"> Register here.</NavLink>
+                                <NavLink to="/login" className={classes.signupLink}> Register here.</NavLink>
                             </p>
 
                         </Form>

@@ -1,12 +1,33 @@
-.cardContainer{
+/*.cardContainer{
     padding:1rem;
     display:flex;
     flex-wrap:wrap
+}*/
+
+.cardContainer {
+    padding: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
 }
+
+.productCard {
+    flex: 0 0 calc(20% - 20px);
+    max-width: calc(20% - 20px);
+    box-sizing: border-box;
+}
+
+.paginationContainer {
+    display: flex;
+    justify-content: flex-end; /* Poravnavanje paginacije na dno kontejnera */
+
+ }
+
+
 .naslov{
     text-align: center;
 }
 .paginacija{
-    text-align: end;
+    text-align: left;
     margin-bottom: 20px;
 }

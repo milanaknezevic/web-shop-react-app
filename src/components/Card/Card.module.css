@@ -1,4 +1,33 @@
-.card{
-    width: 20%;
-    margin:2%
+.card {
+    width: 90%;
+    height: 100%;
+    margin: 2%;
+}
+
+.imageContainer {
+    width: 100%;
+    padding-bottom: 100%; /* Omogućava omjer stranica 1:1 */
+    position: relative;
+    overflow: hidden;
+}
+
+.image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Slika će biti skalirana i obrezana da stane unutar kontejnera */
+}
+
+.priceContainer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 4px 8px;
+    border-top-left-radius: 4px;
+    font-weight: bold;
+}
+
+.price {
+    color: white;
 }
