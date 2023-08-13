@@ -2,9 +2,10 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import userService from "../../api/user.service";
 import authService from "../../api/auth.service";
 
-export const login = createAsyncThunk("/login", async ({loginData}) => {
-    return await authService.login(loginData);
+export const login = createAsyncThunk("users/login", async ({username, password}) => {
+    return await authService.login(username, password);
 });
+
 
 export const updateUser = createAsyncThunk("/updateUser", async ({id, userDataToUpdate}, {rejectWithValue}) => {
     try {
@@ -47,7 +48,7 @@ const onSuccessAuth = (state, action) => {
     state.loading = false;
 };
 const userSlice = createSlice({
-        name: 'user',
+        name: 'users',
         initialState: {
             authenticated: false,
             authenticatedFailed: false,
@@ -65,11 +66,12 @@ const userSlice = createSlice({
             }
         },
         extraReducers: {
-            [login.fulfilled]: (state, action) => {
-                state.authenticatedFailed = false;
-                state.authenticated = true;
-                state.loading = false;
-
+            [login.fulfilled]: (state,action) =>
+            {
+                state.authenticatedFailed=false;
+                state.authenticated=true;
+                state.loading=false;
+                state.error=null;
             },
             [login.pending]: (state) => {
                 state.loading = true;

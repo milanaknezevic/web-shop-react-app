@@ -65,7 +65,7 @@ const SidebarComponent = () => {
 
             </div>
 
-            <Button type="primary" icon={<SearchOutlined/>}>
+            <Button style={{ backgroundColor: '#41418d'}} type="primary" icon={<SearchOutlined/>}>
                 Search
             </Button>
 

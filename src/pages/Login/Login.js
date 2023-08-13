@@ -1,30 +1,47 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import classes from './Login.module.css'
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import {formaSchema} from "../../schemas";
 import {useDispatch} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {Link, NavLink, useNavigate} from "react-router-dom";
 import {login, getUser} from '../../redux/features/userSlice'
 
 
 const Login = () => {
     const dispatch = useDispatch();
     const nav = useNavigate();
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     const onSubmit = async (values, actions) => {
         console.log(values);
 
         const response = await dispatch(login(values));
-        /*if (response.error) {
-            setStatusCode(response.error.message);
+        if (response.error) {
+            // setStatusCode(response.error.message);
             return;
-        }*/
-        console.log(response);
-        /* dispatch(getUser({id: response.id}));
-         nav('/');
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          actions.resetForm();*/
+        }
+
+        setShowSuccessMessage(true); // Prikazujemo poruku o uspjehu
+
+        dispatch(getUser({id: response.payload.id}));
+        setTimeout(() => {
+            setShowSuccessMessage(false); // Skrivamo poruku o uspjehu
+            nav('/');
+        }, 3000); // Prikazat će se 3 sekunde
     };
+
+    useEffect(() => {
+        let timer;
+
+        if (showSuccessMessage) {
+            timer = setTimeout(() => {
+                setShowSuccessMessage(false);
+                nav('/');
+            }, 3000);
+        }
+
+        return () => clearTimeout(timer);
+    }, [showSuccessMessage, nav]);
 
     return (
         <div className={classes.App}>
@@ -37,6 +54,11 @@ const Login = () => {
                     {({errors, isSubmitting, touched, handleBlur}) => (
                         <Form className={classes.loginForm}>
                             <h2>Login</h2>
+                            {showSuccessMessage && (
+                                <div className={classes.succes}>
+                                    Login successful! Redirecting...
+                                </div>
+                            )}
                             <label htmlFor="name">Username:</label>
                             <Field
                                 type="text"
@@ -65,14 +87,12 @@ const Login = () => {
 
                             <div>
                                 <button type="submit">Login</button>
-
-
                             </div>
-                           <div >
-                               <button className={classes.linkBtn} disabled={isSubmitting} type="submit">
-                                   No account? Register here.
-                               </button>
-                           </div>
+                            <p>
+                                No account?
+                                <NavLink to="/register"> Register here.</NavLink>
+                            </p>
+
                         </Form>
                     )}
                 </Formik>

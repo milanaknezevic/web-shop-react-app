@@ -2,20 +2,19 @@ import base from './base.service';
 
 const instance = base.service();
 
-export const login = (loginData) => {
+export const login = (korisnickoIme, lozinka) => {
     return instance
-        .post('/login', loginData)  // Koristite relativnu putanju /login umjesto login/
+        .post('login', {korisnickoIme, lozinka})
         .then((results) => {
-            const { access } = results.data;
-            sessionStorage.setItem('access', access);
+            const {token} = results.data;
+            sessionStorage.setItem('access', token);
             return results.data;
         })
         .catch((err) => Promise.reject(err.response.status));
-};
-
+}
 export const signUp = (signupData) => {
     return instance
-        .post('sign-up/', signupData)
+        .post('sign-up', signupData)
         .then((results) => results);
 }
 export const activateAccount = (activationData) => {

@@ -4,11 +4,13 @@
     background-color: #41418d;
 
 }
-.spaceComp{
+
+.spaceComp {
     flex: 1;
     width: 100%;
     height: 100%;
 }
+
 .centerSpace {
     display: flex;
     justify-content: center;
@@ -17,13 +19,14 @@
     padding: 0.6rem;
 }
 
-.dugme{
+.dugme {
     width: 11%;
     justify-content: center;
     text-align: center;
     font-size: 16px;
     background: #e0e0e0;
     margin: 5px;
+    color: #41418d;
 
 }
 

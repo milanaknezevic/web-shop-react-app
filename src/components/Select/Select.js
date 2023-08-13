@@ -13,10 +13,10 @@ const SelectComponent = () => {
         <div>
 
 
-            <div  style={{textAlign:'left',marginBottom:'15px' }}>
-                <label style={{ color: 'black',fontSize:'16px',fontWeight:'bold' }}>Status</label>
+            <div style={{textAlign: 'left', marginBottom: '15px'}}>
+                <label style={{color: 'black', fontSize: '16px', fontWeight: 'bold'}}>Status</label>
             </div>
-            <div style={{textAlign: 'left',marginLeft:'5px'}}>
+            <div style={{textAlign: 'left', marginLeft: '5px'}}>
                 <Select
                     style={{backgroundColor: '#c5c5c5'}}
                     placeholder="Select a status"

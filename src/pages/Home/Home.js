@@ -1,19 +1,14 @@
 import React, {useState} from 'react';
-import {Button, InputNumber, Layout} from 'antd';
+import {Layout} from 'antd';
 import SearchComponent from "../../components/Search/SearchComponent";
 import Products from "../Product/Products";
-import CategoryTree from "../../components/CategoryTree/CategoryTree";
-import SelectComponent from "../../components/Select/Select";
-import { SearchOutlined } from '@ant-design/icons';
-import SidebarComponent from "../../components/Select/SidebarComponent";
-import Header from "../../components/Header/Header";
+import SidebarComponent from "../../components/Sidebar/SidebarComponent";
 
 const {Footer, Sider, Content} = Layout;
 
 const contentStyle = {
     textAlign: 'center'
 };
-
 const footerStyle = {
     textAlign: 'center',
     color: '#fff',
@@ -28,8 +23,10 @@ const Home = () => {
         <div style={{minHeight: contentHeight}}>
             <SearchComponent/>
             <Layout style={{height: "100%"}}>
-                <Sider breakpoint='lg' collapsedWidth='0' style={{textAlign: 'center',
-                    backgroundColor: ' #e6e6e6',width: '500px !important'}}>
+                <Sider breakpoint='lg' collapsedWidth='0' style={{
+                    textAlign: 'center',
+                    backgroundColor: ' #e6e6e6', width: '500px !important'
+                }}>
                     <SidebarComponent/>
 
                 </Sider>

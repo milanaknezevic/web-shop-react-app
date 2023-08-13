@@ -1,197 +1,199 @@
-import React from "react";
+import React, {useState} from "react";
 import classes from './Register.module.css'
 import {ErrorMessage, Field, Form, Formik} from "formik";
-import {formaSchema} from "../../schemas";
+import {registerSchema} from "../../schemas";
 import {useDispatch} from "react-redux";
-import {useNavigate} from "react-router-dom";
-import {login, getUser} from '../../redux/features/userSlice'
-
+import {NavLink, useNavigate} from "react-router-dom";
+import authService from "../../api/auth.service";
 
 const Register = () => {
     const dispatch = useDispatch();
     const nav = useNavigate();
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
 
     const onSubmit = async (values, actions) => {
-        console.log(values);
+        try {
+            console.log(values);
+            const response = await authService.signUp(values);
+            console.log("response " + response);
 
-        const response = await dispatch(login(values));
-        /*if (response.error) {
-            setStatusCode(response.error.message);
-            return;
-        }*/
-        console.log(response);
-        /* dispatch(getUser({id: response.id}));
-         nav('/');
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          actions.resetForm();*/
+        } catch (error) {
+            console.error("Error:", error);
+
+        }
     };
+
 
     return (
         <div className={classes.App}>
             <div className={classes.authFormContainer}>
                 <Formik
-                    initialValues={{username: "", password: ""}}
-                    validationSchema={formaSchema}
+                    initialValues={{
+                        ime: "",
+                        prezime: "",
+                        korisnickoIme: "",
+                        lozinka: "",
+                        confirmPassword: "",
+                        grad: "",
+                        avatar: "",
+                        email: ""
+                    }}
+                    validationSchema={registerSchema}
                     onSubmit={onSubmit}
                 >
                     {({errors, isSubmitting, touched, handleBlur}) => (
                         <Form className={classes.loginForm}>
-                            <h2>Sign in</h2>
-
-                            <div style={{display: 'flex'}}>
-                                <div style={{display: 'flex',
-                                    flexDirection: 'column' ,padding: '10px'}}>
-                                    <label htmlFor="name">Username:</label>
+                            <h2 className={classes.poravnaj}>Sign in</h2>
+                            {showErrorMessage && (
+                                <div className={classes.error}>
+                                   Desila se greska...
+                                </div>
+                            )}
+                            <div className={classes.fleks}>
+                                <div className={classes.ispodFleks}>
+                                    <label htmlFor="name">First name:</label>
                                     <Field
                                         type="text"
-                                        id="username"
-                                        name="username"
-                                        placeholder='Username'
+                                        id="ime"
+                                        name="ime"
+                                        placeholder='First name'
                                         className={
-                                            errors.username && touched.username ? classes.inputError : ""
+                                            errors.ime && touched.ime ? classes.inputError : ""
                                         }
                                         onBlur={handleBlur}
                                     />
-                                    {touched.username && errors.username && (
-                                        <ErrorMessage name="username" component="div" className={classes.error}/>
+                                    {touched.ime && errors.ime && (
+                                        <ErrorMessage name="ime" component="div" className={classes.error}/>
                                     )}
                                 </div>
 
 
-                                    <div style={{display: 'flex',
-                                        flexDirection: 'column' ,padding: '10px'}}>
-                                    <label htmlFor="name">Username:</label>
+                                <div className={classes.ispodFleks}>
+                                    <label htmlFor="name">Last name:</label>
                                     <Field
                                         type="text"
-                                        id="username"
-                                        name="username"
-                                        placeholder='Username'
+                                        id="prezime"
+                                        name="prezime"
+                                        placeholder='Last name'
                                         className={
-                                            errors.username && touched.username ? classes.inputError : ""
+                                            errors.prezime && touched.prezime ? classes.inputError : ""
                                         }
                                         onBlur={handleBlur}
                                     />
-                                    {touched.username && errors.username && (
-                                        <ErrorMessage name="username" component="div" className={classes.error}/>
-                                    )}
-                                </div>
-                            </div>
-
-
-                            <div style={{display: 'flex'}}>
-                                <div style={{display: 'flex',
-                                    flexDirection: 'column' ,padding: '10px'}}>
-                                    <label htmlFor="name">Username:</label>
-                                    <Field
-                                        type="text"
-                                        id="username"
-                                        name="username"
-                                        placeholder='Username'
-                                        className={
-                                            errors.username && touched.username ? classes.inputError : ""
-                                        }
-                                        onBlur={handleBlur}
-                                    />
-                                    {touched.username && errors.username && (
-                                        <ErrorMessage name="username" component="div" className={classes.error}/>
-                                    )}
-                                </div>
-
-
-                                <div style={{display: 'flex',
-                                    flexDirection: 'column' ,padding: '10px'}}>
-                                    <label htmlFor="name">Username:</label>
-                                    <Field
-                                        type="text"
-                                        id="username"
-                                        name="username"
-                                        placeholder='Username'
-                                        className={
-                                            errors.username && touched.username ? classes.inputError : ""
-                                        }
-                                        onBlur={handleBlur}
-                                    />
-                                    {touched.username && errors.username && (
-                                        <ErrorMessage name="username" component="div" className={classes.error}/>
-                                    )}
-                                </div>
-                            </div>
-
-                            <div style={{display: 'flex'}}>
-                                <div style={{display: 'flex',
-                                    flexDirection: 'column' ,padding: '10px'}}>
-                                    <label htmlFor="name">Username:</label>
-                                    <Field
-                                        type="text"
-                                        id="username"
-                                        name="username"
-                                        placeholder='Username'
-                                        className={
-                                            errors.username && touched.username ? classes.inputError : ""
-                                        }
-                                        onBlur={handleBlur}
-                                    />
-                                    {touched.username && errors.username && (
-                                        <ErrorMessage name="username" component="div" className={classes.error}/>
-                                    )}
-                                </div>
-
-
-                                <div style={{display: 'flex',
-                                    flexDirection: 'column' ,padding: '10px'}}>
-                                    <label htmlFor="name">Username:</label>
-                                    <Field
-                                        type="text"
-                                        id="username"
-                                        name="username"
-                                        placeholder='Username'
-                                        className={
-                                            errors.username && touched.username ? classes.inputError : ""
-                                        }
-                                        onBlur={handleBlur}
-                                    />
-                                    {touched.username && errors.username && (
-                                        <ErrorMessage name="username" component="div" className={classes.error}/>
+                                    {touched.prezime && errors.prezime && (
+                                        <ErrorMessage name="prezime" component="div" className={classes.error}/>
                                     )}
                                 </div>
                             </div>
 
 
-                            <div style={{display: 'flex'}}>
-                                <div style={{display: 'flex',
-                                    flexDirection: 'column' ,padding: '10px'}}>
+                            <div className={classes.fleks}>
+                                <div className={classes.ispodFleks}>
                                     <label htmlFor="name">Username:</label>
                                     <Field
                                         type="text"
-                                        id="username"
-                                        name="username"
+                                        id="korisnickoIme"
+                                        name="korisnickoIme"
                                         placeholder='Username'
                                         className={
-                                            errors.username && touched.username ? classes.inputError : ""
+                                            errors.korisnickoIme && touched.korisnickoIme ? classes.inputError : ""
                                         }
                                         onBlur={handleBlur}
                                     />
-                                    {touched.username && errors.username && (
-                                        <ErrorMessage name="username" component="div" className={classes.error}/>
+                                    {touched.korisnickoIme && errors.korisnickoIme && (
+                                        <ErrorMessage name="korisnickoIme" component="div" className={classes.error}/>
                                     )}
                                 </div>
 
 
-                                <div style={{display: 'flex',
-                                    flexDirection: 'column' ,padding: '10px'}}>
-                                    <label htmlFor="name">Username:</label>
+                                <div className={classes.ispodFleks}>
+                                    <label htmlFor="email">Email:</label>
                                     <Field
-                                        type="text"
-                                        id="username"
-                                        name="username"
-                                        placeholder='Username'
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        placeholder='Email'
                                         className={
-                                            errors.username && touched.username ? classes.inputError : ""
+                                            errors.email && touched.email ? classes.inputError : ""
                                         }
                                         onBlur={handleBlur}
                                     />
-                                    {touched.username && errors.username && (
-                                        <ErrorMessage name="username" component="div" className={classes.error}/>
+                                    {touched.email && errors.email && (
+                                        <ErrorMessage name="email" component="div" className={classes.error}/>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className={classes.fleks}>
+                                <div className={classes.ispodFleks}>
+                                    <label htmlFor="password">Password:</label>
+                                    <Field
+                                        type="password"
+                                        id="lozinka"
+                                        name="lozinka"
+                                        placeholder='Password'
+                                        className={
+                                            errors.lozinka && touched.lozinka ? classes.inputError : ""
+                                        }
+                                        onBlur={handleBlur}
+                                    />
+                                    {touched.lozinka && errors.lozinka && (
+                                        <ErrorMessage name="lozinka" component="div" className={classes.error}/>
+                                    )}
+                                </div>
+
+                                <div className={classes.ispodFleks}>
+                                    <label htmlFor="password">Confirm password:</label>
+                                    <Field
+                                        type="password"
+                                        id="confirmPassword"
+                                        name="confirmPassword"
+                                        placeholder='Confirm password'
+                                        className={
+                                            errors.confirmPassword && touched.confirmPassword ? classes.inputError : ""
+                                        }
+                                        onBlur={handleBlur}
+                                    />
+                                    {touched.confirmPassword && errors.confirmPassword && (
+                                        <ErrorMessage name="confirmPassword" component="div" className={classes.error}/>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className={classes.fleks}>
+                                <div className={classes.ispodFleks}>
+                                    <label htmlFor="name">City:</label>
+                                    <Field
+                                        type="text"
+                                        id="grad"
+                                        name="grad"
+                                        placeholder='City'
+                                        className={
+                                            errors.grad && touched.grad ? classes.inputError : ""
+                                        }
+                                        onBlur={handleBlur}
+                                    />
+                                    {touched.grad && errors.grad && (
+                                        <ErrorMessage name="grad" component="div" className={classes.error}/>
+                                    )}
+                                </div>
+
+
+                                <div className={classes.ispodFleks}>
+                                    <label htmlFor="name">Avatar:</label>
+
+                                    <Field
+                                        type="file"
+                                        id="avatar"
+                                        name="avatar"
+                                        className={classes.customFileLabel}
+                                        placeholder='avatar'
+                                        accept="image/*"
+
+                                        onBlur={handleBlur}
+                                    />
+                                    {touched.avatar && errors.avatar && (
+                                        <ErrorMessage name="avatar" component="div" className={classes.error}/>
                                     )}
                                 </div>
                             </div>
@@ -202,11 +204,11 @@ const Register = () => {
 
                             </div>
 
-                          <div>
-                              <button className={classes.linkBtn} disabled={isSubmitting} type="submit">
-                                  Already have an account? Login here.
-                              </button>
-                          </div>
+
+                            <p className={classes.poravnaj}>
+                                Already have an account?
+                                <NavLink to="/login"> Login here.</NavLink>
+                            </p>
                         </Form>
                     )}
                 </Formik>

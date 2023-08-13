@@ -1,10 +1,10 @@
 .App {
     text-align: center;
     display: flex;
-    min-height: calc(100vh - 65px);
     align-items: center;
     justify-content: center;
     color: black;
+    min-height: calc(100vh - 65px);
     background: #e6e6e6;
 }
 
@@ -20,15 +20,19 @@ body {
     display: flex;
     flex-direction: column;
     margin-top: 1rem;
+
 }
+
 .authFormContainer {
     width: auto;
-    padding: 0 2.3rem 0 2.3rem;
-
-    border: 2px solid #2b2b49;
+    height: auto;
+    padding-left: 4rem;
     border-radius: 50px;
-
+    border: 2px solid #2b2b49;
+    overflow: auto;
 }
+
+
 .error {
     color: red;
     font-size: 0.75rem;
@@ -37,8 +41,7 @@ body {
     padding-bottom: 0.5rem;
 }
 
-input.inputError
-{
+input.inputError {
     border-color: red;
 }
 
@@ -62,6 +65,7 @@ button {
     cursor: pointer;
     color: white;
 }
+
 button:disabled {
     opacity: 0.35;
 }
@@ -72,14 +76,16 @@ button:disabled {
     width: 50%;
     text-align: center;
     background-color: #2b2b49;
-    padding: 20px;
+    margin-right: 70px;
     border-radius: 10px;
     cursor: pointer;
     color: white;
 }
+
 .signIn:disabled {
     opacity: 0.35;
 }
+
 .linkBtn {
     background: none;
     color: #2b2b49;
@@ -91,4 +97,34 @@ button:disabled {
     color: #7439db;
 }
 
+.customFileLabel {
+    margin: 0.5rem 0;
+    padding: 1rem;
+    border: none;
+    border-radius: 10px;
+    background: white;
+    width: 61.5%;
+    height: 15%;
+
+}
+
+.fileInput {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+.poravnaj {
+    margin-right: 70px;
+}
+
+.fleks {
+    display: flex;
+}
+
+.ispodFleks {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
 
