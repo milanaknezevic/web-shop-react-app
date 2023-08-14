@@ -3,7 +3,7 @@ import {Layout, Pagination} from 'antd';
 import SearchComponent from "../../components/Search/SearchComponent";
 import Products from "../Product/Products";
 import SidebarComponent from "../../components/Sidebar/SidebarComponent";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {getAllProducts} from "../../redux/features/productSlice";
 
 const {Footer, Sider, Content} = Layout;
@@ -24,10 +24,11 @@ const Home = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+
         const fetchData = async () => {
             try {
                 const pageNumber = current - 1;
-                const pageSize = 5;
+                const pageSize = 10;
 
                 console.log("pageNumber: " + pageNumber);
                 console.log("pageSize: " + pageSize);

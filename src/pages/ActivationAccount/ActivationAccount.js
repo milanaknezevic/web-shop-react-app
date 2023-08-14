@@ -3,8 +3,6 @@ import React, {useEffect, useState} from 'react';
 import {Button, Form, Input} from 'antd';
 import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
-
-import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {activateAccount} from "../../api/auth.service";
 
@@ -16,6 +14,7 @@ export default function ActivationAccount() {
     const [errorMessage, setErrorMessage] = useState("");
     const [showSuccesMessage, setShowSuccesMessage] = useState(false);
     const [succesMessage, setsuccesMessage] = useState("");
+    const nav = useNavigate();
     const [contentHeight, setContentHeight] = useState('calc(100vh - 65px)');
 
     const navigate = useNavigate();
@@ -40,22 +39,27 @@ export default function ActivationAccount() {
         setIsDisabled(true);
         try {
             const response = await activateAccount(activationData);
-            console.log("response " + response.status);
-            if (response.status === 200 || response.status === 201) {
-                setShowSuccesMessage(true);
-                setsuccesMessage("bravoooo");
-                setTimeout(() => {
-                    setShowSuccesMessage(false);
-                    setsuccesMessage("");
-                    setIsDisabled(false);
-                }, 1500);
-            } else {
+            console.log("gledaj ovooo " + JSON.stringify(response.data));
+
+
+            if (response.data === "") {
                 setShowErrorMessage(true);
-                setErrorMessage("Account successfully activated!");
+                setErrorMessage("Account activation failed. Please try again.");
                 setTimeout(() => {
                     setShowErrorMessage(false);
                     setErrorMessage("");
                     setIsDisabled(false);
+                }, 1500);
+
+            } else {
+                setShowSuccesMessage(true);
+                setsuccesMessage("Account successfully activated!");
+
+                setTimeout(() => {
+                    setShowSuccesMessage(false);
+                    setsuccesMessage("");
+                    setIsDisabled(false);
+                    nav('/');
                 }, 1500);
             }
         } catch (error) {
@@ -63,14 +67,14 @@ export default function ActivationAccount() {
             setErrorMessage("Account activation failed. Please try again.");
             console.error("showErrorMessage:", showErrorMessage);
             setTimeout(() => {
-                //navigate("/activate", {state: {username: registerData.korisnickoIme}});
+
                 setIsDisabled(false);
                 setShowErrorMessage(false);
                 setErrorMessage("");
             }, 1500);
             console.error("Greska:", error);
-            console.error("showErrorMessage:", showErrorMessage);
-            console.error("AAAAAAAAAAAAAAAAAAAAAAAA:");
+
+
         }
 
 
@@ -110,7 +114,7 @@ export default function ActivationAccount() {
                             <p className={classes.succes}>{succesMessage}</p>
                         )}
                         {showErrorMessage && (
-                            <p className={classes.succes}>{errorMessage}</p>
+                            <p className={classes.error}>{errorMessage}</p>
                         )}
                         <Form.Item
                             label="Activation code"

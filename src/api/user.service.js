@@ -2,10 +2,13 @@ import base from "./base.service"
 
 const token = sessionStorage.getItem('access');
 const instance = base.service(true);
+
 export const getUserByID = (id) => {
+    console.log("id u slice  " + id);
+    console.log("token " + token);
     return instance
         .get(`users/${id}`)
-        .then((result) => result.data)
+        .then((results) => results.data);
 };
 
 export const getAllProductsForBuyer = (page) => {
@@ -14,9 +17,9 @@ export const getAllProductsForBuyer = (page) => {
             headers: {
                 Authorization: `Bearer ${token}`
             },
-            params:{
-                page:page.pageNumber,
-                size:page.pageSize
+            params: {
+                page: page.pageNumber,
+                size: page.pageSize
             }
         })
         .then((result) => result.data);
@@ -27,7 +30,7 @@ export const getAllProductsForSeller = (page, finished) => {
         .get(`users/products`, {
             headers: {
                 Authorization: `Bearer ${token}`
-            },params: {
+            }, params: {
                 page: page.pageNumber,
                 size: page.pageSize,
                 finished: finished,
@@ -48,8 +51,8 @@ export const updateUser = (id, userDataToUpdate) => {
 };
 export const changePassword = (id, changePasswordData) => {
     return instance
-        .put(`users/${id}/change-password/`, changePasswordData,{
-            headers:{
+        .put(`users/${id}/change-password/`, changePasswordData, {
+            headers: {
                 Authorization: `Bearer ${token}`
             },
         })

@@ -12,6 +12,18 @@ export const login = (korisnickoIme, lozinka) => {
         })
         .catch((err) => Promise.reject(err.response.status));
 }
+
+export const insertImage = (imageData) => {
+    const file = imageData.get("file");
+    return instance
+        .post('insertImage', {file}, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        .then((results) => results);
+}
+
 export const signUp = (signupData) => {
     return instance
         .post('sign-up', signupData)

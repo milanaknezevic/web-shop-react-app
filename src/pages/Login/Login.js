@@ -10,25 +10,52 @@ import {login, getUser} from '../../redux/features/userSlice'
 const Login = () => {
     const dispatch = useDispatch();
     const nav = useNavigate();
-    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+    const [showSuccesMessage, setShowSuccesMessage] = useState(false);
+    const [succesMessage, setsuccesMessage] = useState("");
 
     const onSubmit = async (values, actions) => {
         console.log(values);
 
         const response = await dispatch(login(values));
-        if (response.error) {
-            // nije ulogovan
-            return;
-        }//ulogovan
-        setShowSuccessMessage(true);
-        dispatch(getUser({id: response.payload.id}));
-        setTimeout(() => {
-            setShowSuccessMessage(false);
-            nav('/');
-        }, 3000);
+        console.log("gledaj ovooo " + JSON.stringify(response));
+        if (response.payload.token === "" && response.payload.code !== "" ) {
+            console.log("Ima code " + response.payload.code);
+            setShowSuccesMessage(true);
+            setsuccesMessage("Activation code sent. Check your email.");
+            setTimeout(() => {
+                setShowSuccesMessage(false);
+                setsuccesMessage("");
+                console.log("ime " + values.username);
+                nav("/activate", {state: {username: values.username}});
+            }, 3000);
+        } else  if (response.payload.code === "" && response.payload.token !== "" ) {
+            console.log("Ima token ulogovan je " + response.payload.token);
+            setShowSuccesMessage(true);
+            setsuccesMessage("Login successful! Redirecting...");
+            console.log("id koji slajem " + response.payload.id);
+            dispatch(getUser({id: response.payload.id}));
+            setTimeout(() => {
+                setShowSuccesMessage(false);
+                setsuccesMessage("");
+                nav('/');
+            }, 3000);
+        }else {
+
+            console.log("ni kod ni token vj greska");
+            setShowErrorMessage(true);
+            errorMessage("Login failed. Please try again.");
+            setTimeout(() => {
+                setShowErrorMessage(false);
+                setErrorMessage("");
+
+            }, 3000);
+        }
+
     };
 
-    useEffect(() => {
+    /*useEffect(() => {
         let timer;
 
         if (showSuccessMessage) {
@@ -39,7 +66,7 @@ const Login = () => {
         }
 
         return () => clearTimeout(timer);
-    }, [showSuccessMessage, nav]);
+    }, [showSuccessMessage, nav]);*/
 
     return (
         <div className={classes.App}>
@@ -52,9 +79,14 @@ const Login = () => {
                     {({errors, isSubmitting, touched, handleBlur}) => (
                         <Form className={classes.loginForm}>
                             <h2>Login</h2>
-                            {showSuccessMessage && (
+                            {showSuccesMessage && (
                                 <div className={classes.succes}>
-                                    Login successful! Redirecting...
+                                    {succesMessage}
+                                </div>
+                            )}
+                            {showErrorMessage && (
+                                <div className={classes.error}>
+                                    {errorMessage}
                                 </div>
                             )}
                             <label htmlFor="name">Username:</label>

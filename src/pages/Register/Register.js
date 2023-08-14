@@ -1,11 +1,10 @@
 import classes from './Register.module.css';
-import {signUp} from "../../api/auth.service";
+import {insertImage, signUp} from "../../api/auth.service";
 import React, {useEffect, useState} from 'react';
-import {Button, Form, Input, Upload} from 'antd';
+import {Button, Form, Input} from 'antd';
 import {NavLink, useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
 import 'react-toastify/dist/ReactToastify.css';
-import {UploadOutlined} from "@ant-design/icons";
 
 
 export default function Register() {
@@ -21,28 +20,38 @@ export default function Register() {
     const dispatch = useDispatch();
 
     const {authenticated} = useSelector((state) => state.users);
-
+    const [selectedFile, setSelectedFile] = useState();
     useEffect(() => {
-        console.log("auth " + authenticated);
+        console.log("autentifikacija " + authenticated);
         if (authenticated)
             navigate('/');
     }, [authenticated, navigate, dispatch]);
+    const changeHandler = (event) => {
 
+        setSelectedFile(event.target.files[0]);
 
+    };
     const onSubmit = async (registerData) => {
         setIsDisabled(true);
-        const signupData = {
-            ime: registerData.ime,
-            prezime: registerData.prezime,
-            korisnickoIme: registerData.korisnickoIme,
-            lozinka: registerData.lozinka,
-            grad: registerData.grad,
-            avatar: registerData.avatar,
-            email: registerData.email,
-        };
-        console.log(signupData);
+        const formData = new FormData();
+        formData.append("file", selectedFile);
         try {
-            const response = await signUp(registerData);
+            let responseImage = null;
+            if (formData.get("file") != null) {
+                responseImage = await insertImage(formData);
+            }
+
+            const signupData = {
+                ime: registerData.ime,
+                prezime: registerData.prezime,
+                korisnickoIme: registerData.korisnickoIme,
+                lozinka: registerData.lozinka,
+                grad: registerData.grad,
+                avatar: responseImage.data !== "" ? responseImage.data : null,
+                email: registerData.email,
+            };
+            console.log(signupData);
+            const response = await signUp(signupData);
             console.log("response " + response.status);
             if (response.status === 200 || response.status === 201) {
                 setShowSuccesMessage(true);
@@ -67,7 +76,7 @@ export default function Register() {
             setErrorMessage("error");
             console.error("showErrorMessage:", showErrorMessage);
             setTimeout(() => {
-                navigate("/activate", {state: {username: registerData.korisnickoIme}});
+
                 setIsDisabled(false);
                 setShowErrorMessage(false);
                 setErrorMessage("");
@@ -225,10 +234,19 @@ export default function Register() {
                         <Form.Item
                             label="Avatar"
                             name="avatar"
-                        ><Upload>
-                            <Button style={{width: 'fit-content'}} icon={<UploadOutlined/>}>Choose file</Button>
-                        </Upload>
+                            style={{backgroundColor:'yellow'}}
+                        >
+                            <input
+                                style={{backgroundColor:'red',height:'fit-content'}}
+                                type="file"
+                                onChange={changeHandler}
+                                id="file"
+                                name="file"
+                                accept=".jpg, .jpeg, .png"
+                            />
                         </Form.Item>
+
+
                         <Form.Item
                             wrapperCol={{
                                 offset: 10,

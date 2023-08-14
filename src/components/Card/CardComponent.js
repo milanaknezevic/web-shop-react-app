@@ -24,7 +24,7 @@ const CardComponent = ({ product }) => {
                     }
                 >
                     <div >
-                        <Meta title={product.naslov} description={product.opis} />
+                        <Meta title={product.naslov} />
                         <div className={classes.priceContainer}>
                             <span className={classes.price}>{product.cijena} KM</span>
                         </div>
