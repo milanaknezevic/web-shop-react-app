@@ -8,12 +8,13 @@ export const getProductByID = (id) => {
         .get(`products/${id}`)
         .then((result) => result.data)
 };
-export const getAllProducts = (pageNumber, pageSize) => {
+export const getAllProducts = (pageNumber, pageSize,naslov) => {
    return unauthenticatedInstance
         .get(`products`, {
             params: {
                 page: pageNumber,
-                size: pageSize
+                size: pageSize,
+                naslov:naslov
             }
         })
         .then((result) => result.data);

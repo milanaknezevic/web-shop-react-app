@@ -5,7 +5,6 @@ const instance = base.service(true);
 
 export const getUserByID = (id) => {
     console.log("id u slice  " + id);
-    console.log("token " + token);
     return instance
         .get(`users/${id}`)
         .then((results) => results.data);

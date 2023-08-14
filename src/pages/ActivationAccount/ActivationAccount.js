@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {activateAccount} from "../../api/auth.service";
 
 
-export default function ActivationAccount() {
+const ActivationAccount=() =>{
 
     const [isDisabled, setIsDisabled] = useState(false);
     const [showErrorMessage, setShowErrorMessage] = useState(false);
@@ -157,3 +157,4 @@ export default function ActivationAccount() {
 
     )
 }
+export default ActivationAccount;

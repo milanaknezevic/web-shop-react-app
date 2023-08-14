@@ -16,36 +16,36 @@ const Login = () => {
     const [succesMessage, setsuccesMessage] = useState("");
 
     const onSubmit = async (values, actions) => {
-        console.log(values);
+
 
         const response = await dispatch(login(values));
-        console.log("gledaj ovooo " + JSON.stringify(response));
+
         if (response.payload.token === "" && response.payload.code !== "" ) {
-            console.log("Ima code " + response.payload.code);
+
             setShowSuccesMessage(true);
             setsuccesMessage("Activation code sent. Check your email.");
             setTimeout(() => {
                 setShowSuccesMessage(false);
                 setsuccesMessage("");
-                console.log("ime " + values.username);
+
                 nav("/activate", {state: {username: values.username}});
             }, 3000);
         } else  if (response.payload.code === "" && response.payload.token !== "" ) {
-            console.log("Ima token ulogovan je " + response.payload.token);
-            setShowSuccesMessage(true);
-            setsuccesMessage("Login successful! Redirecting...");
-            console.log("id koji slajem " + response.payload.id);
+
+           // setShowSuccesMessage(true);
+            //setsuccesMessage("Login successful! Redirecting...");
+
             dispatch(getUser({id: response.payload.id}));
-            setTimeout(() => {
+            //treba provjera status ai ovde al nmg sad to
+            nav('/');
+           /* setTimeout(() => {
                 setShowSuccesMessage(false);
                 setsuccesMessage("");
                 nav('/');
-            }, 3000);
+            }, 3000);*/
         }else {
-
-            console.log("ni kod ni token vj greska");
             setShowErrorMessage(true);
-            errorMessage("Login failed. Please try again.");
+            setErrorMessage("Login failed. Please try again.");
             setTimeout(() => {
                 setShowErrorMessage(false);
                 setErrorMessage("");

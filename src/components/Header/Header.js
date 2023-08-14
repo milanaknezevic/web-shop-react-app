@@ -4,6 +4,8 @@ import {NavComponent} from "../Navbar/NavComponent";
 import styles from './Header.module.css';
 
 const Header = () => {
+
+
     return (
         <nav className={styles.nav}>
             <div className={styles.logoContainer}>

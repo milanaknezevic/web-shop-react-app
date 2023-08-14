@@ -43,9 +43,9 @@ export const getProductByID = createAsyncThunk("getProductByID/", async ({
 });
 
 
-export const getAllProducts = createAsyncThunk("getProducts/", async ({ pageNumber, pageSize }, { rejectWithValue }) => {
+export const getAllProducts = createAsyncThunk("getProducts/", async ({ pageNumber, pageSize,naslov }, { rejectWithValue }) => {
     try {
-        return await productService.getAllProducts(pageNumber, pageSize);
+        return await productService.getAllProducts(pageNumber, pageSize,naslov);
     } catch (err) {
         return rejectWithValue("There is some problem with getting data. Please try later.");
     }

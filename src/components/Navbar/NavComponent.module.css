@@ -27,3 +27,22 @@
 .activeNavLink {
     color: blue; /* Podesite boju koja vam odgovara */
 }
+.userImageContainer {
+    display: flex;
+    align-items: center;
+    margin-right: 10px; /* Opciono, dodajte razmak između slike i teksta */
+}
+
+.userImage {
+    width: 30px; /* Prilagodite veličinu slike prema potrebi */
+    height: 30px;
+    border-radius: 50%; /* Da bi slika bila okrugla */
+    object-fit: cover; /* Da bi slika bila ispravno skalirana */
+    margin-right: 5px; /* Opciono, dodajte razmak između slike i teksta */
+}
+.poruka{
+    color: white;
+    font-size: 1rem;
+
+
+}

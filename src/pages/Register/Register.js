@@ -18,9 +18,9 @@ export default function Register() {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [selectedFile, setSelectedFile] = useState();
 
     const {authenticated} = useSelector((state) => state.users);
-    const [selectedFile, setSelectedFile] = useState();
     useEffect(() => {
         console.log("autentifikacija " + authenticated);
         if (authenticated)
@@ -231,13 +231,14 @@ export default function Register() {
                         >
                             <Input/>
                         </Form.Item>
+
+
                         <Form.Item
                             label="Avatar"
                             name="avatar"
-                            style={{backgroundColor:'yellow'}}
                         >
                             <input
-                                style={{backgroundColor:'red',height:'fit-content'}}
+                                style={{marginTop:'-2%'}}
                                 type="file"
                                 onChange={changeHandler}
                                 id="file"
@@ -245,6 +246,7 @@ export default function Register() {
                                 accept=".jpg, .jpeg, .png"
                             />
                         </Form.Item>
+
 
 
                         <Form.Item
