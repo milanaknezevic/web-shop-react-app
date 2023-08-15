@@ -5,6 +5,7 @@ import Products from "../Product/Products";
 import SidebarComponent from "../../components/Sidebar/SidebarComponent";
 import {useDispatch} from "react-redux";
 import {getAllProducts} from "../../redux/features/productSlice";
+import classes from './Home.module.css';
 
 const {Footer, Sider, Content} = Layout;
 
@@ -25,31 +26,35 @@ const Home = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const headerElement = document.querySelector('.Header_nav__73kXe');
-        console.log(headerElement);
-        const windowHeight = window.innerHeight;
-        console.log("windowHeight " + windowHeight);
-        if (headerElement) {
-            const headerHeight = headerElement.offsetHeight;
-            const calculatedContentHeight = windowHeight - headerHeight;
-            console.log("elementHeight " + headerHeight);
-            setContentHeight(calculatedContentHeight);
-            console.log("content height " + contentHeight);
-            const searchElement = document.querySelector('.Search_center__EZYl7');
-            if (searchElement) {
-                const searchHeight = searchElement.offsetHeight;
-                const calculatedSearchHeight = windowHeight - searchHeight - headerHeight;
-                console.log("searchHeight " + searchHeight);
-                setSideHeight(calculatedSearchHeight);
-                console.log("calculatedSearchHeight " + calculatedSearchHeight);
-                console.log("sideHeight" + sideHeight);
-            } else {
-                console.log("Element 'search' nije pronađen.");
+        const resizeHandler = () => {
+            const nesto = document.querySelector(`.${classes.nesto}`);
+            const container = document.querySelector(`.${classes.container}`);
+
+            const windowHeight = window.innerHeight;
+            console.log("windowHeight " + windowHeight)
+            const headerElement = document.querySelector('.Header_nav__73kXe');
+            /* console.log(headerElement);
+
+             console.log("windowHeight " + windowHeight);*/
+            if (headerElement) {
+                const headerHeight = headerElement.offsetHeight;
+                console.log("headerHeight " + headerHeight)
+                const searchElement = document.querySelector('.Search_center__EZYl7');
+                if (searchElement) {
+                    const searchHeight = searchElement.offsetHeight;
+                    console.log("searchHeight " + searchHeight)
+                    nesto.style.minHeight = `${windowHeight - headerHeight}px`;
+                    container.style.minHeight = `${windowHeight - headerHeight - searchHeight}px`;
+                    console.log("proracun " + `${windowHeight - headerHeight - searchHeight}px`)
+                }
             }
-        } else {
-            console.log("Element 'myElement' nije pronađen.");
-        }
-    }, [contentHeight, sideHeight,current]);
+        };
+        resizeHandler(); // Postavi visinu kontejnera na početku
+        window.addEventListener('resize', resizeHandler);
+        return () => {
+            window.removeEventListener('resize', resizeHandler);
+        };
+    }, []);
     useEffect(() => {
 
         const fetchData = async () => {
@@ -88,41 +93,41 @@ const Home = () => {
     };
 
     return (
-        <div style={{minHeight: contentHeight,backgroundColor:'red'}}>
+        <div className={classes.nesto}>
             <SearchComponent onSearch={onSearch}/>
-            <Layout style={{ minHeight: sideHeight}}>
-                <Sider breakpoint='lg' collapsedWidth='0' style={{
-                    textAlign: 'center',
-                    backgroundColor: ' #e6e6e6',
-                    width: '500px !important',
+
+            <div className={classes.container}>
 
 
-                }}>
-                    <SidebarComponent/>
-                </Sider>
-                <Layout>
-                    <Content>
-                        {isLoading ? (
-                            <p style={{
-                                textAlign: 'center',
-                                fontWeight: 'bold'
-                            }}>Loading...</p>
-                        ) : (
-                            products.length === 0 ? (
+                <div className={classes.left}>
+                    <SidebarComponent></SidebarComponent>
+                    </div>
+                <Layout style={{ minHeight: sideHeight}}>
+                    <Layout>
+                        <Content>
+                            {isLoading ? (
                                 <p style={{
                                     textAlign: 'center',
                                     fontWeight: 'bold'
-                                }}>No data.</p>
+                                }}>Loading...</p>
                             ) : (
-                                <Products products={products}/>
-                            )
-                        )}
-                    </Content>
-                    <Pagination style={{textAlign: "right", padding: '0.4rem'}} current={current} onChange={onChange}
-                                total={50}/>
-                    <Footer style={footerStyle}>Footer</Footer>
+                                products.length === 0 ? (
+                                    <p style={{
+                                        textAlign: 'center',
+                                        fontWeight: 'bold'
+                                    }}>No data.</p>
+                                ) : (
+                                    <Products products={products}/>
+                                )
+                            )}
+                        </Content>
+                        <Pagination style={{textAlign: "right", padding: '0.4rem'}} current={current} onChange={onChange}
+                                    total={50}/>
+                        <Footer style={footerStyle}>Footer</Footer>
+                    </Layout>
                 </Layout>
-            </Layout>
+            </div>
+
         </div>
     )
 };
