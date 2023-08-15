@@ -21,9 +21,9 @@ const MyProfile = () => {
     const [dugmePurchase, setDugmePurchase] = useState(false);
     const [finished, setFinished] = useState(3);
     const [current, setCurrent] = useState(1);
-    const dispatch = useDispatch();
+    const dispatch1 = useDispatch();
+    const dispatch2 = useDispatch();
     const navigate = useNavigate();
-
 
     const options = [
         {
@@ -44,7 +44,7 @@ const MyProfile = () => {
        // console.log("autentifikacija " + authenticated);
         if (authenticated === false)
             navigate('/');
-    }, [authenticated, navigate, dispatch]);
+    }, [authenticated, navigate]);
 
 
     const onChange = (page) => {
@@ -78,9 +78,10 @@ const MyProfile = () => {
             console.log("dugmePurchase:", dugmePurchase);
             const pageNumber = current - 1;
             const pageSize = 10;
+
             console.log("pageNumber " + pageNumber + " pageSIze " + pageSize + " finished " + finished);
             console.log("Usla u if:");
-            const response = await dispatch(getAllProductsForBuyer({pageNumber, pageSize}));
+            const response = await dispatch2(getAllProductsForBuyer({pageNumber, pageSize}));
             // console.log(JSON.stringify(response))
 
             if (getAllProductsForBuyer.fulfilled.match(response)) {
@@ -105,7 +106,7 @@ const MyProfile = () => {
             const pageSize = 10;
             console.log("pageNumber " + pageNumber + " pageSIze " + pageSize + " finished " + finished);
              console.log("Usla u if:");
-                const response = await dispatch(getAllProductsForSeller({pageNumber, pageSize, finished}));
+                const response = await dispatch1(getAllProductsForSeller({pageNumber, pageSize, finished}));
                 // console.log(JSON.stringify(response))
 
                 if (getAllProductsForSeller.fulfilled.match(response)) {
@@ -124,10 +125,10 @@ const MyProfile = () => {
     };
     useEffect(() => {
         fetchData2();
-    }, [dugmePurchase]);
+    }, [dispatch2]);
     useEffect(() => {
         fetchData1();
-    }, [current, finished, dispatch,dugmeProducts]);
+    }, [current, finished, dispatch1]);
 
     useEffect(() => {
         setAuth(authenticated);
@@ -189,7 +190,7 @@ const MyProfile = () => {
                     My Purchase
                 </button>
             </div>
-            {showSelect ? <Select onChangeValue={onChangeValue} options={options}/> : null}
+            {showSelect ? <Select onChangeValue={onChangeValue} options={options} finished={finished}/> : null}
             <Content>
                 {
                     products.length === 0 ? (
