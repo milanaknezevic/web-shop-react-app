@@ -10,28 +10,28 @@ export const getUserByID = (id) => {
         .then((results) => results.data);
 };
 
-export const getAllProductsForBuyer = (page) => {
+export const getAllProductsForBuyer = (pageNumber, pageSize) => {
     return instance
         .get(`users/purchases`, {
             headers: {
                 Authorization: `Bearer ${token}`
             },
             params: {
-                page: page.pageNumber,
-                size: page.pageSize
+                page: pageNumber,
+                size: pageSize
             }
         })
         .then((result) => result.data);
 };
 
-export const getAllProductsForSeller = (page, finished) => {
+export const getAllProductsForSeller = (pageNumber, pageSize,finished) => {
     return instance
         .get(`users/products`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }, params: {
-                page: page.pageNumber,
-                size: page.pageSize,
+                page: pageNumber,
+                size: pageSize,
                 finished: finished,
 
             },

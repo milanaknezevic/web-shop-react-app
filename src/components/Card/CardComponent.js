@@ -8,7 +8,7 @@ const CardComponent = ({ product }) => {
 
     return (
         <div>
-
+            <p>{product.id}</p>
             {product.slikas.length > 0 && ( // Proveravamo da li postoji barem jedna slika
                 <Card
                     hoverable

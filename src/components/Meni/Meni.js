@@ -35,8 +35,12 @@ const Meni = () => {
 
     const onClick = ({ key }) => {
         if (key === '4') {
-            handleLogout(); // Pozovi handleLogout samo ako je pritisnuta stavka "Log out"
-        } else {
+            handleLogout();
+        } else  if (key === '1') {
+            navigate('/profile');
+
+        }
+        else {
             message.info(`Click on item ${key}`);
         }
     };

@@ -1,16 +1,15 @@
 import React from "react";
-import {Button, InputNumber, Select} from "antd";
+import {Button, InputNumber} from "antd";
 import CategoryTree from "../CategoryTree/CategoryTree";
 import {SearchOutlined} from "@ant-design/icons";
+import Select from "../Select/Select";
 
 const SidebarComponent = () => {
 
     const onChangeValue = (value) => {
         console.log(`selected ${value}`);
     };
-    const onSearch = (value) => {
-        console.log('search:', value);
-    };
+
     return (
         <div>
 
@@ -20,24 +19,7 @@ const SidebarComponent = () => {
                     <label style={{color: 'black', fontSize: '16px', fontWeight: 'bold'}}>Status</label>
                 </div>
                 <div style={{textAlign: 'left', marginLeft: '5px'}}>
-                    <Select
-                        style={{backgroundColor: '#c5c5c5'}}
-                        placeholder="Select a status"
-                        onChange={onChangeValue}
-                        onSearch={onSearch}
-                        filterOption={(input, option) =>
-                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                        }
-                        options={[
-                            {
-                                value: '0',
-                                label: 'New',
-                            },
-                            {
-                                value: '1',
-                                label: 'Used',
-                            },
-                        ]}/>
+                   <Select onChangeValue={onChangeValue}></Select>
                 </div>
                 <br/>
             </div>
@@ -65,10 +47,9 @@ const SidebarComponent = () => {
 
             </div>
 
-            <Button style={{ backgroundColor: '#41418d'}} type="primary" icon={<SearchOutlined/>}>
+            <Button style={{backgroundColor: '#41418d'}} type="primary" icon={<SearchOutlined/>}>
                 Search
             </Button>
-
 
 
         </div>

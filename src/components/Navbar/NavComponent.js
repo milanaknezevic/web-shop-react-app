@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import styles from "./NavComponent.module.css";
-import {useDispatch, useSelector} from "react-redux";
-import logout from '../../redux/features/userSlice';
+import {useSelector} from "react-redux";
 import userImage from '../../assets/logo.png';
 import Meni from "../Meni/Meni";
 
@@ -15,8 +14,7 @@ export const NavComponent = () => {
         console.log("autheticated " + authenticated);
         console.log("auth " + auth);
         console.log("user " + user);
-    }, [authenticated,auth,user]);
-
+    }, [authenticated, auth, user]);
 
 
     return (

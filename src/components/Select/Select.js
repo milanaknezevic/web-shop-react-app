@@ -1,11 +1,10 @@
 import React from "react";
 import {Select} from "antd";
 
-const SelectComponent = () => {
+const SelectComponent = (props) => {
 
-    const onChangeValue = (value) => {
-        console.log(`selected ${value}`);
-    };
+    const {onChangeValue, options} = props;
+
     const onSearch = (value) => {
         console.log('search:', value);
     };
@@ -13,28 +12,19 @@ const SelectComponent = () => {
         <div>
 
 
-            <div style={{textAlign: 'left', marginBottom: '15px'}}>
-                <label style={{color: 'black', fontSize: '16px', fontWeight: 'bold'}}>Status</label>
-            </div>
+            <br/>
             <div style={{textAlign: 'left', marginLeft: '5px'}}>
                 <Select
                     style={{backgroundColor: '#c5c5c5'}}
-                    placeholder="Select a status"
+                    placeholder="Select a option"
                     onChange={onChangeValue}
                     onSearch={onSearch}
+
                     filterOption={(input, option) =>
                         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                     }
-                    options={[
-                        {
-                            value: '0',
-                            label: 'New',
-                        },
-                        {
-                            value: '1',
-                            label: 'Used',
-                        },
-                    ]}/>
+                    options={options}
+                />
             </div>
             <br/>
 

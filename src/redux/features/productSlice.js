@@ -14,19 +14,16 @@ export const getProductsInCategory = createAsyncThunk("categories/getProducts", 
     }
 });
 
-export const getAllProductsForBuyer = createAsyncThunk("getProductForBuyer/", async ({page}, {rejectWithValue}) => {
+export const getAllProductsForBuyer = createAsyncThunk("getProductForBuyer/", async ({ pageNumber, pageSize }, {rejectWithValue}) => {
     try {
-        return await userService.getAllProductsForBuyer(page);
+        return await userService.getAllProductsForBuyer(pageNumber, pageSize);
     } catch (err) {
         return rejectWithValue("There is some problem with getting data. Please try later.");
     }
 });
-export const getAllProductsForSeller = createAsyncThunk("getProductForSeller/", async ({
-                                                                                           page,
-                                                                                           finished
-                                                                                       }, {rejectWithValue}) => {
+export const getAllProductsForSeller = createAsyncThunk("getProductForSeller/", async ({ pageNumber, pageSize,finished }, {rejectWithValue}) => {
     try {
-        return await userService.getAllProductsForSeller(page, finished);
+        return await userService.getAllProductsForSeller(pageNumber, pageSize,finished);
     } catch (err) {
         return rejectWithValue("There is some problem with getting data. Please try later.");
     }
