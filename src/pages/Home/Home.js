@@ -88,14 +88,14 @@ const Home = () => {
     };
 
     return (
-        <div style={{minHeight: contentHeight}}>
+        <div style={{minHeight: contentHeight,backgroundColor:'red'}}>
             <SearchComponent onSearch={onSearch}/>
             <Layout style={{ minHeight: sideHeight}}>
                 <Sider breakpoint='lg' collapsedWidth='0' style={{
                     textAlign: 'center',
                     backgroundColor: ' #e6e6e6',
                     width: '500px !important',
-                    minHeight: sideHeight
+
 
                 }}>
                     <SidebarComponent/>

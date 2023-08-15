@@ -4,38 +4,35 @@ import styles from "./NavComponent.module.css";
 import {useDispatch, useSelector} from "react-redux";
 import logout from '../../redux/features/userSlice';
 import userImage from '../../assets/logo.png';
+import Meni from "../Meni/Meni";
 
 export const NavComponent = () => {
     const {authenticated, user} = useSelector((state) => state.users);
     const [auth, setAuth] = useState(false);
-    const dispatch = useDispatch(); // Koristimo useDispatch za pozivanje akcija
-    const navigate = useNavigate();
 
     useEffect(() => {
         setAuth(authenticated);
-    }, [authenticated]);
+        console.log("autheticated " + authenticated);
+        console.log("auth " + auth);
+        console.log("user " + user);
+    }, [authenticated,auth,user]);
 
-    const handleLogout = () => {
-        dispatch(logout());
-        navigate('/');
-    };
+
 
     return (
         <div className={styles.navComponent}>
             {auth ? (
                 <>
-                    <p className={styles.poruka}>Hello, {user.ime}</p>
-                    <div className={styles.userImageContainer}>
-                        <img className={styles.userImage} src={userImage} alt="User"/>
-                    </div>
-                    <NavLink
-                        className={styles.navLink} activeClassName={styles.activeNavLink} to="/"
-                        onClick={() => {
-                            handleLogout();
-                        }}
-                    >
-                        Logout
-                    </NavLink>
+                    {user ? (
+                        <>
+                            <p className={styles.poruka}>Hello, {user.ime}</p>
+                            <div className={styles.userImageContainer}>
+                                <img className={styles.userImage} src={userImage} alt="User"/>
+                            </div>
+                        </>
+                    ) : null}
+
+                    <Meni></Meni>
                 </>
             ) : (
                 <>

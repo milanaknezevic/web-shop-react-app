@@ -8,6 +8,7 @@ import React from "react";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import ActivationAccount from "./pages/ActivationAccount/ActivationAccount";
+import MyProfile from "./pages/MyProfile/MyProfile";
 
 function App() {
     return (
@@ -17,8 +18,9 @@ function App() {
             <Routes>
                 <Route element={<PrivateRoutes/>}>
 
-                    <Route element={<Product/>} path="/products" exact/>
+
                 </Route>
+                <Route element={<MyProfile/>} path="/profile" exact/>
                 <Route element={<Home/>} path="/"/>
                 <Route element={<Login/>} path="/login" exact/>
                 <Route element={<Register/>} path="/register" exact/>
