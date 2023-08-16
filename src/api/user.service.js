@@ -4,7 +4,6 @@ const token = sessionStorage.getItem('access');
 const instance = base.service(true);
 
 export const getUserByID = (id) => {
-    console.log("id u slice  " + id);
     return instance
         .get(`users/${id}`)
         .then((results) => results.data);
@@ -39,14 +38,17 @@ export const getAllProductsForSeller = (pageNumber, pageSize,finished) => {
         .then((result) => result.data);
 };
 
-export const updateUser = (id, userDataToUpdate) => {
+
+export const updateUser = (id,userDataToUpdate) => {
+    console.log("U servisu sam userDataToUpdate " + JSON.stringify(userDataToUpdate));
+
     return instance
-        .put(`users/${id}`, userDataToUpdate, {
-            headers: {
+        .put(`users/${id}`,userDataToUpdate,{
+            headers:{
                 Authorization: `Bearer ${token}`
-            }
+            },
         })
-        .then((result) => result.data);
+        .then((results) => results.data);
 };
 export const changePassword = (id, changePasswordData) => {
     return instance

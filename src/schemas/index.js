@@ -2,6 +2,28 @@ import * as yup from "yup";
 
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
 
+export const changePasswordSchema = yup.object().shape({
+    lozinka: yup
+        .string()
+        .min(8)
+        .matches(passwordRules, { message: "Please create a stronger password" })
+        .required("Required"),
+    confirmPassword: yup
+        .string()
+        .oneOf([yup.ref("lozinka"), null], "Passwords must match")
+        .required("Required"),
+});
+export const formaSchemaTMP = yup.object().shape({
+    password: yup
+        .string()
+        .min(8)
+        .matches(passwordRules, { message: "Please create a stronger password" })
+        .required("Required"),
+    confirmPassword: yup
+        .string()
+        .oneOf([yup.ref("password"), null], "Passwords must match")
+        .required("Required"),
+});
 export const formaSchema = yup.object().shape({
     username: yup
         .string()
@@ -11,6 +33,7 @@ export const formaSchema = yup.object().shape({
         .string()
         .required("Required"),
 });
+
 
 export const editSchema = yup.object().shape({
     ime: yup
@@ -29,17 +52,8 @@ export const editSchema = yup.object().shape({
         .string()
         .email()
         .required("Required"),
-    lozinka: yup
-        .string()
-        .min(5, "Password must be at least 5 characters long")
-        .required("Required"),
-    confirmPassword: yup
-        .string()
-        .oneOf([yup.ref('lozinka'), null], "Passwords must match")
-        .required("Required"),
     grad: yup
         .string()
-        .min(3, "City name must be at least 3 characters long")
+        .min(2, "City must be at least 2 characters long")
         .required("Required"),
-
 });

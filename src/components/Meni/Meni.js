@@ -36,6 +36,8 @@ const Meni = () => {
     const [customSupportModal, setCustomSupportModal] = useState(false);
     const onClick = ({key}) => {
         if (key === '1') {
+           // console.log("bzvzvzvz");
+            //message.info(`Click on item ${key}`);
             navigate('/profile');
 
         } else if (key === '3') {

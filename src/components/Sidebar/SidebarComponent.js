@@ -8,7 +8,7 @@ import Select from "../Select/Select";
 const SidebarComponent = () => {
 
     const onChangeValue = (value) => {
-        console.log(`selected ${value}`);
+
     };
 
     return (

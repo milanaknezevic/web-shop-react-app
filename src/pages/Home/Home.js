@@ -42,21 +42,14 @@ const Home = () => {
             const container = document.querySelector(`.${classes.container}`);
 
             const windowHeight = window.innerHeight;
-            console.log("windowHeight " + windowHeight)
-            const headerElement = document.querySelector('.Header_nav__73kXe');
-            /* console.log(headerElement);
-
-             console.log("windowHeight " + windowHeight);*/
+           const headerElement = document.querySelector('.Header_nav__73kXe');
             if (headerElement) {
                 const headerHeight = headerElement.offsetHeight;
-                console.log("headerHeight " + headerHeight)
-                const searchElement = document.querySelector('.Search_center__EZYl7');
+               const searchElement = document.querySelector('.Search_center__EZYl7');
                 if (searchElement) {
                     const searchHeight = searchElement.offsetHeight;
-                    console.log("searchHeight " + searchHeight)
                     nesto.style.minHeight = `${windowHeight - headerHeight}px`;
                     container.style.minHeight = `${windowHeight - headerHeight - searchHeight}px`;
-                    console.log("proracun " + `${windowHeight - headerHeight - searchHeight}px`)
                 }
             }
         };
@@ -78,7 +71,6 @@ const Home = () => {
                     setProducts(response.payload.content);
                 } else {
                     setIsLoading(true);
-                    console.log("Akcija nije uspešno završena:", response.error);
                 }
             } catch (error) {
                 setIsLoading(true);
@@ -99,7 +91,6 @@ const Home = () => {
         setCurrent(page);
     };
     const onSearch = (value) => {
-        console.log("naslov " + value);
         setNaslov(value);
     };
 

@@ -11,9 +11,6 @@ export const NavComponent = () => {
 
     useEffect(() => {
         setAuth(authenticated);
-        console.log("autheticated " + authenticated);
-        console.log("auth " + auth);
-        console.log("user " + user);
     }, [authenticated, auth, user]);
 
 

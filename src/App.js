@@ -42,13 +42,13 @@ function App() {
         <BrowserRouter>
             <Header />
             <Routes>
+                <Route element={<PrivateRoutes />}>
+                    <Route path="/profile" element={<MyProfile />} />
+                </Route>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/activate" element={<ActivationAccount />} />
-                <Route element={<PrivateRoutes />}>
-                    <Route path="/profile" element={<MyProfile />} />
-                </Route>
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </BrowserRouter>

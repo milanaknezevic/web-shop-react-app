@@ -7,9 +7,14 @@ export const login = createAsyncThunk("users/login", async ({username, password}
 });
 
 
-export const updateUser = createAsyncThunk("/updateUser", async ({id, userDataToUpdate}, {rejectWithValue}) => {
-    try {
 
+export const updateUser = createAsyncThunk("users/updateUser", async ({
+                                                                          id,
+                                                                          userDataToUpdate
+                                                                      }, {rejectWithValue}) => {
+    console.log("U reduxu sam userDataToUpdate " + JSON.stringify(userDataToUpdate));
+
+    try {
         return await userService.updateUser(id, userDataToUpdate);
     } catch (err) {
         return rejectWithValue("Error while updating model. Please try later.");

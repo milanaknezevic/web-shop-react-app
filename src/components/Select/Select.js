@@ -7,7 +7,7 @@ const SelectComponent = (props) => {
 
     const onSearch = (value) => {
 
-        console.log('search:', value);
+
     };
     const[defaultValue,setDefaultValue]=useState("");
 

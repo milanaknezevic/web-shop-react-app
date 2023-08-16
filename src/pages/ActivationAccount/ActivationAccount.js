@@ -23,7 +23,7 @@ const ActivationAccount=() =>{
     const {authenticated} = useSelector((state) => state.users);
 
     useEffect(() => {
-        console.log("auth " + authenticated);
+
         if (authenticated)
             navigate('/');
     }, [authenticated, navigate, dispatch]);
@@ -35,11 +35,10 @@ const ActivationAccount=() =>{
             korisnickoIme: username
 
         };
-        console.log(activationData);
+
         setIsDisabled(true);
         try {
             const response = await activateAccount(activationData);
-            console.log("gledaj ovooo " + JSON.stringify(response.data));
 
 
             if (response.data === "") {
@@ -81,7 +80,7 @@ const ActivationAccount=() =>{
     }
 
     const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+
     };
     const location = useLocation();
     const username = location.state && location.state.username;

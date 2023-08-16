@@ -18,40 +18,43 @@ const Login = () => {
     const onSubmit = async (values, actions) => {
 
 
-        const response = await dispatch(login(values));
+       try{
+           const response = await dispatch(login(values));
 
-        if (response.payload.token === "" && response.payload.code !== "" ) {
+           if (response.payload.token === "" && response.payload.code !== "" ) {
 
-            setShowSuccesMessage(true);
-            setsuccesMessage("Activation code sent. Check your email.");
-            setTimeout(() => {
-                setShowSuccesMessage(false);
-                setsuccesMessage("");
+               setShowSuccesMessage(true);
+               setsuccesMessage("Activation code sent. Check your email.");
+               setTimeout(() => {
+                   setShowSuccesMessage(false);
+                   setsuccesMessage("");
 
-                nav("/activate", {state: {username: values.username}});
-            }, 3000);
-        } else  if (response.payload.code === "" && response.payload.token !== "" ) {
+                   nav("/activate", {state: {username: values.username}});
+               }, 3000);
+           } else  if (response.payload.code === "" && response.payload.token !== "" ) {
+               dispatch(getUser({id: response.payload.id}));
+               nav('/');
 
-           // setShowSuccesMessage(true);
-            //setsuccesMessage("Login successful! Redirecting...");
+           }else {
+               setShowErrorMessage(true);
+               setErrorMessage("Login failed. Please try again.");
+               setTimeout(() => {
+                   setShowErrorMessage(false);
+                   setErrorMessage("");
 
-            dispatch(getUser({id: response.payload.id}));
-            //treba provjera status ai ovde al nmg sad to
-            nav('/');
-           /* setTimeout(() => {
-                setShowSuccesMessage(false);
-                setsuccesMessage("");
-                nav('/');
-            }, 3000);*/
-        }else {
-            setShowErrorMessage(true);
-            setErrorMessage("Login failed. Please try again.");
-            setTimeout(() => {
-                setShowErrorMessage(false);
-                setErrorMessage("");
+               }, 3000);
+           }
+       }
+       catch (error)
+       {
+           setShowErrorMessage(true);
+           setErrorMessage("Login failed. Please try again.");
+           setTimeout(() => {
+               setShowErrorMessage(false);
+               setErrorMessage("");
 
-            }, 3000);
-        }
+           }, 3000);
+       }
 
     };
 

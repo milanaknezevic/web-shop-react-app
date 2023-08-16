@@ -1,12 +1,15 @@
 import {Outlet, Navigate} from 'react-router-dom'
+import {useEffect} from "react";
 
-const token = sessionStorage.getItem('access');
 const PrivateRoutes = () => {
-    //kad s eloginuje poslati token
-    console.log("token " + token);
+const token = sessionStorage.getItem('access');
+    useEffect(()=>{
+        console.log("token storage" + sessionStorage.getItem('access'));
+        console.log("token " + token );
+    },[])
     return (
         token ? <Outlet/> : <Navigate to="/login"/>
     )
 }
 
-export default PrivateRoutes
+export default PrivateRoutes;

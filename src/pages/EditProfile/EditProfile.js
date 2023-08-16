@@ -1,69 +1,143 @@
-import {Button, Form, Input, Modal} from 'antd';
-import {useDispatch} from "react-redux";
-import {createMessage} from "../../redux/features/messageSlice";
-import React, {useState} from "react";
-import {ErrorMessage, Field, Formik} from "formik";
+import {Modal} from 'antd';
+import React, {useEffect, useState} from "react";
 import {editSchema} from "../../schemas";
-import {NavLink} from "react-router-dom";
-import classes from './EditProfile.module.css';
+import {ErrorMessage, Field, Form, Formik} from "formik";
+import classes from "../Login/Login.module.css";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {insertImage} from "../../api/auth.service";
+import {updateUser} from "../../redux/features/userSlice";
 
-const {TextArea} = Input;
+
 const EditProfile = ({show, onClose}) => {
+    const navigate = useNavigate();
+    const {authenticated, user} = useSelector((state) => state.users);
+    const [selectedFile, setSelectedFile] = useState("");
+    const [temp, setTemp] = useState(null);
     const dispatch = useDispatch();
     const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [showSuccesMessage, setShowSuccesMessage] = useState(false);
     const [succesMessage, setsuccesMessage] = useState("");
-    const [isDisabled, setIsDisabled] = useState(false);
-    const [selectedFile, setSelectedFile] = useState("");
-
-    const handleClick = (e) => {
-        e.stopPropagation();
-    };
 
 
-    const handleFormSubmit = async (values) => {
-        setIsDisabled(true)
-        const messageRequest = {
-            sadrzaj: values.message,
-        };
-        const response = await dispatch(createMessage({messageData: messageRequest}));
-        console.log("repsonse " + response);
-        console.log("repsonse " + JSON.stringify(response));
-        if (createMessage.fulfilled.match(response)) {
-            console.log("bravo: ",);
-            setShowSuccesMessage(true);
-            setsuccesMessage("Message sent successfully.");
-            setTimeout(() => {
-                setShowSuccesMessage(false);
-                setsuccesMessage("");
-                setIsDisabled(false);
-                onClose();
-            }, 1500);
-        } else {
-            console.log("Akcija nije uspešno završena:", response.error);
-            setShowErrorMessage(true);
-            setErrorMessage("Message delivery failed.");
-            setTimeout(() => {
-                setShowErrorMessage(false);
-                setErrorMessage("");
-                setIsDisabled(false);
-                onClose();
-            }, 1500);
+    const onSubmit = async (values, actions) => {
+
+        try {   console.log("prije provjere u submit " + temp );
+            if (user.ime !== values.ime || user.prezime !== values.prezime || user.korisnickoIme !== values.korisnickoIme || user.email !== values.email || user.grad !== values.grad || temp !== null) {
+                console.log("usla u submit " + temp);
+                //salji
+                const formData = new FormData();
+                formData.append("file", selectedFile);
+                let responseImage = null;
+                console.log("temp !== null " + temp !== null);
+                if (temp !== null) {
+                    console.log(" usla u temp !== null ");
+                    responseImage = await insertImage(formData);
+                    console.log("responseImage " + JSON.stringify(responseImage));
+
+                }
+                console.log("prije provjere " + temp);
+                if (temp === null) {
+
+                    const userDataToUpdate = {
+                        ime: values.ime,
+                        prezime: values.prezime,
+                        korisnickoIme: values.korisnickoIme,
+                        grad: values.grad,
+                        email: values.email,
+                    };
+                    const id = user.id;
+                    const response = await dispatch(updateUser({id, userDataToUpdate: userDataToUpdate}));
+                    if (updateUser.fulfilled.match(response)) {
+                        setShowSuccesMessage(true);
+                        setsuccesMessage("Data sent successfully!");
+                        setTimeout(() => {
+                            setShowSuccesMessage(false);
+                            setsuccesMessage("")
+                            onClose();
+
+                        }, 1000);
+
+                    } else {
+                        setShowErrorMessage(true);
+                        setErrorMessage("Update failed. Please try again.");
+                        setTimeout(() => {
+                            setShowErrorMessage(false);
+                            setErrorMessage("");
+                            onClose();
+                        }, 1000);
+
+                    }
+                } else {
+                    console.log("gdje siiiii");
+                    const userDataToUpdate = {
+                        ime: values.ime,
+                        prezime: values.prezime,
+                        korisnickoIme: values.korisnickoIme,
+                        grad: values.grad,
+                        avatar: responseImage !== null ? responseImage.data : null,
+                        email: values.email,
+                    };
+                    const id = user.id;
+
+
+                    const response = await dispatch(updateUser({id, userDataToUpdate: userDataToUpdate}));
+                    if (updateUser.fulfilled.match(response)) {
+                        setShowSuccesMessage(true);
+                        setsuccesMessage("Data sent successfully!");
+                        setTimeout(() => {
+                            setShowSuccesMessage(false);
+                            setsuccesMessage("")
+                            onClose();
+
+                        }, 1000);
+
+                    } else {
+                        setShowErrorMessage(true);
+                        setErrorMessage("Update failed. Please try again.");
+                        setTimeout(() => {
+                            setShowErrorMessage(false);
+                            setErrorMessage("");
+                            onClose();
+                        }, 1000);
+
+
+                    }
+                }
+                // const response = await signUp(userUpdateData);
+            } else {
+                setShowErrorMessage(true);
+                setErrorMessage("Update failed. Please try again.");
+                setTimeout(() => {
+                    setShowErrorMessage(false);
+                    setErrorMessage("");
+                    onClose();
+                }, 1000);
+            }
+        } catch (error) {
+            console.log("error");
+        }finally {
+            console.log("user " + JSON.stringify(user));
         }
 
 
-    };
-
+    }
     const changeHandler = (event) => {
 
         setSelectedFile(event.target.files[0]);
+        console.log("setuj temp");
+        setTemp(1);
+        console.log("setuj temp" +temp);
 
     };
 
+    useEffect(() => {
 
-    return (
-        <>
+
+        if (authenticated === false) navigate('/');
+    }, [authenticated, navigate]);
+    return (<>
             <Modal
                 width='30%'
                 maskClosable={false}
@@ -72,96 +146,123 @@ const EditProfile = ({show, onClose}) => {
                 open={show}
                 onCancel={onClose}
                 bodyStyle={{
-                    maxHeight: '410px',
-                    overflow: 'auto',
-                    width: '100%',
+                    maxHeight: '500px', overflow: 'auto', width: '100%',
                 }}
             >
                 <div>
+
+
                     <Formik
                         initialValues={{
-                            ime: "",
-                            prezime: "",
-                            korisnickoIme: "",
-                            lozinka: "",
-                            confirmPassword: "",
-                            email: "",
-                            grad: ""
+                            ime: authenticated ? user.ime : '',
+                            prezime: authenticated ? user.prezime : '',
+                            korisnickoIme: authenticated ? user.korisnickoIme : '',
+                            email: authenticated ? user.email : '',
+                            grad: authenticated ? user.grad : '',
+                            avatar: authenticated ? user.avatar : '',
                         }}
                         validationSchema={editSchema}
-                        onSubmit={handleFormSubmit}
+                        onSubmit={onSubmit}
                     >
                         {({errors, isSubmitting, touched, handleBlur}) => (
+
                             <Form className={classes.loginForm}>
-                                {showSuccesMessage && (
-                                    <div className={classes.succes}>
-                                        {succesMessage}
-                                    </div>
-                                )}
-                                {showErrorMessage && (
-                                    <div className={classes.error}>
-                                        {errorMessage}
-                                    </div>
-                                )}
+
                                 <label htmlFor="name">First name:</label>
                                 <Field
                                     type="text"
                                     id="ime"
                                     name="ime"
                                     placeholder='First name'
-                                    className={
-                                        errors.ime && touched.ime ? classes.inputError : ""
-                                    }
+                                    className={errors.ime && touched.ime ? classes.inputError : ""}
                                     onBlur={handleBlur}
                                 />
                                 {touched.ime && errors.ime && (
-                                    <ErrorMessage name="ime" component="div" className={classes.error}/>
-                                )}
+                                    <ErrorMessage name="ime" component="div" className={classes.error}/>)}
+
                                 <label htmlFor="name">Last name:</label>
                                 <Field
                                     type="text"
                                     id="prezime"
                                     name="prezime"
                                     placeholder='Last name'
-                                    className={
-                                        errors.prezime && touched.prezime ? classes.inputError : ""
-                                    }
+                                    className={errors.prezime && touched.prezime ? classes.inputError : ""}
                                     onBlur={handleBlur}
                                 />
                                 {touched.prezime && errors.prezime && (
-                                    <ErrorMessage name="prezime" component="div" className={classes.error}/>
-                                )}
+                                    <ErrorMessage name="prezime" component="div" className={classes.error}/>)}
 
 
+                                <label htmlFor="name">Username:</label>
+                                <Field
+                                    type="text"
+                                    id="korisnickoIme"
+                                    name="korisnickoIme"
+                                    placeholder='Username'
+                                    className={errors.korisnickoIme && touched.korisnickoIme ? classes.inputError : ""}
+                                    onBlur={handleBlur}
+                                />
+                                {touched.korisnickoIme && errors.korisnickoIme && (
+                                    <ErrorMessage name="korisnickoIme" component="div" className={classes.error}/>)}
+                                <label htmlFor="name">Email:</label>
+                                <Field
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    placeholder='Email'
+                                    className={errors.email && touched.email ? classes.inputError : ""}
+                                    onBlur={handleBlur}
+                                />
+                                {touched.email && errors.email && (
+                                    <ErrorMessage name="email" component="div" className={classes.error}/>)}
+
+                                <label htmlFor="name">City:</label>
+                                <Field
+                                    type="text"
+                                    id="grad"
+                                    name="grad"
+                                    placeholder='City'
+
+                                    className={errors.grad && touched.grad ? classes.inputError : ""}
+                                    onBlur={handleBlur}
+                                />
+                                {touched.grad && errors.grad && (
+                                    <ErrorMessage name="grad" component="div" className={classes.error}/>)}
                                 <label htmlFor="avatar">Avatar</label>
                                 <Field name="avatar">
-                                    {({field, form}) => (
-                                        <div>
+                                    {({field, form}) => (<div>
                                             <input
                                                 style={{marginTop: '-2%'}}
                                                 type="file"
-                                                id="avatar"
-                                                name="avatar"
+                                                id="file"
+                                                name="file"
                                                 accept=".jpg, .jpeg, .png"
                                                 onChange={changeHandler}
                                             />
-                                        </div>
-                                    )}
+                                        </div>)}
                                 </Field>
+                                {showSuccesMessage && (<div className={classes.succes}>
+                                    {succesMessage}
+                                </div>)}
+                                {showErrorMessage && (<div className={classes.error}>
+                                    {errorMessage}
+                                </div>)}
 
                                 <div style={{textAlign: "center"}}>
-                                    <button style={{width: "fit-content"}} type="submit">Submit</button>
+                                    <button
+                                        style={{width: "fit-content"}}
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                    >
+                                        Submit
+                                    </button>
                                 </div>
 
-
-                            </Form>
-
-                        )}
+                            </Form>)}
                     </Formik>
                 </div>
 
             </Modal>
-        </>
-    );
+        </>);
 };
 export default EditProfile;

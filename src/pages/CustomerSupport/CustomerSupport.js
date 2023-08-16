@@ -23,10 +23,9 @@ const CustomerSupport = ({show, onClose}) => {
             sadrzaj: values.message,
         };
         const response = await dispatch(createMessage({messageData: messageRequest}));
-        console.log("repsonse " + response);
-        console.log("repsonse " + JSON.stringify(response));
+
         if (createMessage.fulfilled.match(response)) {
-            console.log("bravo: ",);
+
             setShowSuccesMessage(true);
             setsuccesMessage("Message sent successfully.");
             setTimeout(() => {
@@ -36,7 +35,7 @@ const CustomerSupport = ({show, onClose}) => {
                 onClose();
             }, 1500);
         } else {
-            console.log("Akcija nije uspešno završena:", response.error);
+
             setShowErrorMessage(true);
             setErrorMessage("Message delivery failed.");
             setTimeout(() => {

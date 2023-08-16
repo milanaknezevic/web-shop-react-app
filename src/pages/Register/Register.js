@@ -22,7 +22,7 @@ export default function Register() {
 
     const {authenticated} = useSelector((state) => state.users);
     useEffect(() => {
-        console.log("autentifikacija " + authenticated);
+
         if (authenticated)
             navigate('/');
     }, [authenticated, navigate, dispatch]);
@@ -50,9 +50,9 @@ export default function Register() {
                 avatar: responseImage.data !== "" ? responseImage.data : null,
                 email: registerData.email,
             };
-            console.log(signupData);
+
             const response = await signUp(signupData);
-            console.log("response " + response.status);
+
             if (response.status === 200 || response.status === 201) {
                 setShowSuccesMessage(true);
                 setsuccesMessage("Registration successful");
@@ -90,7 +90,7 @@ export default function Register() {
     }
 
     const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+
     };
 
     return (

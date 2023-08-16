@@ -3,11 +3,13 @@ import base from './base.service';
 const instance = base.service();
 
 export const login = (korisnickoIme, lozinka) => {
+    console.log("loginujem se");
     return instance
         .post('login', {korisnickoIme, lozinka})
         .then((results) => {
             const {token} = results.data;
             sessionStorage.setItem('access', token);
+            console.log("token  " +  sessionStorage.getItem('access'));
             return results.data;
         })
         .catch((err) => Promise.reject(err.response.status));
