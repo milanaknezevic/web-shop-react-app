@@ -2,6 +2,7 @@ import React from "react";
 import {Input, Space} from "antd";
 import classes from './Search.module.css';
 import {CgMathPlus} from "react-icons/cg";
+import {PlusOutlined} from "@ant-design/icons";
 const {Search} = Input;
 
 const SearchBar = (props) => {
@@ -23,8 +24,8 @@ const SearchBar = (props) => {
                 </div>
             </div>
             <button className={classes.dugme}>
-                <CgMathPlus size={15} className="cart"/>
-                Objavi oglas
+                <PlusOutlined size={15} className="cart"/>
+                New offer
             </button>
         </div>
     );

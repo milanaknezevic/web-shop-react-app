@@ -5,7 +5,7 @@ const instance = base.service(true);
 
 export const insertMessage = (messageData) => {
     return instance
-        .post('messages/', messageData, {
+        .post('messages', messageData, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

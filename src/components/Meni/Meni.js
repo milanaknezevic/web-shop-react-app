@@ -1,61 +1,73 @@
-import React from 'react';
-import { LogoutOutlined, PlusOutlined, QuestionCircleOutlined, UserOutlined } from '@ant-design/icons';
-import {Dropdown, message, Space} from 'antd';
+import React, {useState} from 'react';
+import {LogoutOutlined, PlusOutlined, QuestionCircleOutlined, UserOutlined} from '@ant-design/icons';
+import {Dropdown, message} from 'antd';
 import classes from './Meni.module.css';
-import { useDispatch } from 'react-redux';
-import {NavLink, useNavigate} from "react-router-dom";
-import { logout } from '../../redux/features/userSlice'; // Proučite ispravan put do vašeg userSlice-a
+import {useDispatch} from 'react-redux';
+import {useNavigate} from "react-router-dom";
+import {logout} from '../../redux/features/userSlice';
+import CustomerSupport from "../../pages/CustomerSupport/CustomerSupport";
 
 const items = [
     {
         label: 'My profile',
         key: '1',
-        icon: <UserOutlined />,
+        icon: <UserOutlined/>,
     },
     {
         label: 'New offer',
         key: '2',
-        icon: <PlusOutlined />,
+        icon: <PlusOutlined/>,
     },
     {
         label: 'Customer support',
         key: '3',
-        icon: <QuestionCircleOutlined />,
+        icon: <QuestionCircleOutlined/>,
     },
     {
         label: 'Log out',
         key: '4',
-        icon: <LogoutOutlined />,
+        icon: <LogoutOutlined/>,
     },
 ];
 
 const Meni = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    const onClick = ({ key }) => {
-        if (key === '4') {
-            handleLogout();
-        } else  if (key === '1') {
+    const [customSupportModal, setCustomSupportModal] = useState(false);
+    const onClick = ({key}) => {
+        if (key === '1') {
             navigate('/profile');
 
-        }
-        else {
+        } else if (key === '3') {
+
+            setCustomSupportModal(true);
+
+        } else if (key === '4') {
+            handleLogout();
+        } else {
             message.info(`Click on item ${key}`);
         }
     };
 
     const handleLogout = () => {
-        dispatch(logout()); // Koristi Redux akciju logout iz userSlice
-        navigate('/'); // Ako koristite useNavigate, ovdje bi trebali imati definiran navigate
+        dispatch(logout());
+        navigate('/');
     };
 
+    const handleCloseSupportModal = () => {
+        setCustomSupportModal(false);
+    };
+
+
     return (
-        <Dropdown menu={{ items, onClick }}>
-            <a onClick={(e) => e.preventDefault()} className={classes.navLink}>
-                Menu
-            </a>
-        </Dropdown>
+        <div>
+            <Dropdown menu={{items, onClick}}>
+                <a onClick={(e) => e.preventDefault()} className={classes.navLink}>
+                    Menu
+                </a>
+            </Dropdown>
+            {customSupportModal && <CustomerSupport show={customSupportModal} onClose={handleCloseSupportModal}/>}
+        </div>
     );
 };
 

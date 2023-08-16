@@ -29,7 +29,6 @@ export const NavComponent = () => {
                             </div>
                         </>
                     ) : null}
-
                     <Meni></Meni>
                 </>
             ) : (

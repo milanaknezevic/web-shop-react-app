@@ -46,10 +46,17 @@ body {
 }
 
 input.inputError
- {
+{
     border-color: red;
 }
+/* Primer u običnom CSS-u */
+.styleA {
+    background-color: red; /* Stil A kada postoji greška */
+}
 
+.styleB {
+    background-color: yellow; /* Stil B uvek */
+}
 
 
 label {

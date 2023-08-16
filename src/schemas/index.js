@@ -12,7 +12,7 @@ export const formaSchema = yup.object().shape({
         .required("Required"),
 });
 
-export const registerSchema = yup.object().shape({
+export const editSchema = yup.object().shape({
     ime: yup
         .string()
         .min(3, "First name must be at least 3 characters long")

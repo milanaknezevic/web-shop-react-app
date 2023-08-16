@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
-import { Card } from 'antd';
+import React from 'react';
+import {Card} from 'antd';
 import classes from './Card.module.css';
 
-const { Meta } = Card;
+const {Meta} = Card;
 
-const CardComponent = ({ product }) => {
+const CardComponent = ({product}) => {
 
     return (
         <div>
@@ -22,8 +22,8 @@ const CardComponent = ({ product }) => {
                         </div>
                     }
                 >
-                    <div >
-                        <Meta title={product.naslov} />
+                    <div>
+                        <Meta title={product.naslov}/>
                         <div className={classes.priceContainer}>
                             <span className={classes.price}>{product.cijena} KM</span>
                         </div>
