@@ -19,15 +19,25 @@
 }
 
 .priceContainer {
+margin-top: 10px;
+}
+.deleteDugme{
     position: absolute;
-    bottom: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 4px 8px;
-    border-top-left-radius: 4px;
-    font-weight: bold;
+    bottom: 0;
+    align-self: flex-start;
+    background: transparent;
+    color: red;
 }
 
 .price {
     color: white;
+    background-color: rgba(0, 0, 0, 0.7);
+width: 300px;
+    border-top-left-radius: 4px;
+}
+.kontejner{
+   display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

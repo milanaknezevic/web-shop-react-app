@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import classes from './MyProfile.module.css';
 import {useDispatch, useSelector} from "react-redux";
 import {FaBoxOpen, FaEdit, FaKey, FaShoppingCart} from "react-icons/fa";
-import {Pagination} from "antd";
+import {Layout, Pagination} from "antd";
 import Select from "../../components/Select/Select";
 import {getAllProductsForBuyer, getAllProductsForSeller} from '../../redux/features/productSlice';
 import {useNavigate} from "react-router-dom";
@@ -14,6 +14,7 @@ import EditProfile from "../EditProfile/EditProfile";
 import ChangePassword from "../ChangePassword/ChangePassword";
 
 const MyProfile = () => {
+    const [refreshKey, setRefreshKey] = useState(0);
     const [editProfileModal, setEditProfileModal] = useState(false);
     const [changePasswordModal, setChangePasswordModall] = useState(false);
     const {authenticated, user} = useSelector((state) => state.users);
@@ -139,7 +140,7 @@ const MyProfile = () => {
     }, [dispatch2]);
     useEffect(() => {
         fetchData1();
-    }, [current, finished, dispatch1]);
+    }, [current, finished, dispatch1,refreshKey]);
 
     useEffect(() => {
         setAuth(authenticated);
@@ -163,6 +164,9 @@ const MyProfile = () => {
     const handleEditProfileOpen = () => {
         setEditProfileModal(true);
     };
+    const handleSaveObrisi = () => {
+        setRefreshKey((prevKey) => prevKey + 1);
+    };
     const handleEditProfileClose = () => {
         setEditProfileModal(false);
     };
@@ -175,8 +179,6 @@ const MyProfile = () => {
 
     return (<div className={classes.container}>
         <div className={classes.left}>
-
-
             {user ? (
                 <div className={classes.zaLijevo}>
                     <div className={classes.userImageContainer}>
@@ -199,7 +201,7 @@ const MyProfile = () => {
             ) : null}
 
         </div>
-        <div className={classes.right}>
+        <Layout>
             <div className={classes.zaKupovine}>
                 <button style={{textDecorationColor: underlineColorProducts, fontSize: '20'}}
                         className={classes.kupovineDugme} onClick={myProductsHandle}>
@@ -216,26 +218,31 @@ const MyProfile = () => {
             {showSelect ? <Select onChangeValue={onChangeValue} options={options} finished={finished}/> : null}
             {editProfileModal && <EditProfile show={editProfileModal} onClose={handleEditProfileClose}/>}
             {changePasswordModal && <ChangePassword show={changePasswordModal} onClose={handleChangePasswordClose}/>}
-            <Content>
-                {isLoading ? (
-                    <p style={{
-                        textAlign: 'center',
-                        fontWeight: 'bold'
-                    }}>Loading...</p>
-                ) : (
-                    products.length === 0 ? (
+
+            <Layout>
+                <Content>
+                    {isLoading ? (
                         <p style={{
                             textAlign: 'center',
                             fontWeight: 'bold'
-                        }}>No data.</p>
+                        }}>Loading...</p>
                     ) : (
-                        <Products products={products}/>
-                    )
-                )}
-            </Content>
-            <Pagination className={classes.paginacija} current={current} onChange={onChange}
-                        total={50}/>
-        </div>
+                        products.length === 0 ? (
+                            <p style={{
+                                textAlign: 'center',
+                                fontWeight: 'bold'
+                            }}>No data.</p>
+                        ) : (
+                            <Products products={products} onSave={handleSaveObrisi}/>
+                        )
+                    )}
+                </Content>
+                <Pagination style={{textAlign: "right", padding: '0.4rem'}} current={current}
+                            onChange={onChange}
+                            total={50}/>
+
+            </Layout>
+        </Layout>
     </div>);
 };
 

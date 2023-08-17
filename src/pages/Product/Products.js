@@ -2,17 +2,19 @@ import React from 'react';
 import classes from './Product.module.css'
 import CardComponent from "../../components/Card/CardComponent";
 
-const Product = ({products}) => {
+const Product = ({products,onSave}) => {
 
 
     return (
         <div style={{minHeight: "500px"}}>
             <div className={classes.cardContainer}>
-                {products.map(product => (
-                    <div className={classes.productCard} key={product.id}>
-                        <CardComponent product={product}/>
-                    </div>
-                ))}
+                {products
+                    .filter(product => product.zavrsenaPonuda !== 2)
+                    .map(product => (
+                        <div className={classes.productCard} key={product.id}>
+                            <CardComponent product={product} onSave={onSave}/>
+                        </div>
+                    ))}
             </div>
         </div>
     );

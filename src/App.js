@@ -1,9 +1,9 @@
 import './App.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import React, {useEffect} from 'react';
+import {useDispatch} from 'react-redux';
 import jwtDecode from 'jwt-decode';
-import { logout } from './redux/features/userSlice';
+import {logout} from './redux/features/userSlice';
 import PrivateRoutes from './utils/PrivateRoutes';
 import Header from './components/Header/Header';
 import Home from './pages/Home/Home';
@@ -12,6 +12,7 @@ import Register from './pages/Register/Register';
 import ActivationAccount from './pages/ActivationAccount/ActivationAccount';
 import MyProfile from './pages/MyProfile/MyProfile';
 import NotFound from './pages/NotFound/NotFound';
+import ViewProduct from "./pages/ViewProduct/ViewProduct";
 
 function App() {
     const dispatch = useDispatch();
@@ -40,16 +41,17 @@ function App() {
 
     return (
         <BrowserRouter>
-            <Header />
+            <Header/>
             <Routes>
-                <Route element={<PrivateRoutes />}>
-                    <Route path="/profile" element={<MyProfile />} />
+                <Route element={<PrivateRoutes/>}>
+                    <Route path="/profile" element={<MyProfile/>}/>
                 </Route>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/activate" element={<ActivationAccount />} />
-                <Route path="*" element={<NotFound />} />
+                <Route path="/view" element={<ViewProduct/>}/>
+                <Route path="/" element={<Home/>}/>
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/register" element={<Register/>}/>
+                <Route path="/activate" element={<ActivationAccount/>}/>
+                <Route path="*" element={<NotFound/>}/>
             </Routes>
         </BrowserRouter>
     );

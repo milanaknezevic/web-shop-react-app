@@ -1,0 +1,63 @@
+.container {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    height: 100%;
+    background: #7439db;
+}
+
+.left {
+    background: #efe9e7;
+    padding: 20px;
+    width: 75%;
+}
+
+.right {
+    background: #9caf88;
+    padding: 20px;
+    width: 25%;
+}
+
+.productInfoContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.imageSliderContainer {
+
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+
+
+}
+
+.kontejner {
+    display: grid;
+    width: fit-content;
+    margin-left: 30%;
+
+}
+
+.priceStil {
+    font-weight: bold;
+    color: black;
+}
+
+.dividerX {
+    margin: 10px;
+}
+
+.insertKomentar {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+
+
+
+}

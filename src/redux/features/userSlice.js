@@ -2,8 +2,10 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import userService from "../../api/user.service";
 import authService from "../../api/auth.service";
 
-export const login = createAsyncThunk("users/login", async ({username, password}) => {
-    return await authService.login(username, password);
+export const login = createAsyncThunk("users/login", async ({korisnickoIme, lozinka}) => {
+
+    console.log("username " + korisnickoIme + " password " + lozinka)
+    return await authService.login(korisnickoIme, lozinka);
 });
 
 
