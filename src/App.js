@@ -46,7 +46,7 @@ function App() {
                 <Route element={<PrivateRoutes/>}>
                     <Route path="/profile" element={<MyProfile/>}/>
                 </Route>
-                <Route path="/view" element={<ViewProduct/>}/>
+                <Route path="/:id" element={<ViewProduct/>}/>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>

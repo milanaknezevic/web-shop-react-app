@@ -4,6 +4,8 @@ const token = sessionStorage.getItem('access');
 const authenticatedInstance = base.service(true);
 const unauthenticatedInstance = base.service();
 export const getProductByID = (id) => {
+    console.log("u servisuu " +id);
+
     return unauthenticatedInstance
         .get(`products/${id}`)
         .then((result) => result.data)

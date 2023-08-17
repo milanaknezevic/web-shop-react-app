@@ -3,8 +3,8 @@ import {Card} from 'antd';
 import classes from './Card.module.css';
 import {FaTrash} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteProduct} from "../../redux/features/productSlice";
-import {useNavigate} from "react-router-dom";
+import {deleteProduct, getProductByID} from "../../redux/features/productSlice";
+import {Link, useNavigate} from "react-router-dom";
 
 const {Meta} = Card;
 
@@ -23,10 +23,13 @@ const CardComponent = ({product, onSave}) => {
         }
     }
 
+    const productPath = `/${product.id}`;
+
     const handleCardClick = () => {
         setSelectedProduct(product);
         console.log("kliknula sam " + JSON.stringify(product));
-        navigate("/view", {state: {product: product}});
+        //dispatch(getProductByID({id:product.id}));
+        //navigate("/view");
 
     };
 
@@ -35,7 +38,7 @@ const CardComponent = ({product, onSave}) => {
         <div>
 
             {product.slikas.length > 0 && (
-                <a href="#" onClick={handleCardClick} className={classes.cardLink}>
+                <Link className={classes.cardLink} target="_blank"  to={productPath} >
                     <Card
                         hoverable
                         className={classes.card}
@@ -64,7 +67,7 @@ const CardComponent = ({product, onSave}) => {
                         </div>
 
                     </Card>
-                </a>
+                </Link>
 
 
             )}

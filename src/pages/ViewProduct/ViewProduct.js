@@ -1,18 +1,26 @@
 import React, {useEffect, useState} from 'react';
 import classes from './ViewProduct.module.css'
-import {useLocation} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import SimpleImageSlider from "react-simple-image-slider";
 import {Button, Divider, Form} from "antd";
 import TextArea from "antd/es/input/TextArea";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {List, Avatar, Typography} from 'antd';
+import {getProductByID} from "../../redux/features/productSlice";
+
+const {Text} = Typography;
 
 
 const ViewProduct = () => {
-    const location = useLocation();
-    const product = location.state && location.state.product;
-    const [proizvod, setProizvod] = useState(null);
+
+    const { id } = useParams();
+    const dispatch=useDispatch();
+    //const {oneProduct} = useSelector((state)=>state.products);
     const [showInsertCommentar, setShowInsertCommentar] = useState(false);
     const {authenticated, user} = useSelector((state) => state.users);
+    let product=null;
+    let sliderImages = null;
+
     useEffect(() => {
 
         if (authenticated === true) {
@@ -24,22 +32,32 @@ const ViewProduct = () => {
     }, [authenticated]);
 
     useEffect(() => {
-        if (product) {
-            setProizvod(product)
-        }
-        console.log("Proizvod " + JSON.stringify(proizvod))
+        const fetchData = async () => {
+            console.log("id koji sam uzela iz params " + id);
+            try {
+                const response = await dispatch(getProductByID({ id: id }));
+                product=response.payload;
+                console.log("proizvod"+ JSON.stringify(product));
 
-    }, [proizvod]);
+                if (product !== null) {
 
-    const sliderImages = [{
-        url: "https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8OXx8fGVufDB8fHx8fA%3D%3D&w=1000&q=80"
-    }, {
-        url: "https://img.taste.com.au/hWQLNVaJ/w720-h480-cfill-q80/taste/2021/08/clinkers-cake-173208-2.jpg",
-    }, {
-        url: "https://img.freepik.com/free-photo/celebration-birthday-cake-with-candle-generative-ai_188544-9596.jpg",
-    },
+                    sliderImages = product.slikas.map((slika) => ({
+                        url: slika.slikaProizvoda
+                    }));
+                    console.log("sliderImages"+ JSON.stringify(sliderImages));
 
-    ];
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+    }, [product]);
+
+
+
+
 
     function handleCLick() {
         console.log("kliknula")
@@ -47,13 +65,14 @@ const ViewProduct = () => {
 
     return (
         <div>
-            {proizvod && (
+            {product && (
+
                 <div className={classes.container}>
                     <div className={classes.left}>
                         <div className={classes.productInfoContainer}>
-                            <h3>
-                                {proizvod.naslov}
-                            </h3>
+                            <h1>
+                                {product.naslov}
+                            </h1>
 
                         </div>
                         <div className={classes.kontejner}>
@@ -66,72 +85,105 @@ const ViewProduct = () => {
                                     showNavs={true}
                                     showBullets
                                 />
-                                <p className={classes.priceStil}>Price: {proizvod.cijena}KM</p>
+                                <p className={classes.priceStil}>Price: {product.cijena}KM</p>
 
+
+                            </div>
+                        </div>
+                        <div className={classes.productInfoContainer}>
+                            <button style={{width:"fit-content"}}>Buy</button>
+
+                        </div>
+                        <div>
+                            <h2>All comments</h2>
+                            <div style={{background: 'white'}}>
+
+
+                                <List>
+                                    {product.komentars.map((komentar, index) => (
+                                        <div>
+                                            <List.Item key={index}>
+                                                <List.Item.Meta
+                                                    avatar={<Avatar
+                                                        src={require("../../assets/" +komentar.korisnik_komentar.avatar)}
+                                                        alt="John Doe"/>}
+                                                    title={<Text
+                                                        strong>{komentar.korisnik_komentar.korisnickoIme}</Text>}
+                                                    description={komentar.pitanje}
+                                                />
+                                            </List.Item>
+                                            <p><strong style={{color: 'green'}}>Answer:</strong> {komentar.odgovor}</p>
+                                            <hr style={{borderColor: '#9caf88'}}/>
+                                        </div>
+                                    ))}
+
+                                </List>
                             </div>
                         </div>
 
                     </div>
                     <div className={classes.right}>
-                        <div className={classes.insertKomentar}>
-                            <label>Add a new comment</label>
-                            <Form
-                                style={{width: '100%'}}
-                                layout="horizontal"
-                                onClick={event => event.stopPropagation()}
-                            >
-
-                                <Form.Item
-                                    name="message"
-                                    rules={[
-                                        {required: true, message: 'Please enter a message.'},
-                                        {max: 1024, message: 'Message must not exceed 1024 characters.'},
-                                    ]}
+                        {showInsertCommentar && (
+                            <div className={classes.insertKomentar}>
+                                <label>Add a new comment</label>
+                                <Form
+                                    style={{width: '100%'}}
+                                    layout="horizontal"
+                                    onClick={event => event.stopPropagation()}
                                 >
-                                    <TextArea
-                                        rows={4}
-                                        style={{
-                                            width: "100%",
-                                            maxWidth: "300px",
-                                            height: '150px',
-                                            resize: 'vertical',
-                                            marginLeft: '8%'
-                                        }}
-                                    />
-                                </Form.Item>
 
-                                <Form.Item wrapperCol={{offset: 8, span: 14}}>
-                                    <Button type="primary" style={{backgroundColor: '#2b2b49'}} htmlType="submit"
-                                            onClick={handleCLick}>
-                                        Send
-                                    </Button>
-                                </Form.Item>
+                                    <Form.Item
+                                        name="message"
+                                        rules={[
+                                            {required: true, message: 'Please enter a message.'},
+                                            {max: 1024, message: 'Message must not exceed 1024 characters.'},
+                                        ]}
+                                    >
+                                        <TextArea
+                                            rows={7}
+                                            style={{
+                                                width: "100%",
+                                                maxWidth: "400px",
+
+                                                resize: 'vertical',
+                                                marginLeft: '8%'
+                                            }}
+                                        />
+                                    </Form.Item>
+
+                                    <Form.Item wrapperCol={{offset: 8, span: 14}}>
+                                        <Button type="primary" style={{backgroundColor: '#2b2b49'}} htmlType="submit"
+                                                onClick={handleCLick}>
+                                            Send
+                                        </Button>
+                                    </Form.Item>
 
 
-                            </Form>
+                                </Form>
 
-                        </div>
+                            </div>
+                        )}
                         <div className={classes.dividerX}>
                             <p>
-                                <strong style={{color: 'black'}}>Location:</strong> {proizvod.lokacija}
+                                <strong style={{color: 'black'}}>Location:</strong> {product.lokacija}
                             </p>
                             <Divider style={{background: '#efe9e7'}}/>
                             <p>
-                                <strong style={{color: 'black'}}>Number:</strong> {proizvod.kontakt}
+                                <strong style={{color: 'black'}}>Number:</strong> {product.kontakt}
                             </p>
                             <Divider style={{background: '#efe9e7'}}/>
                             <p>
                                 <strong style={{color: 'black'}}>Product
-                                    condition:</strong> {proizvod.stanje ? 'Used' : 'New'}
+                                    condition:</strong> {product.stanje ? 'Used' : 'New'}
                             </p>
                             <Divider style={{background: '#efe9e7'}}/>
                             <p>
-                                <strong style={{color: 'black'}}>Publish date:</strong> {proizvod.datumKreiranja}
+                                <strong style={{color: 'black'}}>Publish date:</strong> {product.datumKreiranja}
                             </p>
                             <Divider style={{color: 'black', borderColor: '#efe9e7'}}
                                      orientation="left">Description</Divider>
                             <p>
-                                {proizvod.opis}
+                                {product.opis}
                             </p>
 
                         </div>
