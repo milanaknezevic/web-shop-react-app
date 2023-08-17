@@ -13,18 +13,17 @@ const {Text} = Typography;
 
 const ViewProduct = () => {
 
-    const { id } = useParams();
-    const dispatch=useDispatch();
-    //const {oneProduct} = useSelector((state)=>state.products);
+    const {id} = useParams();
+    const dispatch = useDispatch();
+    const {oneProduct} = useSelector((state) => state.products);
     const [showInsertCommentar, setShowInsertCommentar] = useState(false);
     const {authenticated, user} = useSelector((state) => state.users);
-    let product=null;
-    let sliderImages = null;
 
     useEffect(() => {
 
         if (authenticated === true) {
             setShowInsertCommentar(true);
+
         } else {
             setShowInsertCommentar(false);
         }
@@ -32,60 +31,41 @@ const ViewProduct = () => {
     }, [authenticated]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            console.log("id koji sam uzela iz params " + id);
-            try {
-                const response = await dispatch(getProductByID({ id: id }));
-                product=response.payload;
-                console.log("proizvod"+ JSON.stringify(product));
+        dispatch(getProductByID({ id: id }));
+    },[]);
 
-                if (product !== null) {
-
-                    sliderImages = product.slikas.map((slika) => ({
-                        url: slika.slikaProizvoda
-                    }));
-                    console.log("sliderImages"+ JSON.stringify(sliderImages));
-
-                }
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-
-        fetchData();
-    }, [product]);
-
-
-
-
+    // const sliderImages = oneProduct.slikas.map((slika) => ({
+    //     url: slika.slikaProizvoda
+    // }));
 
     function handleCLick() {
         console.log("kliknula")
     }
 
     return (
-        <div>
-            {product && (
+        <div >
+            {oneProduct && (
 
                 <div className={classes.container}>
                     <div className={classes.left}>
                         <div className={classes.productInfoContainer}>
                             <h1>
-                                {product.naslov}
+                                {oneProduct.naslov}
                             </h1>
 
                         </div>
                         <div className={classes.kontejner}>
                             <div className={classes.imageSliderContainer}>
                                 <SimpleImageSlider
-
                                     width="30%"
                                     height={300}
-                                    images={sliderImages}
+                                    images={oneProduct.slikas.map((slika) => ({
+                                        url: slika.slikaProizvoda
+                                    }))}
                                     showNavs={true}
                                     showBullets
                                 />
-                                <p className={classes.priceStil}>Price: {product.cijena}KM</p>
+                                <p className={classes.priceStil}>Price: {oneProduct.cijena}KM</p>
 
 
                             </div>
@@ -100,7 +80,7 @@ const ViewProduct = () => {
 
 
                                 <List>
-                                    {product.komentars.map((komentar, index) => (
+                                    {oneProduct.komentars.map((komentar, index) => (
                                         <div>
                                             <List.Item key={index}>
                                                 <List.Item.Meta
@@ -165,25 +145,25 @@ const ViewProduct = () => {
                         )}
                         <div className={classes.dividerX}>
                             <p>
-                                <strong style={{color: 'black'}}>Location:</strong> {product.lokacija}
+                                <strong style={{color: 'black'}}>Location:</strong> {oneProduct.lokacija}
                             </p>
                             <Divider style={{background: '#efe9e7'}}/>
                             <p>
-                                <strong style={{color: 'black'}}>Number:</strong> {product.kontakt}
+                                <strong style={{color: 'black'}}>Number:</strong> {oneProduct.kontakt}
                             </p>
                             <Divider style={{background: '#efe9e7'}}/>
                             <p>
                                 <strong style={{color: 'black'}}>Product
-                                    condition:</strong> {product.stanje ? 'Used' : 'New'}
+                                    condition:</strong> {oneProduct.stanje ? 'Used' : 'New'}
                             </p>
                             <Divider style={{background: '#efe9e7'}}/>
                             <p>
-                                <strong style={{color: 'black'}}>Publish date:</strong> {product.datumKreiranja}
+                                <strong style={{color: 'black'}}>Publish date:</strong> {oneProduct.datumKreiranja}
                             </p>
                             <Divider style={{color: 'black', borderColor: '#efe9e7'}}
                                      orientation="left">Description</Divider>
                             <p>
-                                {product.opis}
+                                {oneProduct.opis}
                             </p>
 
                         </div>
