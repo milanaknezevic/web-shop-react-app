@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {NavLink} from "react-router-dom";
 import styles from "./NavComponent.module.css";
 import {useSelector} from "react-redux";
-import userImage from '../../assets/logo.png';
 import Meni from "../Meni/Meni";
 
 export const NavComponent = () => {
@@ -22,7 +21,8 @@ export const NavComponent = () => {
                         <>
                             <p className={styles.poruka}>Hello, {user.ime}</p>
                             <div className={styles.userImageContainer}>
-                                <img className={styles.userImage} src={userImage} alt="User"/>
+                                <img className={styles.userImage} src={require("../../assets/" + user.avatar)}
+                                     alt="User"/>
                             </div>
                         </>
                     ) : null}

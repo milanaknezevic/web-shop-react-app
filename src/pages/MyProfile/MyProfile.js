@@ -140,7 +140,7 @@ const MyProfile = () => {
     }, [dispatch2]);
     useEffect(() => {
         fetchData1();
-    }, [current, finished, dispatch1,refreshKey]);
+    }, [current, finished, dispatch1, refreshKey]);
 
     useEffect(() => {
         setAuth(authenticated);
@@ -182,7 +182,7 @@ const MyProfile = () => {
             {user ? (
                 <div className={classes.zaLijevo}>
                     <div className={classes.userImageContainer}>
-                        <img className={classes.userImage} src={userImage} alt="User"/>
+                        <img className={classes.userImage} src={require("../../assets/" + user.avatar)} alt="User"/>
                     </div>
                     <p className={classes.ime}>{user.ime} {user.prezime}</p>
                     <div className={classes.buttonContainer}>

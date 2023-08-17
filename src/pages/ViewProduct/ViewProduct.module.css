@@ -3,7 +3,7 @@
     flex-wrap: nowrap;
     justify-content: space-between;
     height: 100%;
-    background: #7439db;
+
 }
 
 .left {
@@ -16,6 +16,17 @@
     background: #9caf88;
     padding: 20px;
     width: 30%;
+}
+.replyDugme{
+   font-weight:bold;
+    background:#2b2b49;
+    color:white;
+    height: fit-content;
+    width: fit-content;
+
+}
+.replyDugme:hover{
+    color:blue;
 }
 
 .productInfoContainer {
@@ -60,3 +71,11 @@
 
 }
 
+.sendReply {
+    display: flex;
+    justify-content: left;
+    align-items: flex-start;
+    width: 100%;
+    flex-direction: column;
+
+}
