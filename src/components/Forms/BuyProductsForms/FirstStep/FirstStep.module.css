@@ -1,0 +1,36 @@
+.container {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    height: 100%;
+}
+
+
+.left {
+    padding: 20px;
+    width: 50%;
+
+}
+.dugmeKupi{
+    margin-left: 60%;
+    margin-top: 40%;
+    width: fit-content;
+    height: fit-content;
+}
+.right {
+    padding: 20px;
+    width: 50%;
+}
+.imageContainer {
+    width: 100%;
+    padding-bottom: 100%; /* Omogućava omjer stranica 1:1 */
+    position: relative;
+    overflow: hidden;
+}
+
+.image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Slika će biti skalirana i obrezana da stane unutar kontejnera */
+}

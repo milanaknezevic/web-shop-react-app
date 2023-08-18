@@ -6,6 +6,7 @@ import {useDispatch} from 'react-redux';
 import {useNavigate} from "react-router-dom";
 import {logout} from '../../redux/features/userSlice';
 import CustomerSupport from "../../pages/CustomerSupport/CustomerSupport";
+import InsertProduct from "../../pages/InsertProduct/InsertProduct";
 
 const items = [
     {
@@ -34,11 +35,14 @@ const Meni = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [customSupportModal, setCustomSupportModal] = useState(false);
+    const [newOfferModal, setNewOfferModal] = useState(false);
     const onClick = ({key}) => {
         if (key === '1') {
-           // console.log("bzvzvzvz");
-            //message.info(`Click on item ${key}`);
             navigate('/profile');
+
+        } else if (key === '2') {
+
+            setNewOfferModal(true);
 
         } else if (key === '3') {
 
@@ -60,7 +64,9 @@ const Meni = () => {
         setCustomSupportModal(false);
     };
 
-
+    const handleCloseNewOfferModal = () => {
+        setNewOfferModal(false);
+    };
     return (
         <div>
             <Dropdown menu={{items, onClick}}>
@@ -69,6 +75,8 @@ const Meni = () => {
                 </a>
             </Dropdown>
             {customSupportModal && <CustomerSupport show={customSupportModal} onClose={handleCloseSupportModal}/>}
+            {newOfferModal && <InsertProduct show={newOfferModal} onClose={handleCloseNewOfferModal}/>}
+
         </div>
     );
 };

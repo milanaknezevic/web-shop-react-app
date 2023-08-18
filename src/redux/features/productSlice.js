@@ -71,7 +71,7 @@ export const sendQuestion = createAsyncThunk("sendQuestion/", async ({
 export const sendAnswer = createAsyncThunk("sendAnswer/", async ({
                                                                      id, answerData
                                                                  }, {rejectWithValue}) => {
-   console.log("redux id " + id + " answerdata " + answerData);
+   console.log("redux id " + id + " answerdata " + JSON.stringify(answerData));
     try {
         return await productService.sendAnswer(id, answerData);
     } catch (err) {

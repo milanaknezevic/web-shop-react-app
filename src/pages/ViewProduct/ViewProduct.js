@@ -2,17 +2,20 @@ import React, {useEffect, useRef, useState} from 'react';
 import classes from './ViewProduct.module.css'
 import {useParams} from "react-router-dom";
 import SimpleImageSlider from "react-simple-image-slider";
-import {Button, Divider, Form} from "antd";
-import TextArea from "antd/es/input/TextArea";
+import {Avatar, Divider, List, Typography} from "antd";
 import {useDispatch, useSelector} from "react-redux";
-import {List, Avatar, Typography} from 'antd';
-import {getProductByID} from "../../redux/features/productSlice";
-import {sendQuestion,sendAnswer} from "../../redux/features/productSlice";
+import {getProductByID, sendAnswer, sendQuestion} from "../../redux/features/productSlice";
+import BuyProduct from "../BuyProduct/BuyProduct";
+import FirstForm from "../../components/Forms/ViewProductsForms/Form1/FirstForm";
+import SecondForm from "../../components/Forms/ViewProductsForms/Form2/SecondForm";
 
 const {Text} = Typography;
 
 
 const ViewProduct = () => {
+    const [contentHeight, setContentHeight] = useState('calc(100vh - 71px)');
+
+    const [buyModal, setBuyModall] = useState(false);
     const [refreshKey, setRefreshKey] = useState(0);
     const {id} = useParams();
     const dispatch = useDispatch();
@@ -42,13 +45,7 @@ const ViewProduct = () => {
     useEffect(() => {
         dispatch(getProductByID({id: id}));
     }, [refreshKey]);
-    /* useEffect(() => {
-         dispatch(getProductByID({id: id}));
-     }, [refreshKey]);
- */
-    // const sliderImages = oneProduct.slikas.map((slika) => ({
-    //     url: slika.slikaProizvoda
-    // }));
+
 
     const handleClick = (e) => {
         e.stopPropagation();
@@ -56,8 +53,8 @@ const ViewProduct = () => {
     const handleClickReply = (e) => {
         e.stopPropagation();
     };
-    const handleFormReply=async (values)=>{
-        console.log("values " + JSON.stringify(values));
+    const handleFormReply = async (values, idKomentara) => {
+        console.log("handle form reply " + JSON.stringify(values));
 
         try {
             console.log("values " + JSON.stringify(values));
@@ -65,8 +62,8 @@ const ViewProduct = () => {
             const answerData = {
                 odgovor: values.replyComm,
             };
-            console.log("questionData " + JSON.stringify(answerData) + " id " + oneProduct.id);
-            const response = await dispatch(sendAnswer({id: oneProduct.id, answerData: answerData}));
+            console.log("questionData " + JSON.stringify(answerData) + " id " + idKomentara);
+            const response = await dispatch(sendAnswer({id: idKomentara, answerData: answerData}));
             console.log("response " + JSON.stringify(response));
         } catch (error) {
             setShowErrorMessage(true);
@@ -122,9 +119,20 @@ const ViewProduct = () => {
 
 
     };
+    const handleBuyOpen = () => {
+        console.log("otvori modal " + buyModal);
+        setBuyModall(true);
+        console.log("modal otvoren" + buyModal);
+    };
+    const handleBuyClose = () => {
+        setBuyModall(false);
+        setRefreshKey((prevKey) => prevKey + 1);
+
+        console.log("modal otvoren" + buyModal);
+    };
 
     return (
-        <div>
+        <div style={{height: contentHeight}}>
             {oneProduct && (
 
                 <div className={classes.container}>
@@ -133,8 +141,8 @@ const ViewProduct = () => {
                             <h1>
                                 {oneProduct.naslov}
                             </h1>
-
                         </div>
+
                         <div className={classes.kontejner}>
                             <div className={classes.imageSliderContainer}>
                                 <SimpleImageSlider
@@ -151,13 +159,17 @@ const ViewProduct = () => {
 
                             </div>
                         </div>
-                        <div className={classes.productInfoContainer}>
-                            <button style={{width: "fit-content"}}>Buy</button>
+                        {showInsertCommentar && oneProduct.zavrsenaPonuda === 0 && (
+                            <div className={classes.productInfoContainer}>
+                                <button onClick={handleBuyOpen} style={{width: "fit-content"}}>
+                                    Buy
+                                </button>
 
-                        </div>
+                            </div>
+                        )}
                         <div>
                             <h2>All comments</h2>
-                            <div >
+                            <div>
 
                                 <List>
                                     {oneProduct.komentars.length === 0 ? (
@@ -178,54 +190,19 @@ const ViewProduct = () => {
                                                 {komentar.odgovor !== null &&
                                                     (
                                                         <p><strong
-                                                            style={{color: 'green'}}>Answer:</strong> {komentar.odgovor}</p>
+                                                            style={{color: 'green'}}>Answer:</strong> {komentar.odgovor}
+                                                        </p>
                                                     )}
                                                 {showInsertCommentar && user.id === komentar.korisnik_komentar.id && komentar.odgovor === null &&
                                                     (<div className={classes.sendReply}>
-                                                            <Form
-                                                                ref={formRefReply}
-                                                                style={{width: '100%'}}
-                                                                layout="horizontal"
-                                                                onFinish={handleFormReply}
-                                                                onClick={event => event.stopPropagation()}>
-                                                                {showErrorMessage && (
-                                                                    <p style={{
-                                                                        color: "darkred",
-                                                                        fontSize: '0.75rem',
-                                                                        textAlign: 'center',
-                                                                        fontWeight: 'bold'
-                                                                    }}>{errorMessage}</p>
-
-                                                                )}
-
-                                                                <Form.Item name="replyComm" rules={[{
-                                                                    required: true,
-                                                                    message: 'Please enter a reply.'
-                                                                }, {
-                                                                    max: 255,
-                                                                    message: 'Message must not exceed 255 characters.'
-                                                                },]}>
-                                                                    <TextArea
-                                                                        rows={2}
-                                                                        style={{
-                                                                            width: "100%",
-                                                                            maxWidth: "400px",
-                                                                            resize: 'vertical',
-                                                                        }}
-                                                                    />
-                                                                </Form.Item>
-                                                                <Form.Item>
-                                                                    <Button type="primary" style={{
-                                                                        backgroundColor: '#2b2b49',
-                                                                        width: 'fit-content'
-                                                                    }} htmlType="submit"
-                                                                            disabled={isDisabled}
-                                                                            onClick={handleClickReply}>
-                                                                        Reply
-                                                                    </Button>
-                                                                </Form.Item>
-
-                                                            </Form>
+                                                            <FirstForm formRefReply={formRefReply}
+                                                                       showErrorMessage={showErrorMessage}
+                                                                       errorMessage={errorMessage}
+                                                                       isDisabled={isDisabled}
+                                                                       handleClickReply={handleClickReply}
+                                                                       idKomentara={komentar.id}
+                                                                       handleFormReply={handleFormReply}
+                                                            />
                                                         </div>
                                                     )
                                                 }
@@ -244,58 +221,15 @@ const ViewProduct = () => {
                         {showInsertCommentar && oneProduct.prodavac.id !== user.id && (
                             <div className={classes.insertKomentar}>
                                 <label style={{color: 'black'}}>Add a new comment</label>
-                                <Form
-                                    ref={formRef}
-                                    style={{width: '100%'}}
-                                    layout="horizontal"
-                                    onFinish={handleFormSubmit}
-                                    onClick={event => event.stopPropagation()}
-                                >
-                                    {showSuccesMessage && (
-                                        <p style={{
-                                            color: "darkgreen",
-                                            fontSize: '0.75rem',
-                                            textAlign: 'center',
-                                            fontWeight: 'bold'
-                                        }}>{succesMessage}</p>
-                                    )}
-                                    {showErrorMessage && (
-                                        <p style={{
-                                            color: "darkred",
-                                            fontSize: '0.75rem',
-                                            textAlign: 'center',
-                                            fontWeight: 'bold'
-                                        }}>{errorMessage}</p>
-
-                                    )}
-                                    <Form.Item
-                                        name="message"
-                                        rules={[
-                                            {required: true, message: 'Please enter a message.'},
-                                            {max: 1024, message: 'Message must not exceed 1024 characters.'},
-                                        ]}
-                                    >
-                                        <TextArea
-                                            rows={7}
-                                            style={{
-                                                width: "100%",
-                                                maxWidth: "400px",
-
-                                                resize: 'vertical',
-                                                marginLeft: '8%'
-                                            }}
-                                        />
-                                    </Form.Item>
-
-                                    <Form.Item wrapperCol={{offset: 8, span: 14}}>
-                                        <Button type="primary" style={{backgroundColor: '#2b2b49'}} htmlType="submit"
-                                                disabled={isDisabled} onClick={handleClick}>
-                                            Send
-                                        </Button>
-                                    </Form.Item>
-
-
-                                </Form>
+                                <SecondForm formRef={formRef}
+                                            handleFormSubmit={handleFormSubmit}
+                                            showSuccesMessage={showSuccesMessage}
+                                            succesMessage={succesMessage}
+                                            showErrorMessage={showErrorMessage}
+                                            errorMessage={errorMessage}
+                                            isDisabled={isDisabled}
+                                            handleClick={handleClick}
+                                />
 
                             </div>
                         )}
@@ -327,8 +261,8 @@ const ViewProduct = () => {
                     </div>
                 </div>
             )}
+            {buyModal && <BuyProduct show={buyModal} onClose={handleBuyClose} product={oneProduct}/>}
         </div>
     );
 };
-
 export default ViewProduct;

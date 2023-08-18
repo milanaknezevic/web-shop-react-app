@@ -1,39 +1,19 @@
 import * as yup from "yup";
 
-const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
 
-export const changePasswordSchema = yup.object().shape({
-    lozinka: yup
+export const buyProductByCash = yup.object().shape({
+    adresa: yup
         .string()
-        .min(8)
-        .matches(passwordRules, { message: "Please create a stronger password" })
-        .required("Required"),
-    confirmPassword: yup
-        .string()
-        .oneOf([yup.ref("lozinka"), null], "Passwords must match")
+        .min(5, "Address must be at least 5 characters long")
         .required("Required"),
 });
-export const formaSchemaTMP = yup.object().shape({
-    password: yup
+export const buyProductByCard = yup.object().shape({
+    kartica: yup
         .string()
-        .min(8)
-        .matches(passwordRules, { message: "Please create a stronger password" })
-        .required("Required"),
-    confirmPassword: yup
-        .string()
-        .oneOf([yup.ref("password"), null], "Passwords must match")
+        .length(16, "Address must be exactly 16 characters long")
+        .test('is-16-digits', 'Address must be exactly 16 digits', value => /^\d{16}$/.test(value))
         .required("Required"),
 });
-export const formaSchema = yup.object().shape({
-    username: yup
-        .string()
-        .min(3, "Username must be at least 3 characters long")
-        .required("Required"),
-    password: yup
-        .string()
-        .required("Required"),
-});
-
 
 export const editSchema = yup.object().shape({
     ime: yup
@@ -43,10 +23,6 @@ export const editSchema = yup.object().shape({
     prezime: yup
         .string()
         .min(3, "Last name must be at least 3 characters long")
-        .required("Required"),
-    korisnickoIme: yup
-        .string()
-        .min(5, "Username must be at least 5 characters long")
         .required("Required"),
     email: yup
         .string()
