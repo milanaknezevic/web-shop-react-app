@@ -16,7 +16,7 @@ const FirstForm = ({onFinish, initialValues}) => {
             initialValues={initialValues}
             labelCol={{span: 6}}
             wrapperCol={{span: 14}}
-            style={{maxWidth: 500}}
+            style={{maxWidth: 600}}
             layout="horizontal"
             onFinish={onFinish}
             onClick={event => event.stopPropagation()}
@@ -49,11 +49,11 @@ const FirstForm = ({onFinish, initialValues}) => {
             <Form.Item wrapperCol={{offset: 2, span: 15}} label="Contact" name="kontakt" rules={[
                 {required: true, message: 'Please enter a contact number.'},
                 {
-                    pattern: /^(\+\d{1,3})?[\s.-]?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{3}$/,
+                    pattern: /^(\+\d{1,3})?[\s.-]?\(?\d{3}\)?[\s./]?\d{3}[\s.-]?\d{3}$/,
                     message: 'Please enter a valid phone number.'
                 }
             ]}>
-                <Input placeholder="+1 123-456-789"/>
+                <Input placeholder="+0 065/123-456"/>
             </Form.Item>
             <Form.Item wrapperCol={{offset: 2, span: 15}} label="Description" name="opis" rules={[
                 {required: true, message: 'Please enter a description.'},

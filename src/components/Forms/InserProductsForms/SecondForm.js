@@ -26,7 +26,7 @@ const SecondForm = ({onFinish, initialValues}) => {
             wrapperCol={{span: 14}}
             layout="horizontal"
             onFinish={onFinish}
-            style={{maxWidth: 500}}
+            style={{maxWidth: 600}}
             onClick={event => event.stopPropagation()}
         >
             <br/>

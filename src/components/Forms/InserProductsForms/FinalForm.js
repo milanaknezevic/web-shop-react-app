@@ -1,26 +1,27 @@
 import {Button, Form} from "antd";
+import classes from "../BuyProductsForms/ThirdStep/ThirdStep.module.css";
+import React from "react";
 
 
 const FinalForm = ({onFinish,isDisabled}) =>
 {
 
     return (
-        <Form
-            onFinish={onFinish}
-            style={{
-                maxWidth: 600,
-            }}
-            autoComplete="off"
-        >
-            <br/>
-            <h1>You have filled in all the information.</h1>
-            <h2>Click on finished to finish adding the product.</h2>
-            <Form.Item wrapperCol={{offset: 18, span: 14}}>
-                <Button disabled={isDisabled} type="primary" htmlType="submit">
-                    Finished
-                </Button>
-            </Form.Item>
-        </Form>
+        <div className={classes.container}>
+            <h4 style={{textAlign: 'center'}}>This is the final step.</h4>
+
+            <p style={{textAlign: 'center'}}>Please confirm your inputs.</p>
+            <div style={{textAlign: "center"}}>
+                <button
+                    style={{width: "fit-content",height:'fit-content'}}
+                    type="submit"
+                    onClick={onFinish}
+                    disabled={isDisabled}
+                >
+                    Confirm
+                </button>
+            </div>
+        </div>
     )
 }
 

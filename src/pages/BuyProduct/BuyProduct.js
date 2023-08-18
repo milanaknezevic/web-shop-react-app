@@ -25,14 +25,12 @@ const BuyProduct = ({show, onClose, product}) => {
         setCurrentPage(1);
     }
     const onFinishedSecondStep = (values) => {
-        console.log("secend zavrsen " + JSON.stringify(values))
+        console.log("second zavrsen " + JSON.stringify(values))
         setSecondStepDetails(values);
         setCurrentPage(2);
     }
     const onFinishedThirdStep = (values) => {
         setIsDisabled(true)
-
-
         dispatch(purchaseProduct({id: product.id}));
         setTimeout(() => {
             setIsDisabled(false);
@@ -45,13 +43,10 @@ const BuyProduct = ({show, onClose, product}) => {
             return false;
         }
         if (number === 1) {
-            return generalDetails === null;
+            return Object.keys(generalDetails).length === 0;
         }
         if (number === 2) {
-            return (
-                Object.keys(generalDetails).length === 0 ||
-                Object.keys(secondStepDetails).length === 0
-            );
+            return generalDetails === null || Object.keys(secondStepDetails).length === 0;
         }
 
     }

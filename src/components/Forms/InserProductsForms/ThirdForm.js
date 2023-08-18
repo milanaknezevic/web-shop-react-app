@@ -20,7 +20,7 @@ const ThirdForm = ({ onFinish, categoryId, initialValues }) => {
             wrapperCol={{ span: 14 }}
             layout="horizontal"
             onFinish={onFinish}
-            style={{ maxWidth: 500,marginTop:'10%' }}
+            style={{ maxWidth: 600,marginTop:'10%' }}
             onClick={(event) => event.stopPropagation()}
         >
             {oneCategory !== null && oneCategory.atribut.map((a) => (

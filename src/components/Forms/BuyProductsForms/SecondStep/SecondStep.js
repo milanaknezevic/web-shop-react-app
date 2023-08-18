@@ -1,16 +1,30 @@
-import React, {useState} from 'react';
-import {Radio} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Button, Form, Input, Radio} from 'antd';
 import classes from './SecondStep.module.css'
-import {ErrorMessage, Field, Form, Formik} from "formik";
-import {buyProductByCash,buyProductByCard} from "../../../../schemas";
+import {buyProductByCash, buyProductByCard} from "../../../../schemas";
 
 
-const SecondStep = ({onFinish}) => {
+const SecondStep = ({onFinish, initialValues}) => {
     const [value, setValue] = useState(1);
     const onChange = (e) => {
         console.log('radio checked', e.target.value);
         setValue(e.target.value);
     };
+    useEffect(() => {
+        console.log('SecondStep initialValues'+JSON.stringify(initialValues));
+        if (initialValues.hasOwnProperty("kartica")) {
+            setValue(2);
+            console.log('U initialValues je kartica');
+
+        } else if (initialValues.hasOwnProperty("adresa")) {
+            setValue(1);
+            console.log('U initialValues je adresa');
+
+        } else {
+
+        }
+
+    }, []);
 
     return (
         <div className={classes.container}>
@@ -19,83 +33,59 @@ const SecondStep = ({onFinish}) => {
                 <Radio value={1}>Cash on delivery</Radio>
                 <Radio value={2}>By credit/debit card</Radio>
             </Radio.Group>
-            <div style={{ margin: '2%'}}>
-                { value===1 && (
-                    <Formik
-                        initialValues={{
-                            adresa: ""
-                        }}
-                        validationSchema={buyProductByCash}
-                        onSubmit={onFinish}
+            <div style={{margin: '2%'}}>
+                {value === 1 && (
+                    <Form
+                        initialValues={initialValues}
+                        labelCol={{span: 6}}
+                        wrapperCol={{span: 14}}
+                        style={{maxWidth: 500}}
+                        layout="horizontal"
+                        onFinish={onFinish}
+                        onClick={event => event.stopPropagation()}
                     >
-                        {({errors, isSubmitting, touched, handleBlur}) => (
 
-                            <Form>
+                        <Form.Item wrapperCol={{offset: 2, span: 15}} label="Address" name="adresa" rules={[
+                            {required: true, message: 'Please enter a name.'},
+                        ]}>
+                            <Input/>
+                        </Form.Item>
+                        <Form.Item wrapperCol={{offset: 18, span: 15}}>
+                            <Button style={{width: "fit-content", height: 'fit-content', background: " #2b2b49"}}
+                                    type="primary"
+                                    htmlType="submit">
+                                Continue
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                )}
 
-                                <label htmlFor="name">Address:</label>
-                                <Field
-                                    type="text"
-                                    id="adresa"
-                                    name="adresa"
-                                    placeholder='Address'
-                                    className={errors.adresa && touched.adresa ? classes.inputError : ""}
-                                    onBlur={handleBlur}
-                                />
-                                {touched.adresa && errors.adresa && (
-                                    <ErrorMessage name="adresa" component="div" className={classes.error}/>)}
 
-
-                                <div style={{textAlign: "center"}}>
-                                    <button
-                                        style={{width: "fit-content",height:'fit-content'}}
-                                        type="submit"
-                                        disabled={isSubmitting}
-                                    >
-                                        Continue
-                                    </button>
-                                </div>
-
-                            </Form>)}
-                    </Formik>
-                ) }
-                { value===2 && (
-                    <Formik
-                        initialValues={{
-                            kartica:""
-                        }}
-                        validationSchema={buyProductByCard}
-                        onSubmit={onFinish}
+                {value === 2 && (
+                    <Form
+                        initialValues={initialValues}
+                        labelCol={{span: 6}}
+                        wrapperCol={{span: 14}}
+                        style={{maxWidth: 500}}
+                        layout="horizontal"
+                        onFinish={onFinish}
+                        onClick={event => event.stopPropagation()}
                     >
-                        {({errors, isSubmitting, touched, handleBlur}) => (
 
-                            <Form>
-
-                                <label htmlFor="name">Card numbers:</label>
-                                <Field
-                                    type="text"
-                                    id="kartica"
-                                    name="kartica"
-                                    placeholder='Card numbers'
-                                    className={errors.kartica && touched.kartica ? classes.inputError : ""}
-                                    onBlur={handleBlur}
-                                />
-                                {touched.kartica && errors.kartica && (
-                                    <ErrorMessage name="kartica" component="div" className={classes.error}/>)}
-
-
-                                <div style={{textAlign: "center"}}>
-                                    <button
-                                        style={{width: "fit-content",height:'fit-content'}}
-                                        type="submit"
-                                        disabled={isSubmitting}
-                                    >
-                                        Continue
-                                    </button>
-                                </div>
-
-                            </Form>)}
-                    </Formik>
-                ) }
+                        <Form.Item wrapperCol={{offset: 2, span: 15}} label="Card number" name="kartica" rules={[
+                            {required: true, message: 'Please enter a card number.'},
+                        ]}>
+                            <Input/>
+                        </Form.Item>
+                        <Form.Item wrapperCol={{offset: 18, span: 15}}>
+                            <Button style={{width: "fit-content", height: 'fit-content', background: " #2b2b49"}}
+                                    type="primary"
+                                    htmlType="submit">
+                                Continue
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                )}
             </div>
 
 

@@ -17,7 +17,7 @@ const ThirdStep = ({onFinish,isDisabled}) => {
                     onClick={onFinish}
                     disabled={isDisabled}
                 >
-                    Continue
+                    Confirm
                 </button>
             </div>
         </div>
