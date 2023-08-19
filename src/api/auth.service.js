@@ -15,10 +15,28 @@ export const login = (korisnickoIme, lozinka) => {
         .catch((err) => Promise.reject(err.response.status));
 }
 
+
 export const insertImage = (imageData) => {
-    const file = imageData.get("file");
+    console.log("image data service " + imageData);
+   const file = imageData.get("file");
     return instance
         .post('insertImage', {file}, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        .then((results) => results);
+}
+export const insertImages = (imageData) => {
+    console.log("imageData u servisu " + imageData);
+
+    const formData = new FormData();
+    imageData.forEach(file => {
+        formData.append("files", file);
+    });
+    console.log("formData u servisu " + formData);
+    return instance
+        .post('insertImages', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },

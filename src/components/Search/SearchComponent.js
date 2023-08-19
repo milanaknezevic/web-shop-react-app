@@ -9,7 +9,7 @@ const SearchBar = (props) => {
     return (
         <div className={classes.center}>
             <div className={classes.centerSpace}>
-                <Space direction="vertical" style={{width: "40%", margin: '2px'}}>
+                <Space direction="vertical" style={{width: "40%"}}>
                     <Search
                         allowClear
                         placeholder="Search..."

@@ -31,7 +31,6 @@ const MyProfile = () => {
     const dispatch2 = useDispatch();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const userImage = require('../../assets/fdaab290-208f-4412-a512-0291bccecead_IMG_0652.JPG');
     const [isLoading, setIsLoading] = useState(true); // Dodato stanje za praćenje učitavanja
 
 
@@ -182,7 +181,7 @@ const MyProfile = () => {
             {user ? (
                 <div className={classes.zaLijevo}>
                     <div className={classes.userImageContainer}>
-                        <img className={classes.userImage} src={require("../../assets/" + user.avatar)} alt="User"/>
+                        <img className={classes.userImage} src={require("../../assets/users/" + user.avatar)} alt="User"/>
                     </div>
                     <p className={classes.ime}>{user.ime} {user.prezime}</p>
                     <div className={classes.buttonContainer}>

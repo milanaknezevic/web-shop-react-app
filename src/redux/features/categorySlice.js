@@ -18,6 +18,9 @@ export const getCategory = createAsyncThunk("categories/getCategory", async ({id
         return rejectWithValue("There is some problem with getting data. Please try later.");
     }
 });
+const remove = (state) => {
+    state.oneCategory=null;
+}
 
 const categorySlice = createSlice({
     name: 'categories',
@@ -25,7 +28,9 @@ const categorySlice = createSlice({
         oneCategory: null,
         categories: [],
     },
-    reducers: [],
+    reducers: {
+        removeCategory:remove
+    },
     extraReducers: {
         [getCategories.fulfilled]: (state, action) => {
             state.loading = false;
@@ -50,5 +55,6 @@ const categorySlice = createSlice({
         }
     }
 });
+export const {removeCategory} = categorySlice.actions;
 
 export default categorySlice.reducer;

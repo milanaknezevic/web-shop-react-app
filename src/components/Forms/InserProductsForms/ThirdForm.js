@@ -8,8 +8,9 @@ const ThirdForm = ({ onFinish, categoryId, initialValues }) => {
 
     const {oneCategory} = useSelector((state) => state.categories);
     useEffect(() => {
+        console.log("categoryId " + categoryId)
         if(categoryId !== null) {
-            dispatch(getCategory({id: categoryId}));
+           // dispatch(getCategory({id: categoryId}));
         }
     }, [categoryId]);
 

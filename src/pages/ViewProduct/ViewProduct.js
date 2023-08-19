@@ -29,6 +29,7 @@ const ViewProduct = () => {
     const [succesMessage, setsuccesMessage] = useState("");
     const formRef = useRef(null);
     const formRefReply = useRef(null);
+    const imageBaseUrl = "../../assets/products/";
 
 
     useEffect(() => {
@@ -149,7 +150,7 @@ const ViewProduct = () => {
                                     width="30%"
                                     height={300}
                                     images={oneProduct.slikas.map((slika) => ({
-                                        url: slika.slikaProizvoda
+                                        url: require("../../assets/products/" + slika.slikaProizvoda)
                                     }))}
                                     showNavs={true}
                                     showBullets
@@ -180,7 +181,7 @@ const ViewProduct = () => {
                                                 <List.Item key={index}>
                                                     <List.Item.Meta
                                                         avatar={<Avatar
-                                                            src={require("../../assets/" + komentar.korisnik_komentar.avatar)}
+                                                            src={require("../../assets/users/" + komentar.korisnik_komentar.avatar)}
                                                             alt="Image"/>}
                                                         title={<Text
                                                             strong>{komentar.korisnik_komentar.korisnickoIme}</Text>}

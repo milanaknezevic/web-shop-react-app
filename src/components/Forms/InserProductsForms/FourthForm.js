@@ -11,6 +11,7 @@ const FourthForm = ({onFinish}) => {
         const newImages = [...selectedImages];
         newImages[index] = event.target.files[0];
         setSelectedImages(newImages);
+        console.log("u funkciji handleImageChange " + newImages);
     };
 
     const handleRemoveImage = (index) => {
@@ -19,7 +20,8 @@ const FourthForm = ({onFinish}) => {
         setSelectedImages(newImages);
     };
     const handleSubmit = (values) => {
-        console.log("u funkciji submit sam");
+        console.log("u funkciji submit sam " + selectedImages);
+
         onFinish({...values, images: selectedImages});
     };
 

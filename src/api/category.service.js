@@ -3,7 +3,7 @@ import base from "./base.service"
 const instance = base.service();
 export const getAllCategories = () => {
     return instance
-        .get('categories/')
+        .get('categories')
         .then((results) => {
             return results.data;
         })

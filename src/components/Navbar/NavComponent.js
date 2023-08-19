@@ -21,7 +21,7 @@ export const NavComponent = () => {
                         <>
                             <p className={styles.poruka}>Hello, {user.ime}</p>
                             <div className={styles.userImageContainer}>
-                                <img className={styles.userImage} src={require("../../assets/" + user.avatar)}
+                                <img className={styles.userImage} src={require("../../assets/users/" + user.avatar)}
                                      alt="User"/>
                             </div>
                         </>

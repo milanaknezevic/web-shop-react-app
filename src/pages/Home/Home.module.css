@@ -12,7 +12,7 @@
 }
 
 .left {
-    background: #cecccc;
+    background: #9caf88;
     padding: 20px;
     width: 15%;
 }
@@ -21,4 +21,30 @@
     background: yellow;
     padding: 20px;
     width: 85%;
+}
+.dugme{
+    width: 50%;
+    background: #2b2b49;
+}
+.footerStyle{
+height: fit-content;
+    color: #fff;
+    background-color: #2b2b49
+}
+
+.paragraphContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.centeredParagraph {
+    text-align: center;
+
+}
+
+.rightAlignedParagraph {
+    text-align: right;
+
 }

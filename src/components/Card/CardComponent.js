@@ -37,7 +37,7 @@ const CardComponent = ({product, onSave}) => {
     return (
         <div>
 
-            {product.slikas.length > 0 && (
+            {product && product.slikas.length > 0 && (
                 <Link className={classes.cardLink} to={productPath} >
                     <Card
                         hoverable
@@ -46,7 +46,7 @@ const CardComponent = ({product, onSave}) => {
                             <div className={classes.imageContainer}>
                                 <img
                                     alt="example"
-                                    src={product.slikas[0].slikaProizvoda}
+                                    src={require("../../assets/products/" + product.slikas[0].slikaProizvoda)}
                                     className={classes.image}
                                 />
                             </div>
@@ -55,7 +55,7 @@ const CardComponent = ({product, onSave}) => {
                         <div>
                             <Meta title={product.naslov}/>
                             <div className={classes.priceContainer}>
-                                {(user && product.prodavac.id === user.id && product.kupac.id !== user.id) && (
+                                {(user && product.prodavac && product.kupac && product.prodavac.id === user.id && product.kupac.id !== user.id) && (
                                     <button className={classes.deleteDugme} onClick={handleDeleteProduct}>
                                         <FaTrash size={'15px'}/>
                                     </button>

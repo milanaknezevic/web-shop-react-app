@@ -1,7 +1,6 @@
 import React from "react";
 import classes from './FirstStep.module.css'
 
-
 const FirstStep = ({onFinish, product}) => {
 
     return (
@@ -12,7 +11,7 @@ const FirstStep = ({onFinish, product}) => {
                 <div className={classes.imageContainer}>
                     <img
                         alt="example"
-                        src={product.slikas[0].slikaProizvoda}
+                        src={require("../../../../assets/products/" + product.slikas[0].slikaProizvoda)}
                         className={classes.image}
                     />
                 </div>
