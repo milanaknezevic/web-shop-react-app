@@ -28,7 +28,6 @@ const SelectComponent = (props) => {
                 <Select
                     style={{ backgroundColor: "#c5c5c5", width: "90px" }}
                     placeholder="Select an option"
-                    value={defaultValue}
                     onChange={handleSelectChange} // Use the custom handler
                     onSearch={onSearch}
                     filterOption={(input, option) =>

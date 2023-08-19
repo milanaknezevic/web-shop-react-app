@@ -4,12 +4,13 @@ import SearchComponent from "../../components/Search/SearchComponent";
 import Products from "../Product/Products";
 import SidebarComponent from "../../components/Sidebar/SidebarComponent";
 import {useDispatch, useSelector} from "react-redux";
-import {getAllProducts} from "../../redux/features/productSlice";
+import {getAllProducts, searchProducts} from "../../redux/features/productSlice";
 import classes from './Home.module.css';
 import jwtDecode from "jwt-decode";
 import {getUser} from "../../redux/features/userSlice";
 import {getCategories, getCategory, removeCategory} from "../../redux/features/categorySlice";
 import {SearchOutlined} from "@ant-design/icons";
+
 
 const {Footer, Content} = Layout;
 
@@ -20,12 +21,18 @@ const Home = () => {
     const [location, setLocation] = useState("");
     const [priceTo, setPriceTo] = useState(0);
     const [priceFrom, setPriceFrom] = useState(0);
+    const [pageSize, setPageSize] = useState(10);
     const [current, setCurrent] = useState(1);
-    const [products, setProducts] = useState([]);
+    const [filterClicked, setFilterClicked] = useState(false);
+    const [refreshKey, setRefreshKey] = useState(0);
+    const [pageNumber, setPageNumber] = useState(current - 1);
     const [isLoading, setIsLoading] = useState(true); // Dodato stanje za praćenje učitavanja
     const [naslov, setNaslov] = useState("");
     const dispatch = useDispatch();
     const {oneCategory} = useSelector((state) => state.categories);
+    const {products} = useSelector((state) => state.products);
+    const [stanjeProizvoda, setStanjeProizvoda] = useState("");
+
 
     useEffect(() => {
         const token = sessionStorage.getItem('access');
@@ -33,12 +40,12 @@ const Home = () => {
             const decodedToken = jwtDecode(token);
             const id = parseInt(decodedToken.jti);
             dispatch(getUser({id: id}));
-            //treba dodati i proizvode itd
-
         }
         dispatch(getCategories({}));
     }, []);
-
+    const handleSaveUpdate = () => {
+        setRefreshKey((prevKey) => prevKey + 1);
+    };
 
     useEffect(() => {
         const resizeHandler = () => {
@@ -64,47 +71,58 @@ const Home = () => {
         };
     }, []);
     useEffect(() => {
-
-        const fetchData = async () => {
-            try {
+        try {
+            if (!filterClicked) {
                 setIsLoading(true);
-                const pageNumber = current - 1;
-                const pageSize = 10;
-                const response = await dispatch(getAllProducts({pageNumber, pageSize, naslov}));
-                if (getAllProducts.fulfilled.match(response)) {
-                    setProducts(response.payload.content);
+                dispatch(getAllProducts({pageNumber, pageSize, naslov}));
+                setIsLoading(true);
+            } else if (filterClicked) {
+                const response = dispatch(searchProducts({
+                    pageNumber: pageNumber,
+                    pageSize: pageSize,
+                    searchData: searchData
+                }));
+                if (response.error) {
+                    setFilterClicked(false);
                 } else {
-                    setIsLoading(true);
+                    if (!filterClicked) {
+                        setFilterClicked(true);
+                        setCurrent(1);
+                        setPageNumber(0);
+                    }
                 }
-            } catch (error) {
-                setIsLoading(true);
-                console.error("Greška:", error);
-            } finally {
-                setIsLoading(false);
             }
-        };
+        } catch (error) {
+            setIsLoading(true);
+            console.error("Greška:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [pageSize, pageNumber, refreshKey, filterClicked, current, naslov]);
 
-        fetchData();
-
-        return () => {
-            // Cleanup funkcija (ako je potrebno)
-        };
-    }, [dispatch, current, naslov]);
-
-    const onChange = (page) => {
-        setCurrent(page);
+    const onChange = (newPage) => {
+        setCurrent(newPage);
+        setPageNumber(newPage - 1);
+    };
+    const onShowSizeChange = (current, pageSize) => {
+        setPageSize(pageSize);
     };
     const onSearch = (value) => {
         setNaslov(value);
     };
     const handleCategorySelect = (selectedKeys) => {
-        console.log("selected keys " + selectedKeys)
         setChoosedCategpry(selectedKeys[0]);
-        console.log("selected keys " + selectedKeys[0])
+
+    };
+
+
+    const handleClearFilters = () => {
+        console.log("Obrisi filter ");
+        clearAllFilters();
     };
     const handleSelectStatus = (value) => {
         //used 1, a new 0
-        console.log("status " + value)
+        setStanjeProizvoda(value);
     };
     const handleLocationChange = (event) => {
         setLocation(event.target.value);
@@ -119,23 +137,55 @@ const Home = () => {
     };
     useEffect(() => {
         if (typeof choosedCategory === 'number') {
-            console.log(" choosedCategory  je number " + choosedCategory);
             dispatch(getCategory({id: choosedCategory}));
 
         } else {
-            console.log(" choosedCategory  nije number " + choosedCategory);
             dispatch(removeCategory());
 
         }
 
     }, [choosedCategory])
-    const handleAttributeChange = (attributeId, value) => {
-        setAttributeValues(prevValues => ({
-            ...prevValues,
-            [attributeId]: value,
-        }));
+
+    const atributi = Object.values(attributeValues).map(attrData => {
+        return {
+            atribut: {
+                id: attrData.id,
+                naziv: attrData.name,
+                tip: attrData.type
+            },
+            vrijednost: attrData.value
+        };
+    });
+
+
+    let searchData = {
+        naslov: naslov === "" ? null : naslov,
+        imeKategorije: oneCategory && typeof choosedCategory === 'number' ? oneCategory.naziv : null,
+        lokacija: location !== "" ? location : null,
+        stanjeProizvoda: stanjeProizvoda !== "" ? (stanjeProizvoda === 1 ? true : false) : null,
+        cijenaOd: priceFrom !== 0 ? priceFrom : null,
+        cijenaDo: priceTo !== 0 ? priceTo : null,
+        proizvodAtributi: atributi.length > 0 ? atributi : null
+    };
+    const clearAllFilters = () => {
+        setStanjeProizvoda("");
+        setLocation("");
+        setPriceFrom(0);
+        setPriceTo(0);
+        setAttributeValues({});
+        setCurrent(1);
+        setPageSize(0);
+        setFilterClicked(false);
     };
 
+
+    const handleFilterSearch = () => {
+        console.log("On search ");
+        console.log("searchData " + JSON.stringify(searchData));
+        handleSaveUpdate();
+        setFilterClicked(true);
+
+    };
 
     return (
         <div className={classes.nesto}>
@@ -162,7 +212,7 @@ const Home = () => {
                             </div>
                             {oneCategory != null && oneCategory.atribut.map((attribute) => (
                                 <div style={{textAlign: 'left', marginBottom: '15px'}}>
-                                   <label style={{color: 'black', fontSize: '16px'}}>{attribute.naziv}</label>
+                                    <label style={{color: 'black', fontSize: '16px'}}>{attribute.naziv}</label>
                                     <br/>
                                     {attribute.tip === 'STRING' &&
                                         <Input value={attributeValues[attribute.id]?.value || null} onChange={(e) => {
@@ -171,8 +221,8 @@ const Home = () => {
                                                 ...prevValues,
                                                 [attribute.id]: {
                                                     id: attribute.id,
-                                                    name: attribute.name,
-                                                    type: attribute.type,
+                                                    name: attribute.naziv,
+                                                    type: attribute.tip,
                                                     value: newValue
                                                 },
                                             }));
@@ -183,8 +233,8 @@ const Home = () => {
                                                          ...prevValues,
                                                          [attribute.id]: {
                                                              id: attribute.id,
-                                                             name: attribute.name,
-                                                             type: attribute.type,
+                                                             name: attribute.naziv,
+                                                             type: attribute.tip,
                                                              value: value
                                                          },
                                                      }))}/>}
@@ -192,10 +242,16 @@ const Home = () => {
                             ))}
                         </div>)
                     }
-                    <div style={{textAlign: 'center', padding: '1rem'}}>
-                        <Button className={classes.dugme} type="primary" icon={<SearchOutlined/>}
-                                style={{whiteSpace: 'normal'}}>Search</Button>
-                    </div>
+                    <div style={{textAlign: 'center',}}>
+                            <Button onClick={handleFilterSearch} className={classes.dugme} type="primary"
+                                    icon={<SearchOutlined/>}
+                                    style={{whiteSpace: 'normal',marginBottom:'10px'}}>Search</Button>
+                        </div>
+                        <div style={{textAlign: 'center',}}>
+                            <Button className={classes.dugme} type="primary"
+                                    onClick={handleClearFilters}>Clear</Button>
+                        </div>
+
                 </div>
                 <Layout>
                     <Layout>
@@ -206,7 +262,7 @@ const Home = () => {
                                     fontWeight: 'bold'
                                 }}>Loading...</p>
                             ) : (
-                                products.length === 0 ? (
+                                products && products.length === 0 ? (
                                     <p style={{
                                         textAlign: 'center',
                                         fontWeight: 'bold'
@@ -216,12 +272,19 @@ const Home = () => {
                                 )
                             )}
                         </Content>
-                        <Pagination style={{textAlign: "right", padding: '0.4rem'}} current={current}
-                                    onChange={onChange}
-                                    total={50}/>
+
+                        {products && products.totalElements && (
+                            <Pagination style={{textAlign: "right", padding: '0.4rem'}}
+                                        showSizeChanger
+                                        onShowSizeChange={onShowSizeChange}
+                                        onChange={onChange}
+                                        current={current}
+                                        total={products.totalElements}
+                            />
+                        )}
                         <Footer className={classes.footerStyle}>
                             <p className={classes.rightAlignedParagraph}> Email: <a
-                                href="mailto:kontakt@example.com">kontakt@example.com</a></p>
+                                href="mailto:webshopip2@gmail.com">webshopip2@gmail.com</a></p>
                         </Footer>
                     </Layout>
                 </Layout>

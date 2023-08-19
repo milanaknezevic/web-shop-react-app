@@ -8,8 +8,7 @@ const Product = ({products,onSave}) => {
     return (
         <div style={{minHeight: "500px"}}>
             <div className={classes.cardContainer}>
-                {products
-                    .filter(product => product.zavrsenaPonuda !== 2)
+                {products && products.content
                     .map(product => (
                         <div className={classes.productCard} key={product.id}>
                             <CardComponent product={product} onSave={onSave}/>

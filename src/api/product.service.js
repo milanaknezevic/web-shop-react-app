@@ -21,6 +21,19 @@ export const getAllProducts = (pageNumber, pageSize,naslov) => {
         })
         .then((result) => result.data);
 };
+export const searchProducts = (pageNumber, pageSize,searchData) => {
+    return unauthenticatedInstance
+        .post(`products/searchProducts`, searchData, {
+            params: {
+                page: pageNumber,
+                size: pageSize,
+            },
+        })
+        .then((results) => {
+            return results.data;
+        })
+        .catch((err) => Promise.reject(err.response.status));
+}
 export const insertProduct = (productData) => {
     return authenticatedInstance
         .post('products/', productData, {
@@ -60,19 +73,7 @@ export const deleteProduct = (id) => {
         .then((result) => result.data)
 };
 
-export const searchProducts = (page,searchData) => {
-    return unauthenticatedInstance
-        .post(`products/searchProducts`, searchData, {
-            params: {
-                page: page.pageNumber,
-                size: page.pageSize,
-            },
-        })
-        .then((results) => {
-            return results.data;
-        })
-        .catch((err) => Promise.reject(err.response.status));
-}
+
 export const purchaseProduct = (id) => {
     return authenticatedInstance
         .put(`products/${id}/`, {

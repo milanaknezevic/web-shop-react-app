@@ -47,6 +47,14 @@ export const getAllProducts = createAsyncThunk("getProducts/", async ({ pageNumb
         return rejectWithValue("There is some problem with getting data. Please try later.");
     }
 });
+export const searchProducts = createAsyncThunk("searchProducts/", async ({ pageNumber, pageSize, searchData}, {rejectWithValue}) => {
+    try {
+        return await productService.searchProducts(pageNumber, pageSize, searchData);
+    } catch (err) {
+        return rejectWithValue("There is some problem with getting data. Please try later.");
+    }
+});
+
 
 export const insertProduct = createAsyncThunk("insertProduct/", async ({
                                                                            productData
@@ -84,15 +92,6 @@ export const deleteProduct = createAsyncThunk("deleteProduct/", async ({
                                                                        }, {rejectWithValue}) => {
     try {
         return await productService.deleteProduct(id);
-    } catch (err) {
-        return rejectWithValue("There is some problem with getting data. Please try later.");
-    }
-});
-export const searchProducts = createAsyncThunk("searchProducts/", async ({
-                                                                             page, searchData
-                                                                         }, {rejectWithValue}) => {
-    try {
-        return await productService.searchProducts(page, searchData);
     } catch (err) {
         return rejectWithValue("There is some problem with getting data. Please try later.");
     }

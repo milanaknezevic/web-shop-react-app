@@ -48,9 +48,9 @@ const SidebarComponent = ({
                     <div style={{textAlign: 'left', marginBottom: '15px'}}>
                         <label style={{color: 'black', fontSize: '16px', fontWeight: 'bold'}}>Price</label>
                     </div>
-                    <InputNumber min={0} value={priceTo} onChange={handlePriceToChange}
+                    <InputNumber min={0} value={priceFrom} onChange={handlePriceFromChange}
                                  style={{width: '45%', marginRight: '2%'}} placeholder="Price from"/>
-                    <InputNumber min={priceTo} value={priceFrom} onChange={handlePriceFromChange} style={{width: '45%'}}
+                    <InputNumber min={priceFrom} value={priceTo} onChange={handlePriceToChange} style={{width: '45%'}}
                                  placeholder="Price to"/>
                     <br/>
                     <br/>
