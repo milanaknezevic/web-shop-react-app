@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import categoryService from "../../api/category.service";
 import userService from "../../api/user.service";
 import productService from "../../api/product.service";
+import authService from "../../api/auth.service";
 
 export const getProductsInCategory = createAsyncThunk("categories/getProducts", async ({
                                                                                            id,
@@ -108,6 +109,10 @@ export const purchaseProduct = createAsyncThunk("purchaseProduct/", async ({
     }
 });
 
+const removeProductFunc = (state) => {
+    state.oneProduct = null;
+}
+
 const productSlice = createSlice({
     name: 'products',
     initialState: {
@@ -115,7 +120,9 @@ const productSlice = createSlice({
         oneProduct: null,
         products: []
     },
-    reducers: [],
+    reducers:{
+        removeProduct:removeProductFunc
+    },
     extraReducers: {
         [getProductsInCategory.fulfilled]: (state, action) => {
             state.loading = false;
@@ -239,4 +246,5 @@ const productSlice = createSlice({
 
 })
 
+export const {removeProduct} = productSlice.actions
 export default productSlice.reducer;

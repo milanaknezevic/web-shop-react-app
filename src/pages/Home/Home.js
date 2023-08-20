@@ -4,7 +4,7 @@ import SearchComponent from "../../components/Search/SearchComponent";
 import Products from "../Product/Products";
 import SidebarComponent from "../../components/Sidebar/SidebarComponent";
 import {useDispatch, useSelector} from "react-redux";
-import {getAllProducts, searchProducts} from "../../redux/features/productSlice";
+import {getAllProducts, removeProduct, searchProducts} from "../../redux/features/productSlice";
 import classes from './Home.module.css';
 import jwtDecode from "jwt-decode";
 import {getUser} from "../../redux/features/userSlice";
@@ -18,19 +18,19 @@ const {Footer, Content} = Layout;
 const Home = () => {
     const [choosedCategory, setChoosedCategpry] = useState(null);
     const [attributeValues, setAttributeValues] = useState({});
+    const [current, setCurrent] = useState(1);
     const [location, setLocation] = useState("");
     const [priceTo, setPriceTo] = useState(0);
     const [priceFrom, setPriceFrom] = useState(0);
     const [pageSize, setPageSize] = useState(10);
-    const [current, setCurrent] = useState(1);
+    const [pageNumber, setPageNumber] = useState(current - 1);
     const [filterClicked, setFilterClicked] = useState(false);
     const [refreshKey, setRefreshKey] = useState(0);
-    const [pageNumber, setPageNumber] = useState(current - 1);
     const [isLoading, setIsLoading] = useState(true); // Dodato stanje za praćenje učitavanja
     const [naslov, setNaslov] = useState("");
     const dispatch = useDispatch();
     const {oneCategory} = useSelector((state) => state.categories);
-    const {products} = useSelector((state) => state.products);
+    const {products,oneProduct} = useSelector((state) => state.products);
     const [stanjeProizvoda, setStanjeProizvoda] = useState("");
 
 
@@ -72,6 +72,10 @@ const Home = () => {
     }, []);
     useEffect(() => {
         try {
+            if(oneProduct !== null)
+            {
+                dispatch(removeProduct());
+            }
             if (!filterClicked) {
                 setIsLoading(true);
                 dispatch(getAllProducts({pageNumber, pageSize, naslov}));
@@ -174,7 +178,7 @@ const Home = () => {
         setPriceTo(0);
         setAttributeValues({});
         setCurrent(1);
-        setPageSize(0);
+        setPageNumber(0);
         setFilterClicked(false);
     };
 
@@ -245,7 +249,7 @@ const Home = () => {
                     <div style={{textAlign: 'center',}}>
                             <Button onClick={handleFilterSearch} className={classes.dugme} type="primary"
                                     icon={<SearchOutlined/>}
-                                    style={{whiteSpace: 'normal',marginBottom:'10px'}}>Search</Button>
+                                    style={{whiteSpace: 'normal',marginBottom:'10px',marginTop:'5px'}}>Search</Button>
                         </div>
                         <div style={{textAlign: 'center',}}>
                             <Button className={classes.dugme} type="primary"

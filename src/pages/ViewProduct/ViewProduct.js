@@ -144,7 +144,7 @@ const ViewProduct = () => {
                             </h1>
                         </div>
 
-                        <div className={classes.kontejner}>
+                        {oneProduct && <div className={classes.kontejner}>
                             <div className={classes.imageSliderContainer}>
                                 <SimpleImageSlider
                                     width="30%"
@@ -154,12 +154,19 @@ const ViewProduct = () => {
                                     }))}
                                     showNavs={true}
                                     showBullets
+                                    navStyle={{
+                                        arrowRight: {
+                                            color: 'white', },
+                                        arrowLeft: {
+                                            color: 'white',
+                                        }
+                                    }}
                                 />
                                 <p className={classes.priceStil}>Price: {oneProduct.cijena}KM</p>
 
 
                             </div>
-                        </div>
+                        </div>}
                         {showInsertCommentar && oneProduct.zavrsenaPonuda === 0 && (
                             <div className={classes.productInfoContainer}>
                                 <button onClick={handleBuyOpen} style={{width: "fit-content"}}>

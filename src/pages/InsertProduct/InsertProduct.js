@@ -11,16 +11,13 @@ import {insertProduct} from "../../redux/features/productSlice";
 
 const InsertProduct = ({show, onClose}) => {
     const [isDisabled, setIsDisabled] = useState(false);
-    const [statusCode, setStatusCode] = useState(null);
     const [currentPage, setCurrentPage] = useState(0);
     const dispatch = useDispatch();
     const [firstStepDetails, setFirstStepDetails] = useState(null);
     const [secondStepDetails, setSecondStepDetails] = useState(null);
     const [thirdStepDetails, setThirdStepDetails] = useState(null);
     const [fourthStepDetails, setFourthStepDetails] = useState(null);
-    const handleClick = (e) => {
-        e.stopPropagation();
-    };
+
     const onFinishedFirst = (values) => {
         setFirstStepDetails(values);
         setCurrentPage(1);
@@ -60,7 +57,7 @@ const InsertProduct = ({show, onClose}) => {
             naslov: firstStepDetails.naslov,
             opis: firstStepDetails.opis,
             cijena: firstStepDetails.cijena,
-            stanje: firstStepDetails.stanje,
+            stanje: firstStepDetails.stanje ===1?0:1,
             lokacija: firstStepDetails.grad,
             kontakt: firstStepDetails.kontakt,
             kategorijaId: secondStepDetails.category,

@@ -17,7 +17,7 @@ const ThirdForm = ({ onFinish, categoryId, initialValues }) => {
     return (
         <Form
             initialValues={initialValues}
-            labelCol={{ span: 6 }}
+            labelCol={{ span: 8 }}
             wrapperCol={{ span: 14 }}
             layout="horizontal"
             onFinish={onFinish}

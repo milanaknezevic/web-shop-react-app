@@ -32,6 +32,8 @@ const MyProfile = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true); // Dodato stanje za praćenje učitavanja
+    const [pageSize, setPageSize] = useState(10);
+    const [pageNumber, setPageNumber] = useState(current - 1);
 
 
     const options = [
@@ -50,7 +52,6 @@ const MyProfile = () => {
     ];
 
     useEffect(() => {
-        console.log("user " + user + "user.ime " + user.ime + " user slika " + user.avatar);
         console.log("user " + JSON.stringify(user));
 
         if (authenticated === false)
@@ -63,8 +64,8 @@ const MyProfile = () => {
             const decodedToken = jwtDecode(token);
             const id = parseInt(decodedToken.jti);
             dispatch(getUser({id: id}));
-            const pageNumber = current - 1;
-            const pageSize = 10;
+            // const pageNumber = current - 1;
+            // const pageSize = 10;
             dispatch(getAllProductsForSeller({pageNumber, pageSize, finished}));
 
         }
@@ -98,8 +99,8 @@ const MyProfile = () => {
     const fetchData2 = async () => {
         try {
             setIsLoading(true);
-            const pageNumber = current - 1;
-            const pageSize = 10;
+            // const pageNumber = current - 1;
+            // const pageSize = 10;
             const response = await dispatch2(getAllProductsForBuyer({pageNumber, pageSize}));
             if (getAllProductsForBuyer.fulfilled.match(response)) {
                 setProducts(response.payload.content);
@@ -117,8 +118,8 @@ const MyProfile = () => {
     const fetchData1 = async () => {
         try {
             setIsLoading(true);
-            const pageNumber = current - 1;
-            const pageSize = 10;
+            // const pageNumber = current - 1;
+            // const pageSize = 10;
             const response = await dispatch1(getAllProductsForSeller({pageNumber, pageSize, finished}));
             setProducts(response.payload.content);
             if (getAllProductsForSeller.fulfilled.match(response)) {
@@ -140,6 +141,13 @@ const MyProfile = () => {
     useEffect(() => {
         fetchData1();
     }, [current, finished, dispatch1, refreshKey]);
+    const onShowSizeChange = (current, pageSize) => {
+        setPageSize(pageSize);
+    };
+    const onChangePag = (newPage) => {
+        setCurrent(newPage);
+        setPageNumber(newPage - 1);
+    };
 
     useEffect(() => {
         setAuth(authenticated);
@@ -236,9 +244,13 @@ const MyProfile = () => {
                         )
                     )}
                 </Content>
-                <Pagination style={{textAlign: "right", padding: '0.4rem'}} current={current}
-                            onChange={onChange}
-                            total={50}/>
+                <Pagination style={{textAlign: "right", padding: '0.4rem'}}
+                            showSizeChanger
+                            onShowSizeChange={onShowSizeChange}
+                            onChange={onChangePag}
+                            current={current}
+                            total={products.totalElements}
+                />
 
             </Layout>
         </Layout>

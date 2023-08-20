@@ -49,7 +49,7 @@ const FirstForm = ({onFinish, initialValues}) => {
             <Form.Item wrapperCol={{offset: 2, span: 15}} label="Contact" name="kontakt" rules={[
                 {required: true, message: 'Please enter a contact number.'},
                 {
-                    pattern: /^(\+\d{1,3})?[\s.-]?\(?\d{3}\)?[\s./]?\d{3}[\s.-]?\d{3}$/,
+                    pattern: /^(?:\+\d{3}\s\d{2}\/\d{3}-\d{3}|\d{3}\/\d{3}-\d{3})/,
                     message: 'Please enter a valid phone number.'
                 }
             ]}>
@@ -59,7 +59,7 @@ const FirstForm = ({onFinish, initialValues}) => {
                 {required: true, message: 'Please enter a description.'},
                 {max: 255, message: 'Description must not exceed 255 characters.'},
             ]}>
-                <TextArea rows={2}/>
+                <TextArea rows={3}/>
             </Form.Item>
             <Form.Item wrapperCol={{offset: 18, span: 15}}>
                 <Button style={{width: "fit-content", height: 'fit-content', background: " #2b2b49"}} type="primary"
