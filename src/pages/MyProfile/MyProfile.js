@@ -130,9 +130,7 @@ const MyProfile = () => {
             fetchData1();
             setFetch1(true);
             setFetch2(false);
-        }
-        else if(!fetch1 && fetch2)
-        {
+        } else if (!fetch1 && fetch2) {
             fetchData1();
             setFetch1(true);
             setFetch2(false);
@@ -187,7 +185,8 @@ const MyProfile = () => {
             {user ? (
                 <div className={classes.zaLijevo}>
                     <div className={classes.userImageContainer}>
-                        <img className={classes.userImage} src={require("../../assets/users/" + user.avatar)}
+                        <img className={classes.userImage}
+                             src={user.avatar !== null ? require("../../assets/users/" + user.avatar) : require("../../assets/defaultUserImage.png")}
                              alt="User"/>
                     </div>
                     <p className={classes.ime}>{user.ime} {user.prezime}</p>
