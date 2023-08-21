@@ -19,7 +19,7 @@
 
 .paginationContainer {
     display: flex;
-    justify-content: flex-end; /* Poravnavanje paginacije na dno kontejnera */
+    justify-content: flex-end;
 
  }
 

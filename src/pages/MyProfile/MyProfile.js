@@ -18,14 +18,13 @@ const MyProfile = () => {
     const [editProfileModal, setEditProfileModal] = useState(false);
     const [changePasswordModal, setChangePasswordModall] = useState(false);
     const {authenticated, user} = useSelector((state) => state.users);
-    const [auth, setAuth] = useState(false);
     const [underlineColorProducts, setUnderlineColorProducts] = useState('blue');
     const [underlineColorPurchase, setUnderlineColorPurchase] = useState('gray');
     const [showSelect, setShowSelect] = useState(true);
-    const [products, setProducts] = useState([]);
+    const {products, oneProduct} = useSelector((state) => state.products);
     const [dugmeProducts, setDugmeProducts] = useState(true);
     const [dugmePurchase, setDugmePurchase] = useState(false);
-    const [finished, setFinished] = useState(3);
+    const [finished, setFinished] = useState(0);
     const [current, setCurrent] = useState(1);
     const dispatch1 = useDispatch();
     const dispatch2 = useDispatch();
@@ -34,8 +33,8 @@ const MyProfile = () => {
     const [isLoading, setIsLoading] = useState(true); // Dodato stanje za praćenje učitavanja
     const [pageSize, setPageSize] = useState(10);
     const [pageNumber, setPageNumber] = useState(current - 1);
-
-
+    const [fetch1, setFetch1] = useState(false);
+    const [fetch2, setFetch2] = useState(false);
     const options = [
         {
             value: '0',
@@ -51,24 +50,31 @@ const MyProfile = () => {
         },
     ];
 
-    useEffect(() => {
-        console.log("user " + JSON.stringify(user));
-
-        if (authenticated === false)
-            navigate('/');
-    }, [authenticated, navigate]);
 
     useEffect(() => {
+        console.log("useEffect prvi ");
         const token = sessionStorage.getItem('access');
         if (token !== null) {
             const decodedToken = jwtDecode(token);
             const id = parseInt(decodedToken.jti);
             dispatch(getUser({id: id}));
-            // const pageNumber = current - 1;
-            // const pageSize = 10;
             dispatch(getAllProductsForSeller({pageNumber, pageSize, finished}));
 
         }
+        const resizeHandler = () => {
+            const container = document.querySelector(`.${classes.container}`);
+            const windowHeight = window.innerHeight;
+            const headerElement = document.querySelector('.Header_nav__73kXe');
+            if (headerElement) {
+                const headerHeight = headerElement.offsetHeight;
+                container.style.minHeight = `${windowHeight - headerHeight}px`;
+            }
+        };
+        resizeHandler(); // Postavi visinu kontejnera na početku
+        window.addEventListener('resize', resizeHandler);
+        return () => {
+            window.removeEventListener('resize', resizeHandler);
+        };
     }, []);
 
 
@@ -96,18 +102,11 @@ const MyProfile = () => {
     };
 
 
-    const fetchData2 = async () => {
+    const fetchData2 = () => {
         try {
             setIsLoading(true);
-            // const pageNumber = current - 1;
-            // const pageSize = 10;
-            const response = await dispatch2(getAllProductsForBuyer({pageNumber, pageSize}));
-            if (getAllProductsForBuyer.fulfilled.match(response)) {
-                setProducts(response.payload.content);
-
-            } else {
-                setIsLoading(true);
-            }
+            console.log("uzmi my purchase ");
+            dispatch2(getAllProductsForBuyer({pageNumber, pageSize}));
 
         } catch (error) {
             setIsLoading(true);
@@ -115,18 +114,35 @@ const MyProfile = () => {
             setIsLoading(false);
         }
     };
-    const fetchData1 = async () => {
+    useEffect(() => {
+        console.log("useEffect fetch2 " + finished);
+        if (fetch1 && !fetch2) {
+            fetchData2();
+            setFetch1(false);
+            setFetch2(true);
+
+        }
+
+    }, [dispatch2]);
+    useEffect(() => {
+        console.log("useEffect fetch1 " + finished);
+        if (!fetch1 && !fetch2) {
+            fetchData1();
+            setFetch1(true);
+            setFetch2(false);
+        }
+        else if(!fetch1 && fetch2)
+        {
+            fetchData1();
+            setFetch1(true);
+            setFetch2(false);
+        }
+    }, [current, finished, dispatch1, refreshKey]);
+    const fetchData1 = () => {
         try {
             setIsLoading(true);
-            // const pageNumber = current - 1;
-            // const pageSize = 10;
-            const response = await dispatch1(getAllProductsForSeller({pageNumber, pageSize, finished}));
-            setProducts(response.payload.content);
-            if (getAllProductsForSeller.fulfilled.match(response)) {
-                setProducts(response.payload.content);
-            } else {
-                setIsLoading(true);
-            }
+            console.log("uzmi my products finished " + finished);
+            dispatch1(getAllProductsForSeller({pageNumber, pageSize, finished}));
 
         } catch (error) {
             setIsLoading(true);
@@ -135,12 +151,7 @@ const MyProfile = () => {
             setIsLoading(false);
         }
     };
-    useEffect(() => {
-        fetchData2();
-    }, [dispatch2]);
-    useEffect(() => {
-        fetchData1();
-    }, [current, finished, dispatch1, refreshKey]);
+
     const onShowSizeChange = (current, pageSize) => {
         setPageSize(pageSize);
     };
@@ -148,26 +159,13 @@ const MyProfile = () => {
         setCurrent(newPage);
         setPageNumber(newPage - 1);
     };
+    useEffect(() => {
+        console.log("user " + JSON.stringify(user));
+        console.log("useEffect authet");
+        if (authenticated === false)
+            navigate('/');
+    }, [authenticated, navigate]);
 
-    useEffect(() => {
-        setAuth(authenticated);
-    }, [authenticated, auth, user]);
-    useEffect(() => {
-        const resizeHandler = () => {
-            const container = document.querySelector(`.${classes.container}`);
-            const windowHeight = window.innerHeight;
-            const headerElement = document.querySelector('.Header_nav__73kXe');
-            if (headerElement) {
-                const headerHeight = headerElement.offsetHeight;
-                container.style.minHeight = `${windowHeight - headerHeight}px`;
-            }
-        };
-        resizeHandler(); // Postavi visinu kontejnera na početku
-        window.addEventListener('resize', resizeHandler);
-        return () => {
-            window.removeEventListener('resize', resizeHandler);
-        };
-    }, []);
     const handleEditProfileOpen = () => {
         setEditProfileModal(true);
     };
@@ -189,7 +187,8 @@ const MyProfile = () => {
             {user ? (
                 <div className={classes.zaLijevo}>
                     <div className={classes.userImageContainer}>
-                        <img className={classes.userImage} src={require("../../assets/users/" + user.avatar)} alt="User"/>
+                        <img className={classes.userImage} src={require("../../assets/users/" + user.avatar)}
+                             alt="User"/>
                     </div>
                     <p className={classes.ime}>{user.ime} {user.prezime}</p>
                     <div className={classes.buttonContainer}>
@@ -212,13 +211,13 @@ const MyProfile = () => {
             <div className={classes.zaKupovine}>
                 <button style={{textDecorationColor: underlineColorProducts, fontSize: '20'}}
                         className={classes.kupovineDugme} onClick={myProductsHandle}>
-                    <FaBoxOpen style={{marginRight: '5px', fontSize: '20'}}/> {/* Ikonica proizvoda */}
+                    <FaBoxOpen style={{marginRight: '5px', fontSize: '20'}}/>
                     My Products
                 </button>
 
                 <button style={{textDecorationColor: underlineColorPurchase, fontSize: '20'}}
                         className={classes.kupovineDugme} onClick={myPurchaseHandle}>
-                    <FaShoppingCart style={{marginRight: '5px', fontSize: '20'}}/> {/* Ikonica korpe */}
+                    <FaShoppingCart style={{marginRight: '5px', fontSize: '20'}}/>
                     My Purchase
                 </button>
             </div>

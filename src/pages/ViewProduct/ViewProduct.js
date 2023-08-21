@@ -8,12 +8,14 @@ import {getProductByID, sendAnswer, sendQuestion} from "../../redux/features/pro
 import BuyProduct from "../BuyProduct/BuyProduct";
 import FirstForm from "../../components/Forms/ViewProductsForms/Form1/FirstForm";
 import SecondForm from "../../components/Forms/ViewProductsForms/Form2/SecondForm";
+import jwtDecode from "jwt-decode";
+import {getUser} from "../../redux/features/userSlice";
 
 const {Text} = Typography;
 
 
 const ViewProduct = () => {
-    const [contentHeight, setContentHeight] = useState('calc(100vh - 71px)');
+    const [contentHeight, setContentHeight] = useState('calc(100vh-60px)');
 
     const [buyModal, setBuyModall] = useState(false);
     const [refreshKey, setRefreshKey] = useState(0);
@@ -46,6 +48,18 @@ const ViewProduct = () => {
     useEffect(() => {
         dispatch(getProductByID({id: id}));
     }, [refreshKey]);
+    useEffect(()=>
+    {
+        const token = sessionStorage.getItem('access');
+        if (token !== null) {
+            const decodedToken = jwtDecode(token);
+            const id = parseInt(decodedToken.jti);
+            dispatch(getUser({id: id}));
+
+        }
+        const value=parseInt(id);
+        dispatch(getProductByID({id: value}));
+    },[]);
 
 
     const handleClick = (e) => {
@@ -142,13 +156,14 @@ const ViewProduct = () => {
                             <h1>
                                 {oneProduct.naslov}
                             </h1>
+                            <br/>
                         </div>
 
                         {oneProduct && <div className={classes.kontejner}>
                             <div className={classes.imageSliderContainer}>
                                 <SimpleImageSlider
-                                    width="30%"
-                                    height={300}
+                                    width="35%"
+                                    height={350}
                                     images={oneProduct.slikas.map((slika) => ({
                                         url: require("../../assets/products/" + slika.slikaProizvoda)
                                     }))}
@@ -169,19 +184,22 @@ const ViewProduct = () => {
                         </div>}
                         {showInsertCommentar && oneProduct.zavrsenaPonuda === 0 && (
                             <div className={classes.productInfoContainer}>
-                                <button onClick={handleBuyOpen} style={{width: "fit-content"}}>
+                                <button onClick={handleBuyOpen} style={{width: "fit-content",height:'fit-content'}}>
                                     Buy
                                 </button>
+                                <br/>
+                                <br/>
 
                             </div>
                         )}
                         <div>
-                            <h2>All comments</h2>
+                            <h1>All comments</h1>
+
                             <div>
 
                                 <List>
                                     {oneProduct.komentars.length === 0 ? (
-                                        <p>No comments currently.</p>
+                                        <p style={{fontSize:'18px'}}>No comments currently.</p>
                                     ) : (
                                         oneProduct.komentars.map((komentar, index) => (
                                             <div style={{background: 'white'}}>

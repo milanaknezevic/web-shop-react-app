@@ -38,7 +38,7 @@ const CardComponent = ({product, onSave}) => {
         <div>
 
             {product && product.slikas.length > 0 && (
-                <Link className={classes.cardLink} to={productPath} >
+                <Link to={productPath} >
                     <Card
                         hoverable
                         className={classes.card}

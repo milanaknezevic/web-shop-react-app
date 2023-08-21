@@ -6,7 +6,7 @@
 
 .imageContainer {
     width: 100%;
-    padding-bottom: 100%; /* Omogućava omjer stranica 1:1 */
+    padding-bottom: 100%;
     position: relative;
     overflow: hidden;
 }
@@ -15,7 +15,7 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Slika će biti skalirana i obrezana da stane unutar kontejnera */
+    object-fit: cover;
 }
 
 .priceContainer {
