@@ -264,6 +264,28 @@ const ViewProduct = () => {
                             <p>
                                 {oneProduct.opis}
                             </p>
+                            <Divider style={{background: '#efe9e7'}}/>
+                            <p>
+                                <strong style={{color: 'black'}}>Category:</strong> {oneProduct.kategorija.naziv}
+                            </p>
+                            <Divider style={{color: 'black', borderColor: '#efe9e7'}}
+                                     orientation="left">Attribute</Divider>
+                            {oneProduct.proizvodAtributs.map((attribute, index) => (
+                                <li key={index}>
+                                    {attribute.atribut.naziv === "Square footage"
+                                        ? `${attribute.atribut.naziv}: ${attribute.vrijednost} km²`
+                                        : `${attribute.atribut.naziv}: ${
+                                            attribute.atribut.naziv === "Milage"
+                                                ? `${attribute.vrijednost} km`
+                                                : attribute.vrijednost
+                                        }`}
+                                </li>
+                            ))}
+
+
+
+
+
 
                         </div>
                     </div>

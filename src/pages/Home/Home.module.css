@@ -16,6 +16,10 @@
     padding: 20px;
     width: 15%;
 }
+.innerLeft{
+     max-height:500px;
+     overflow: auto;
+ }
 
 .right {
     background: yellow;

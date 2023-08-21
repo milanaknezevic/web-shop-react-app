@@ -173,6 +173,7 @@ const Home = () => {
     };
     const clearAllFilters = () => {
         setStanjeProizvoda("");
+        setChoosedCategpry(null);
         setLocation("");
         setPriceFrom(0);
         setPriceTo(0);
@@ -199,54 +200,55 @@ const Home = () => {
 
 
                 <div className={classes.left}>
-                    <SidebarComponent onSelect={handleCategorySelect}
-                                      setSelectedCategoryTemp={setChoosedCategpry}
-                                      handleSelect={handleSelectStatus} location={location}
-                                      handleLocationChange={handleLocationChange}
-                                      priceTo={priceTo} priceFrom={priceFrom}
-                                      handlePriceFromChange={handlePriceFromChange}
-                                      handlePriceToChange={handlePriceToChange}
-                    ></SidebarComponent>
-                    {choosedCategory && (
-                        <div style={{textAlign: 'left', marginLeft: '5px'}}>
+                    <div className={classes.innerLeft}>
+                        <SidebarComponent onSelect={handleCategorySelect}
+                                          setSelectedCategoryTemp={setChoosedCategpry}
+                                          handleSelect={handleSelectStatus} location={location}
+                                          handleLocationChange={handleLocationChange}
+                                          priceTo={priceTo} priceFrom={priceFrom}
+                                          handlePriceFromChange={handlePriceFromChange}
+                                          handlePriceToChange={handlePriceToChange}
+                        ></SidebarComponent>
+                        {choosedCategory && (
+                            <div style={{textAlign: 'left', marginLeft: '5px'}}>
 
-                            <div style={{textAlign: 'left', marginBottom: '15px'}}>
-                                <label style={{color: 'black', fontSize: '16px', fontWeight: 'bold'}}>Specific
-                                    attributes</label>
-                            </div>
-                            {oneCategory != null && oneCategory.atribut.map((attribute) => (
                                 <div style={{textAlign: 'left', marginBottom: '15px'}}>
-                                    <label style={{color: 'black', fontSize: '16px'}}>{attribute.naziv}</label>
-                                    <br/>
-                                    {attribute.tip === 'STRING' &&
-                                        <Input value={attributeValues[attribute.id]?.value || null} onChange={(e) => {
-                                            const newValue = e.target.value;
-                                            setAttributeValues(prevValues => ({
-                                                ...prevValues,
-                                                [attribute.id]: {
-                                                    id: attribute.id,
-                                                    name: attribute.naziv,
-                                                    type: attribute.tip,
-                                                    value: newValue
-                                                },
-                                            }));
-                                        }}/>}
-                                    {(attribute.tip === 'INT' || attribute.tip === 'DOUBLE') &&
-                                        <InputNumber value={attributeValues[attribute.id]?.value || 0} min={0}
-                                                     onChange={(value) => setAttributeValues(prevValues => ({
-                                                         ...prevValues,
-                                                         [attribute.id]: {
-                                                             id: attribute.id,
-                                                             name: attribute.naziv,
-                                                             type: attribute.tip,
-                                                             value: value
-                                                         },
-                                                     }))}/>}
+                                    <label style={{color: 'black', fontSize: '16px', fontWeight: 'bold'}}>Specific
+                                        attributes</label>
                                 </div>
-                            ))}
-                        </div>)
-                    }
-                    <div style={{textAlign: 'center',}}>
+                                {oneCategory != null && oneCategory.atribut.map((attribute) => (
+                                    <div style={{textAlign: 'left', marginBottom: '15px'}}>
+                                        <label style={{color: 'black', fontSize: '16px'}}>{attribute.naziv}</label>
+                                        <br/>
+                                        {attribute.tip === 'STRING' &&
+                                            <Input value={attributeValues[attribute.id]?.value || null} onChange={(e) => {
+                                                const newValue = e.target.value;
+                                                setAttributeValues(prevValues => ({
+                                                    ...prevValues,
+                                                    [attribute.id]: {
+                                                        id: attribute.id,
+                                                        name: attribute.naziv,
+                                                        type: attribute.tip,
+                                                        value: newValue
+                                                    },
+                                                }));
+                                            }}/>}
+                                        {(attribute.tip === 'INT' || attribute.tip === 'DOUBLE') &&
+                                            <InputNumber value={attributeValues[attribute.id]?.value || 0} min={0}
+                                                         onChange={(value) => setAttributeValues(prevValues => ({
+                                                             ...prevValues,
+                                                             [attribute.id]: {
+                                                                 id: attribute.id,
+                                                                 name: attribute.naziv,
+                                                                 type: attribute.tip,
+                                                                 value: value
+                                                             },
+                                                         }))}/>}
+                                    </div>
+                                ))}
+                            </div>)
+                        }
+                        <div style={{textAlign: 'center',}}>
                             <Button onClick={handleFilterSearch} className={classes.dugme} type="primary"
                                     icon={<SearchOutlined/>}
                                     style={{whiteSpace: 'normal',marginBottom:'10px',marginTop:'5px'}}>Search</Button>
@@ -255,6 +257,7 @@ const Home = () => {
                             <Button className={classes.dugme} type="primary"
                                     onClick={handleClearFilters}>Clear</Button>
                         </div>
+                    </div>
 
                 </div>
                 <Layout>
