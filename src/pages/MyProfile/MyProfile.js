@@ -125,12 +125,20 @@ const MyProfile = () => {
 
     }, [dispatch2]);
     useEffect(() => {
-        console.log("useEffect fetch1 " + finished);
+        console.log("fetch1" + fetch1);
+        console.log("fetch2" + fetch2);
         if (!fetch1 && !fetch2) {
+            console.log("hvata fetch1 ");
             fetchData1();
             setFetch1(true);
             setFetch2(false);
         } else if (!fetch1 && fetch2) {
+            console.log("hvata fetch2 ");
+            fetchData2();
+            setFetch1(false);
+            setFetch2(true);
+        }else if (fetch1 && !fetch2) {
+            console.log("hvata treci uslov ");
             fetchData1();
             setFetch1(true);
             setFetch2(false);
@@ -168,6 +176,7 @@ const MyProfile = () => {
         setEditProfileModal(true);
     };
     const handleSaveObrisi = () => {
+        console.log("u obrisi proizvod sam ");
         setRefreshKey((prevKey) => prevKey + 1);
     };
     const handleEditProfileClose = () => {
@@ -238,7 +247,7 @@ const MyProfile = () => {
                                 fontWeight: 'bold'
                             }}>No data.</p>
                         ) : (
-                            <Products products={products} onSave={handleSaveObrisi}/>
+                            <Products products={products} handleSaveObrisi={handleSaveObrisi}/>
                         )
                     )}
                 </Content>

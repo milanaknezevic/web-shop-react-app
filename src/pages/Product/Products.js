@@ -2,7 +2,7 @@ import React from 'react';
 import classes from './Product.module.css'
 import CardComponent from "../../components/Card/CardComponent";
 
-const Product = ({products, onSave}) => {
+const Product = ({products,handleSaveObrisi}) => {
 
 
     return (
@@ -11,7 +11,7 @@ const Product = ({products, onSave}) => {
                 {products && products.content && products.content
                     .map(product => (
                         <div className={classes.productCard} key={product.id}>
-                            <CardComponent product={product} onSave={onSave}/>
+                            <CardComponent product={product} handleSaveObrisi={handleSaveObrisi}/>
                         </div>
                     ))}
             </div>

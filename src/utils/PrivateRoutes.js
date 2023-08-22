@@ -4,7 +4,7 @@ import {useEffect} from "react";
 const PrivateRoutes = () => {
 const token = sessionStorage.getItem('access');
     useEffect(()=>{
-        console.log("token storage" + sessionStorage.getItem('access'));
+       // console.log("token storage" + sessionStorage.getItem('access'));
         console.log("token " + token );
     },[])
     return (

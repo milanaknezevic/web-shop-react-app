@@ -1,44 +1,32 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import {Card} from 'antd';
 import classes from './Card.module.css';
 import {FaTrash} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteProduct, getProductByID} from "../../redux/features/productSlice";
-import {Link, useNavigate} from "react-router-dom";
+import {deleteProduct} from "../../redux/features/productSlice";
+import {Link} from "react-router-dom";
 
 const {Meta} = Card;
 
-const CardComponent = ({product, onSave}) => {
+const CardComponent = ({product, handleSaveObrisi}) => {
     const {user} = useSelector((state) => state.users);
     const dispatch = useDispatch();
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    const navigate = useNavigate();
+    const productPath = `/${product.id}`;
 
-    const handleDeleteProduct = async () => {
+    const handleDeleteProduct = async (e) => {
+        e.preventDefault();
+        console.log("wtfffff");
         if (product) {
             console.log("id proizvoda za brisanje " + product.id);
             const response = await dispatch(deleteProduct({id: product.id}));
             console.log("repsonse " + JSON.stringify(response));
-            onSave();
+            handleSaveObrisi();
         }
     }
-
-    const productPath = `/${product.id}`;
-
-    const handleCardClick = () => {
-        setSelectedProduct(product);
-        console.log("kliknula sam " + JSON.stringify(product));
-        //dispatch(getProductByID({id:product.id}));
-        //navigate("/view");
-
-    };
-
-
     return (
         <div>
-
             {product && product.slikas.length > 0 && (
-                <Link to={productPath} >
+                <Link to={productPath}>
                     <Card
                         hoverable
                         className={classes.card}
@@ -55,7 +43,7 @@ const CardComponent = ({product, onSave}) => {
                         <div>
                             <Meta title={product.naslov}/>
                             <div className={classes.priceContainer}>
-                                {(user && product.prodavac && product.kupac && product.prodavac.id === user.id && product.kupac.id !== user.id) && (
+                                {(user && product && product.prodavac.id === user.id) && (
                                     <button className={classes.deleteDugme} onClick={handleDeleteProduct}>
                                         <FaTrash size={'15px'}/>
                                     </button>

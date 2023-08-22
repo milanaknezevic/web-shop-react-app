@@ -171,6 +171,10 @@ const Home = () => {
         cijenaDo: priceTo !== 0 ? priceTo : null,
         proizvodAtributi: atributi.length > 0 ? atributi : null
     };
+    const handleSaveObrisi = () => {
+        console.log("u obrisi proizvod sam home");
+        setRefreshKey((prevKey) => prevKey + 1);
+    };
     const clearAllFilters = () => {
         setStanjeProizvoda("");
         setChoosedCategpry(null);
@@ -275,7 +279,7 @@ const Home = () => {
                                         fontWeight: 'bold'
                                     }}>No data.</p>
                                 ) : (
-                                    <Products products={products}/>
+                                    <Products products={products} handleSaveObrisi={handleSaveObrisi}/>
                                 )
                             )}
                         </Content>
