@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {activateAccount} from "../../api/auth.service";
 
 
-const ActivationAccount=() =>{
+const ActivationAccount = () => {
 
     const [isDisabled, setIsDisabled] = useState(false);
     const [showErrorMessage, setShowErrorMessage] = useState(false);
@@ -39,7 +39,7 @@ const ActivationAccount=() =>{
         setIsDisabled(true);
         try {
             const response = await activateAccount(activationData);
-
+            console.log("response " + JSON.stringify(response));
 
             if (response.data === "") {
                 setShowErrorMessage(true);
@@ -53,7 +53,7 @@ const ActivationAccount=() =>{
             } else {
                 setShowSuccesMessage(true);
                 setsuccesMessage("Account successfully activated!");
-
+                sessionStorage.setItem('access', response.data.token);
                 setTimeout(() => {
                     setShowSuccesMessage(false);
                     setsuccesMessage("");

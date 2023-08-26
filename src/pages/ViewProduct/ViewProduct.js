@@ -204,22 +204,28 @@ const ViewProduct = () => {
                                         oneProduct.komentars.map((komentar, index) => (
                                             <div style={{background: 'white'}}>
                                                 <List.Item key={index}>
+
                                                     <List.Item.Meta
-                                                        avatar={<Avatar
-                                                            src={require("../../assets/users/" + komentar.korisnik_komentar.avatar)}
-                                                            alt="Image"/>}
-                                                        title={<Text
-                                                            strong>{komentar.korisnik_komentar.korisnickoIme}</Text>}
-                                                        description={komentar.pitanje}
+                                                        avatar={<Avatar src={require("../../assets/users/" + komentar.korisnik_komentar.avatar)} alt="Image" />}
+                                                        title={
+                                                            <Text>
+                                                                <span >{komentar.korisnik_komentar.korisnickoIme}    </span>
+
+                                                                <span style={{ fontStyle: 'italic',color:'#3d3c3c' }}>{new Date(komentar.datum).toLocaleString()}</span>
+                                                            </Text>
+                                                        } description={komentar.pitanje}
+
                                                     />
+
                                                 </List.Item>
                                                 {komentar.odgovor !== null &&
                                                     (
                                                         <p><strong
                                                             style={{color: 'green'}}>Answer:</strong> {komentar.odgovor}
                                                         </p>
-                                                    )}
-                                                {showInsertCommentar && user.id === komentar.korisnik_komentar.id && komentar.odgovor === null &&
+                                                    )
+                                                }
+                                               {showInsertCommentar && komentar.odgovor === null && user.id===oneProduct.prodavac.id &&
                                                     (<div className={classes.sendReply}>
                                                             <FirstForm formRefReply={formRefReply}
                                                                        showErrorMessage={showErrorMessage}

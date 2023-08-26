@@ -34,15 +34,7 @@ const Home = () => {
     const [stanjeProizvoda, setStanjeProizvoda] = useState("");
 
 
-    useEffect(() => {
-        const token = sessionStorage.getItem('access');
-        if (token !== null) {
-            const decodedToken = jwtDecode(token);
-            const id = parseInt(decodedToken.jti);
-            dispatch(getUser({id: id}));
-        }
-        dispatch(getCategories({}));
-    }, []);
+
     const handleSaveUpdate = () => {
         setRefreshKey((prevKey) => prevKey + 1);
     };
@@ -65,10 +57,23 @@ const Home = () => {
             }
         };
         resizeHandler(); // Postavi visinu kontejnera na početku
+
+
+        const token = sessionStorage.getItem('access');
+        if (token !== null) {
+            const decodedToken = jwtDecode(token);
+            const id = parseInt(decodedToken.jti);
+            console.log("token " + token);
+            console.log("home sam sta mi je id "+ id + "tip id " + typeof id);
+            dispatch(getUser({id: id}));
+        }
+        dispatch(getCategories({}));
         window.addEventListener('resize', resizeHandler);
         return () => {
             window.removeEventListener('resize', resizeHandler);
         };
+
+
     }, []);
     useEffect(() => {
         try {
