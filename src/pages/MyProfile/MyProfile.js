@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {FaBoxOpen, FaEdit, FaKey, FaShoppingCart} from "react-icons/fa";
 import {Layout, Pagination} from "antd";
 import Select from "../../components/Select/Select";
-import {getAllProductsForBuyer, getAllProductsForSeller} from '../../redux/features/productSlice';
+import {getAllProductsForBuyer, getAllProductsForSeller, removeProduct} from '../../redux/features/productSlice';
 import {useNavigate} from "react-router-dom";
 import Products from "../Product/Products";
 import {Content} from "antd/es/layout/layout";
@@ -17,7 +17,7 @@ const MyProfile = () => {
     const [refreshKey, setRefreshKey] = useState(0);
     const [editProfileModal, setEditProfileModal] = useState(false);
     const [changePasswordModal, setChangePasswordModall] = useState(false);
-    const {authenticated, user} = useSelector((state) => state.users);
+    const {user} = useSelector((state) => state.users);
     const [underlineColorProducts, setUnderlineColorProducts] = useState('blue');
     const [underlineColorPurchase, setUnderlineColorPurchase] = useState('gray');
     const [showSelect, setShowSelect] = useState(true);
@@ -29,8 +29,7 @@ const MyProfile = () => {
     const dispatch1 = useDispatch();
     const dispatch2 = useDispatch();
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(true); // Dodato stanje za praćenje učitavanja
+    const [isLoading, setIsLoading] = useState(true);
     const [pageSize, setPageSize] = useState(10);
     const [pageNumber, setPageNumber] = useState(current - 1);
     const [fetch1, setFetch1] = useState(false);
@@ -44,15 +43,10 @@ const MyProfile = () => {
             value: '1',
             label: 'Finished',
         },
-        {
-            value: '3',
-            label: 'All',
-        },
     ];
 
 
     useEffect(() => {
-        console.log("useEffect prvi ");
         const token = sessionStorage.getItem('access');
         if (token !== null) {
             const decodedToken = jwtDecode(token);
@@ -115,7 +109,10 @@ const MyProfile = () => {
         }
     };
     useEffect(() => {
-        console.log("useEffect fetch2 " + finished);
+        if(oneProduct !== null)
+        {
+            dispatch(removeProduct());
+        }
         if (fetch1 && !fetch2) {
             fetchData2();
             setFetch1(false);
@@ -125,20 +122,22 @@ const MyProfile = () => {
 
     }, [dispatch2]);
     useEffect(() => {
-        console.log("fetch1" + fetch1);
-        console.log("fetch2" + fetch2);
+        if(oneProduct !== null)
+        {
+            dispatch(removeProduct());
+        }
         if (!fetch1 && !fetch2) {
-            console.log("hvata fetch1 ");
+
             fetchData1();
             setFetch1(true);
             setFetch2(false);
         } else if (!fetch1 && fetch2) {
-            console.log("hvata fetch2 ");
+
             fetchData2();
             setFetch1(false);
             setFetch2(true);
         }else if (fetch1 && !fetch2) {
-            console.log("hvata treci uslov ");
+
             fetchData1();
             setFetch1(true);
             setFetch2(false);
@@ -165,12 +164,7 @@ const MyProfile = () => {
         setCurrent(newPage);
         setPageNumber(newPage - 1);
     };
-    useEffect(() => {
-        console.log("user " + JSON.stringify(user));
-        console.log("useEffect authet");
-        if (authenticated === false)
-            navigate('/');
-    }, [authenticated, navigate]);
+
 
     const handleEditProfileOpen = () => {
         setEditProfileModal(true);

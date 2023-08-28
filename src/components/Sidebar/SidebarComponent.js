@@ -17,6 +17,12 @@ const SidebarComponent = ({
                               priceFrom
                           }) => {
 
+    const options = [
+        {   value: '0', label: "New" },
+        {   value: '1', label: "Used" },
+    ];
+
+
     return (
         <div>
             <div className={classes.container}>
@@ -28,7 +34,7 @@ const SidebarComponent = ({
                         <label style={{color: 'black', fontSize: '16px', fontWeight: 'bold'}}>Status</label>
                     </div>
                     <div style={{textAlign: 'left', marginLeft: '5px'}}>
-                        <Select onChangeValue={handleSelect}></Select>
+                        <Select onChangeValue={handleSelect} options={options}></Select>
                     </div>
 
                 </div>

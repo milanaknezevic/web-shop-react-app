@@ -84,8 +84,8 @@ const Home = () => {
             if (!filterClicked) {
                 setIsLoading(true);
                 dispatch(getAllProducts({pageNumber, pageSize, naslov}));
-                setIsLoading(true);
             } else if (filterClicked) {
+                console.log("search data " + JSON.stringify(searchData));
                 const response = dispatch(searchProducts({
                     pageNumber: pageNumber,
                     pageSize: pageSize,
@@ -93,13 +93,10 @@ const Home = () => {
                 }));
                 if (response.error) {
                     setFilterClicked(false);
-                } else {
-                    if (!filterClicked) {
-                        setFilterClicked(true);
-                        setCurrent(1);
-                        setPageNumber(0);
-                    }
+                    setCurrent(1);
+                    setPageNumber(0);
                 }
+
             }
         } catch (error) {
             setIsLoading(true);
@@ -118,6 +115,8 @@ const Home = () => {
     };
     const onSearch = (value) => {
         setNaslov(value);
+        setCurrent(1);
+        setPageNumber(0);
     };
     const handleCategorySelect = (selectedKeys) => {
         setChoosedCategpry(selectedKeys[0]);
@@ -130,7 +129,7 @@ const Home = () => {
         clearAllFilters();
     };
     const handleSelectStatus = (value) => {
-        //used 1, a new 0
+      console.log("stanje proizvoda " + value);
         setStanjeProizvoda(value);
     };
     const handleLocationChange = (event) => {
@@ -171,7 +170,7 @@ const Home = () => {
         naslov: naslov === "" ? null : naslov,
         imeKategorije: oneCategory && typeof choosedCategory === 'number' ? oneCategory.naziv : null,
         lokacija: location !== "" ? location : null,
-        stanjeProizvoda: stanjeProizvoda !== "" ? (stanjeProizvoda === 1 ? true : false) : null,
+        stanjeProizvoda: stanjeProizvoda !== "" ? (stanjeProizvoda === '1' ? true : false) : null,
         cijenaOd: priceFrom !== 0 ? priceFrom : null,
         cijenaDo: priceTo !== 0 ? priceTo : null,
         proizvodAtributi: atributi.length > 0 ? atributi : null
@@ -194,10 +193,10 @@ const Home = () => {
 
 
     const handleFilterSearch = () => {
-        console.log("On search ");
-        console.log("searchData " + JSON.stringify(searchData));
-        handleSaveUpdate();
+       handleSaveUpdate();
         setFilterClicked(true);
+        setCurrent(1);
+        setPageNumber(0);
 
     };
 

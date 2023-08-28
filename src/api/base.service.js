@@ -9,7 +9,6 @@ const baseService = {
             instance.interceptors.request.use(
                 async (config) => {
                     const token = sessionStorage.getItem('access');
-                    console.log("uzela sam token iz base service " + token);
                     if (token) {
                         config.headers = {
                             ...config.headers,
