@@ -182,16 +182,17 @@ const ViewProduct = () => {
 
                             </div>
                         </div>}
-                        {showInsertCommentar && oneProduct.zavrsenaPonuda === 0 && (
-                            <div className={classes.productInfoContainer}>
-                                <button onClick={handleBuyOpen} style={{width: "fit-content",height:'fit-content'}}>
-                                    Buy
-                                </button>
-                                <br/>
-                                <br/>
+                        {showInsertCommentar && oneProduct.zavrsenaPonuda === 0 &&
+                            oneProduct.prodavac.id !== user.id &&(
+                                <div className={classes.productInfoContainer}>
+                                    <button onClick={handleBuyOpen} style={{width: "fit-content",height:'fit-content'}}>
+                                        Buy
+                                    </button>
+                                    <br/>
+                                    <br/>
 
-                            </div>
-                        )}
+                                </div>
+                            )}
                         <div>
                             <h1>All comments</h1>
 
@@ -225,7 +226,7 @@ const ViewProduct = () => {
                                                         </p>
                                                     )
                                                 }
-                                               {showInsertCommentar && komentar.odgovor === null && user.id===oneProduct.prodavac.id &&
+                                                {showInsertCommentar && komentar.odgovor === null && user.id===oneProduct.prodavac.id &&
                                                     (<div className={classes.sendReply}>
                                                             <FirstForm formRefReply={formRefReply}
                                                                        showErrorMessage={showErrorMessage}

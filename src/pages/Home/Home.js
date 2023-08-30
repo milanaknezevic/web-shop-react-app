@@ -12,7 +12,8 @@ import {getCategories, getCategory, removeCategory} from "../../redux/features/c
 import {SearchOutlined} from "@ant-design/icons";
 
 
-const {Footer, Content} = Layout;
+
+const {Footer,Sider, Content} = Layout;
 
 
 const Home = () => {
@@ -205,70 +206,72 @@ const Home = () => {
             <SearchComponent onSearch={onSearch}/>
 
             <div className={classes.container}>
-
-
-                <div className={classes.left}>
-                    <div className={classes.innerLeft}>
-                        <SidebarComponent onSelect={handleCategorySelect}
-                                          setSelectedCategoryTemp={setChoosedCategpry}
-                                          handleSelect={handleSelectStatus} location={location}
-                                          handleLocationChange={handleLocationChange}
-                                          priceTo={priceTo} priceFrom={priceFrom}
-                                          handlePriceFromChange={handlePriceFromChange}
-                                          handlePriceToChange={handlePriceToChange}
-                        ></SidebarComponent>
-                        {choosedCategory && (
-                            <div style={{textAlign: 'left', marginLeft: '5px'}}>
-
-                                <div style={{textAlign: 'left', marginBottom: '15px'}}>
-                                    <label style={{color: 'black', fontSize: '16px', fontWeight: 'bold'}}>Specific
-                                        attributes</label>
-                                </div>
-                                {oneCategory != null && oneCategory.atribut.map((attribute) => (
-                                    <div style={{textAlign: 'left', marginBottom: '15px'}}>
-                                        <label style={{color: 'black', fontSize: '16px'}}>{attribute.naziv}</label>
-                                        <br/>
-                                        {attribute.tip === 'STRING' &&
-                                            <Input value={attributeValues[attribute.id]?.value || null} onChange={(e) => {
-                                                const newValue = e.target.value;
-                                                setAttributeValues(prevValues => ({
-                                                    ...prevValues,
-                                                    [attribute.id]: {
-                                                        id: attribute.id,
-                                                        name: attribute.naziv,
-                                                        type: attribute.tip,
-                                                        value: newValue
-                                                    },
-                                                }));
-                                            }}/>}
-                                        {(attribute.tip === 'INT' || attribute.tip === 'DOUBLE') &&
-                                            <InputNumber value={attributeValues[attribute.id]?.value || 0} min={0}
-                                                         onChange={(value) => setAttributeValues(prevValues => ({
-                                                             ...prevValues,
-                                                             [attribute.id]: {
-                                                                 id: attribute.id,
-                                                                 name: attribute.naziv,
-                                                                 type: attribute.tip,
-                                                                 value: value
-                                                             },
-                                                         }))}/>}
-                                    </div>
-                                ))}
-                            </div>)
-                        }
-                        <div style={{textAlign: 'center',}}>
-                            <Button onClick={handleFilterSearch} className={classes.dugme} type="primary"
-                                    icon={<SearchOutlined/>}
-                                    style={{whiteSpace: 'normal',marginBottom:'10px',marginTop:'5px'}}>Search</Button>
-                        </div>
-                        <div style={{textAlign: 'center',}}>
-                            <Button className={classes.dugme} type="primary"
-                                    onClick={handleClearFilters}>Clear</Button>
-                        </div>
-                    </div>
-
-                </div>
                 <Layout>
+                    <Sider style={{backgroundColor:'#9caf88'}} breakpoint="lg" collapsedWidth="0">
+
+                            <div className={classes.innerLeft}>
+                                <SidebarComponent onSelect={handleCategorySelect}
+                                                  setSelectedCategoryTemp={setChoosedCategpry}
+                                                  handleSelect={handleSelectStatus} location={location}
+                                                  handleLocationChange={handleLocationChange}
+                                                  priceTo={priceTo} priceFrom={priceFrom}
+                                                  handlePriceFromChange={handlePriceFromChange}
+                                                  handlePriceToChange={handlePriceToChange}
+                                ></SidebarComponent>
+                                {choosedCategory && (
+                                    <div style={{textAlign: 'left', marginLeft: '5px'}}>
+
+                                        <div style={{textAlign: 'left', marginBottom: '15px'}}>
+                                            <label style={{color: 'black', fontSize: '16px', fontWeight: 'bold'}}>Specific
+                                                attributes</label>
+                                        </div>
+                                        {oneCategory != null && oneCategory.atribut.map((attribute) => (
+                                            <div style={{textAlign: 'left', marginBottom: '15px'}}>
+                                                <label style={{color: 'black', fontSize: '16px'}}>{attribute.naziv}</label>
+                                                <br/>
+                                                {attribute.tip === 'STRING' &&
+                                                    <Input value={attributeValues[attribute.id]?.value || null} onChange={(e) => {
+                                                        const newValue = e.target.value;
+                                                        setAttributeValues(prevValues => ({
+                                                            ...prevValues,
+                                                            [attribute.id]: {
+                                                                id: attribute.id,
+                                                                name: attribute.naziv,
+                                                                type: attribute.tip,
+                                                                value: newValue
+                                                            },
+                                                        }));
+                                                    }}/>}
+                                                {(attribute.tip === 'INT' || attribute.tip === 'DOUBLE') &&
+                                                    <InputNumber value={attributeValues[attribute.id]?.value || 0} min={0}
+                                                                 onChange={(value) => setAttributeValues(prevValues => ({
+                                                                     ...prevValues,
+                                                                     [attribute.id]: {
+                                                                         id: attribute.id,
+                                                                         name: attribute.naziv,
+                                                                         type: attribute.tip,
+                                                                         value: value
+                                                                     },
+                                                                 }))}/>}
+                                            </div>
+                                        ))}
+                                    </div>)
+                                }
+                                <div style={{textAlign: 'center',}}>
+                                    <Button onClick={handleFilterSearch} className={classes.dugme} type="primary"
+                                            icon={<SearchOutlined/>}
+                                            style={{whiteSpace: 'normal',marginBottom:'10px',marginTop:'5px'}}>Search</Button>
+                                </div>
+                                <div style={{textAlign: 'center',}}>
+                                    <Button className={classes.dugme} type="primary"
+                                            onClick={handleClearFilters}>Clear</Button>
+                                </div>
+                            </div>
+
+
+                    </Sider>
+
+
                     <Layout>
                         <Content>
                             {isLoading ? (

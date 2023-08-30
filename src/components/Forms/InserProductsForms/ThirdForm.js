@@ -31,7 +31,7 @@ const ThirdForm = ({ onFinish, categoryId, initialValues }) => {
                     name={`${a.id}`}
                     rules={[{ required: true, message: "Please enter attribute value." }]}
                 >
-                    {(a.tip === 'INT' || a.tip === 'DOUBLE') && <InputNumber min={1} />}
+                    {(a.tip === 'INT' || a.tip === 'DOUBLE') && <InputNumber min={0} />}
                     {a.tip === 'STRING' && <Input/>}
                 </Form.Item>
             ))}
